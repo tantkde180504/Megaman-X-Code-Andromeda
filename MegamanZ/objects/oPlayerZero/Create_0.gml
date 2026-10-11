@@ -23,9 +23,12 @@ dash_recovery_frame = 4.0;
 wall_slide_anim_frame = 0.0;
 wall_jump_anim_frame = 0.0;
 
-// Air & Dash slash tracking
+// Air, Dash, Wall & Ladder slash tracking
 is_air_slashing = false;
 is_dash_slashing = false;
+is_wall_slashing = false;
+is_ladder_slashing = false;
+ladder_anim_frame = 2.0;
 
 // Damage status tracking
 is_shocked = false;

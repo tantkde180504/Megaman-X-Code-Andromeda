@@ -5,6 +5,8 @@ if (state == PLAYER_STATE.HURT) {
     slash_anim_timer = 0;
     is_air_slashing = false;
     is_dash_slashing = false;
+    is_wall_slashing = false;
+    is_ladder_slashing = false;
     combo_step = 0;
     combo_timer = 0;
     technique_state = TECHNIQUE.NONE;
@@ -49,12 +51,34 @@ if (global.input.special_pressed) {
 
 // Saber Combos (Attack button)
 if (global.input.shoot_pressed) {
-    if (!grounded) {
+    if (state == PLAYER_STATE.WALL_SLIDE) {
+        slash_anim_timer = 14;
+        slash_anim_frame = 0.0;
+        slash_total_frames = 9;
+        is_wall_slashing = true;
+        is_ladder_slashing = false;
+        is_air_slashing = false;
+        is_dash_slashing = false;
+        var _h = instance_create_layer(x + (facing * 24), y - 20, "Instances", oSaberHitbox);
+        _h.damage = 3.0;
+    } else if (state == PLAYER_STATE.LADDER) {
+        slash_anim_timer = 14;
+        slash_anim_frame = 0.0;
+        slash_total_frames = 9;
+        is_ladder_slashing = true;
+        is_wall_slashing = false;
+        is_air_slashing = false;
+        is_dash_slashing = false;
+        var _h = instance_create_layer(x + (facing * 24), y - 20, "Instances", oSaberHitbox);
+        _h.damage = 3.0;
+    } else if (!grounded) {
         slash_anim_timer = 14;
         slash_anim_frame = 0.0;
         slash_total_frames = 9;
         is_air_slashing = true;
         is_dash_slashing = false;
+        is_wall_slashing = false;
+        is_ladder_slashing = false;
         var _h = instance_create_layer(x + (facing * 16), y - 16, "Instances", oSaberHitbox);
         _h.damage = 2.5;
     } else if (state == PLAYER_STATE.DASH) {
@@ -63,11 +87,15 @@ if (global.input.shoot_pressed) {
         slash_total_frames = 9;
         is_dash_slashing = true;
         is_air_slashing = false;
+        is_wall_slashing = false;
+        is_ladder_slashing = false;
         var _h = instance_create_layer(x + (facing * 18), y - 16, "Instances", oSaberHitbox);
         _h.damage = 3.0;
     } else {
         is_air_slashing = false;
         is_dash_slashing = false;
+        is_wall_slashing = false;
+        is_ladder_slashing = false;
         if (combo_step == 0) {
             combo_step = 1;
             combo_timer = COMBO_RESET_FRAMES;
@@ -145,6 +173,8 @@ if (slash_anim_timer > 0) {
     slash_anim_frame = 0.0;
     is_air_slashing = false;
     is_dash_slashing = false;
+    is_wall_slashing = false;
+    is_ladder_slashing = false;
 }
 
 // -------------------------------------------------------------
@@ -242,6 +272,43 @@ if (is_dash_recovering) {
             dash_recovery_frame = 4.0;
         }
     }
+}
+
+// -------------------------------------------------------------
+// Ladder Animation & Top Exit Control (Hàng 18: 14 frames)
+// -------------------------------------------------------------
+if (state == PLAYER_STATE.LADDER) {
+    if (prev_state != PLAYER_STATE.LADDER) {
+        ladder_anim_frame = 2.0; // Start climbing cycle
+        is_ladder_exiting = false;
+        ladder_exit_frame = 0.0;
+        is_landing = false;
+        is_dash_recovering = false;
+    }
+    
+    if (is_ladder_exiting) {
+        ladder_exit_frame += 0.20;
+        y -= 0.8;
+        if (ladder_exit_frame >= 4.0) {
+            is_ladder_exiting = false;
+            ladder_exit_frame = 0.0;
+            state = PLAYER_STATE.IDLE;
+            vsp = 0;
+            hsp = 0;
+            while (place_meeting(x, y, oSolid)) {
+                y -= 1;
+            }
+        }
+    } else {
+        if (vsp != 0 && slash_anim_timer <= 0) {
+            ladder_anim_frame += 0.22;
+            if (ladder_anim_frame >= 10.0 || ladder_anim_frame < 2.0) {
+                ladder_anim_frame = 2.0;
+            }
+        }
+    }
+} else {
+    is_ladder_exiting = false;
 }
 
 // Track previous state and airborne status

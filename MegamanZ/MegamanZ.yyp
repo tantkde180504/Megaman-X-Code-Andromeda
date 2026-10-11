@@ -31,6 +31,9 @@
   "name":"MegamanZ",
   "resources":[
     {"id":{"name":"sZero_WallSlide","path":"sprites/sZero_WallSlide/sZero_WallSlide.yy",},},
+    {"id":{"name":"sZero_WallSlash","path":"sprites/sZero_WallSlash/sZero_WallSlash.yy",},},
+    {"id":{"name":"sZero_Ladder","path":"sprites/sZero_Ladder/sZero_Ladder.yy",},},
+    {"id":{"name":"sZero_LadderSlash","path":"sprites/sZero_LadderSlash/sZero_LadderSlash.yy",},},
     {"id":{"name":"sZero_AirSlash","path":"sprites/sZero_AirSlash/sZero_AirSlash.yy",},},
     {"id":{"name":"sZero_DashSlash","path":"sprites/sZero_DashSlash/sZero_DashSlash.yy",},},
     {"id":{"name":"sZero_Shock","path":"sprites/sZero_Shock/sZero_Shock.yy",},},

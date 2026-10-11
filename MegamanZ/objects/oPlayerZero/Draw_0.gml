@@ -21,7 +21,13 @@ if (state == PLAYER_STATE.HURT) {
 // 1. Z-SABER COMBAT ATTACKS (Highest priority when slashing!)
 else if (slash_anim_timer > 0) {
     var _f_slash = clamp(floor(slash_anim_frame), 0, 8);
-    if (!grounded && sprite_exists(sZero_AirSlash)) {
+    if (is_wall_slashing && sprite_exists(sZero_WallSlash)) {
+        // Wall slash with Z-Saber (Hàng 17)
+        draw_sprite_ext(sZero_WallSlash, _f_slash, x, y, facing, 1, 0, c_white, 1);
+    } else if (is_ladder_slashing && sprite_exists(sZero_LadderSlash)) {
+        // Ladder slash with Z-Saber (Hàng 19)
+        draw_sprite_ext(sZero_LadderSlash, _f_slash, x, y, facing, 1, 0, c_white, 1);
+    } else if (!grounded && sprite_exists(sZero_AirSlash)) {
         // Pure mid-air jump slash (Hàng 13)
         draw_sprite_ext(sZero_AirSlash, _f_slash, x, y, facing, 1, 0, c_white, 1);
     } else if (grounded && (is_air_slashing || is_dash_slashing || state == PLAYER_STATE.DASH) && sprite_exists(sZero_DashSlash)) {
@@ -51,7 +57,24 @@ else if (state == PLAYER_STATE.WALL_SLIDE && sprite_exists(sZero_WallSlide)) {
         draw_sprite_ext(sZero_WallSlide, _wj_f, x, y, facing, 1, 0, c_white, 1);
     }
 }
-// 3. BASIC MOVEMENT
+// 3. LADDER (Hàng 18: 14 frames)
+else if (state == PLAYER_STATE.LADDER && sprite_exists(sZero_Ladder)) {
+    if (is_ladder_exiting) {
+        // Frames 10..13: Ladder top exit
+        var _top_idx = 10 + clamp(floor(ladder_exit_frame), 0, 3);
+        draw_sprite_ext(sZero_Ladder, _top_idx, x, y, 1, 1, 0, c_white, 1);
+    } else {
+        if (vsp != 0) {
+            // Frames 2..9: Climbing cycle (8 frames)
+            var _climb_idx = clamp(floor(ladder_anim_frame), 2, 9);
+            draw_sprite_ext(sZero_Ladder, _climb_idx, x, y, 1, 1, 0, c_white, 1);
+        } else {
+            // Frame 0: Hold / rest on ladder
+            draw_sprite_ext(sZero_Ladder, 0, x, y, 1, 1, 0, c_white, 1);
+        }
+    }
+}
+// 4. BASIC MOVEMENT
 else if (is_landing && sprite_exists(sZero_Jump)) {
     // Landing frames: frames 8..10 (indices 8..10)
     var _landing_idx = clamp(floor(landing_frame), 8, 10);
