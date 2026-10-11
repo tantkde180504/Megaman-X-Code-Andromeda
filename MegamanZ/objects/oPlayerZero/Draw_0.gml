@@ -13,14 +13,8 @@ if (state == PLAYER_STATE.HURT) {
         var _shock_f = clamp(floor((1.0 - (hurt_timer / 18.0)) * 6), 0, 5);
         draw_sprite_ext(sZero_Shock, _shock_f, x, y, facing, 1, 0, c_white, 1);
     } else if (sprite_exists(sZero_Hurt)) {
-        var _hurt_f = 0;
-        if (!grounded) {
-            // Airborne hurt recoil: frames 4 & 5
-            _hurt_f = ((hurt_timer div 3) % 2 == 0) ? 4 : 5;
-        } else {
-            // Ground hurt recoil & recovery: frames 0..7 based on hurt_timer
-            _hurt_f = clamp(floor((1.0 - (hurt_timer / 18.0)) * 8), 0, 7);
-        }
+        // 4-frame hurt impact recoil shudder and recovery
+        var _hurt_f = clamp(floor((1.0 - (hurt_timer / 18.0)) * 4), 0, 3);
         draw_sprite_ext(sZero_Hurt, _hurt_f, x, y, facing, 1, 0, c_white, 1);
     }
 }
@@ -78,10 +72,16 @@ else if (is_landing && sprite_exists(sZero_Jump)) {
     // 16-frame authentic Run animation
     var _run_frame = (anim_timer * 0.3) % 16;
     draw_sprite_ext(sZero_Run, _run_frame, x, y, facing, 1, 0, c_white, 1);
-} else if (sprite_exists(sZero_Idle)) {
-    // Combat ready breathing idle animation with full flowing ponytail
-    var _idle_frame = (anim_timer * 0.1) % 5;
-    draw_sprite_ext(sZero_Idle, _idle_frame, x, y, facing, 1, 0, c_white, 1);
+} else {
+    // Check if low health (<= 30% HP) for exhausted idle animation (Hàng 20: 4 frame sau)
+    if ((hp_current / hp_max) <= 0.30 && sprite_exists(sZero_LowHealth)) {
+        var _low_frame = (anim_timer * 0.1) % 4;
+        draw_sprite_ext(sZero_LowHealth, _low_frame, x, y, facing, 1, 0, c_white, 1);
+    } else if (sprite_exists(sZero_Idle)) {
+        // Combat ready breathing idle animation with full flowing ponytail
+        var _idle_frame = (anim_timer * 0.1) % 5;
+        draw_sprite_ext(sZero_Idle, _idle_frame, x, y, facing, 1, 0, c_white, 1);
+    }
 }
 
 // Technique VFX Overlays

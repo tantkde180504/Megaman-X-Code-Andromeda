@@ -35,6 +35,7 @@
     {"id":{"name":"sZero_DashSlash","path":"sprites/sZero_DashSlash/sZero_DashSlash.yy",},},
     {"id":{"name":"sZero_Shock","path":"sprites/sZero_Shock/sZero_Shock.yy",},},
     {"id":{"name":"sZero_Hurt","path":"sprites/sZero_Hurt/sZero_Hurt.yy",},},
+    {"id":{"name":"sZero_LowHealth","path":"sprites/sZero_LowHealth/sZero_LowHealth.yy",},},
     {"id":{"name":"sZero_Slash3","path":"sprites/sZero_Slash3/sZero_Slash3.yy",},},
     {"id":{"name":"sZero_Slash2","path":"sprites/sZero_Slash2/sZero_Slash2.yy",},},
     {"id":{"name":"sZero_Slash1","path":"sprites/sZero_Slash1/sZero_Slash1.yy",},},

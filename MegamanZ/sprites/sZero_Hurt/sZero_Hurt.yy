@@ -39,34 +39,6 @@
       "name": "5b8aca02-f0c3-4a1b-9c9c-cc6617a35101",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
-    },
-    {
-      "$GMSpriteFrame": "v1",
-      "%Name": "1ebdd8b1-994b-46bc-8c27-cb40ca3ee425",
-      "name": "1ebdd8b1-994b-46bc-8c27-cb40ca3ee425",
-      "resourceType": "GMSpriteFrame",
-      "resourceVersion": "2.0"
-    },
-    {
-      "$GMSpriteFrame": "v1",
-      "%Name": "72dabc3f-ceb6-4a49-9b6b-c3f7bbecbe60",
-      "name": "72dabc3f-ceb6-4a49-9b6b-c3f7bbecbe60",
-      "resourceType": "GMSpriteFrame",
-      "resourceVersion": "2.0"
-    },
-    {
-      "$GMSpriteFrame": "v1",
-      "%Name": "4f80cda7-dc8b-489f-87c9-f572306e1d77",
-      "name": "4f80cda7-dc8b-489f-87c9-f572306e1d77",
-      "resourceType": "GMSpriteFrame",
-      "resourceVersion": "2.0"
-    },
-    {
-      "$GMSpriteFrame": "v1",
-      "%Name": "59114d5a-f55d-425e-939f-f8bb21c27214",
-      "name": "59114d5a-f55d-425e-939f-f8bb21c27214",
-      "resourceType": "GMSpriteFrame",
-      "resourceVersion": "2.0"
     }
   ],
   "gridX": 0,
@@ -115,7 +87,7 @@
     },
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 8.0,
+    "length": 4.0,
     "lockOrigin": false,
     "moments": {
       "$KeyframeStore<MomentsEventKeyframe>": "",
@@ -226,94 +198,6 @@
               "id": "9e276788-2c42-4e88-bbaf-1d29bd2a9fd5",
               "IsCreationKey": false,
               "Key": 3.0,
-              "Length": 1.0,
-              "resourceType": "Keyframe<SpriteFrameKeyframe>",
-              "resourceVersion": "2.0",
-              "Stretch": false
-            },
-            {
-              "$Keyframe<SpriteFrameKeyframe>": "",
-              "Channels": {
-                "0": {
-                  "$SpriteFrameKeyframe": "",
-                  "Id": {
-                    "name": "1ebdd8b1-994b-46bc-8c27-cb40ca3ee425",
-                    "path": "sprites/sZero_Hurt/sZero_Hurt.yy"
-                  },
-                  "resourceType": "SpriteFrameKeyframe",
-                  "resourceVersion": "2.0"
-                }
-              },
-              "Disabled": false,
-              "id": "34327890-8ea6-47fa-885a-3570e2c8d231",
-              "IsCreationKey": false,
-              "Key": 4.0,
-              "Length": 1.0,
-              "resourceType": "Keyframe<SpriteFrameKeyframe>",
-              "resourceVersion": "2.0",
-              "Stretch": false
-            },
-            {
-              "$Keyframe<SpriteFrameKeyframe>": "",
-              "Channels": {
-                "0": {
-                  "$SpriteFrameKeyframe": "",
-                  "Id": {
-                    "name": "72dabc3f-ceb6-4a49-9b6b-c3f7bbecbe60",
-                    "path": "sprites/sZero_Hurt/sZero_Hurt.yy"
-                  },
-                  "resourceType": "SpriteFrameKeyframe",
-                  "resourceVersion": "2.0"
-                }
-              },
-              "Disabled": false,
-              "id": "64d084da-4510-46dd-87f4-fb1dcade0161",
-              "IsCreationKey": false,
-              "Key": 5.0,
-              "Length": 1.0,
-              "resourceType": "Keyframe<SpriteFrameKeyframe>",
-              "resourceVersion": "2.0",
-              "Stretch": false
-            },
-            {
-              "$Keyframe<SpriteFrameKeyframe>": "",
-              "Channels": {
-                "0": {
-                  "$SpriteFrameKeyframe": "",
-                  "Id": {
-                    "name": "4f80cda7-dc8b-489f-87c9-f572306e1d77",
-                    "path": "sprites/sZero_Hurt/sZero_Hurt.yy"
-                  },
-                  "resourceType": "SpriteFrameKeyframe",
-                  "resourceVersion": "2.0"
-                }
-              },
-              "Disabled": false,
-              "id": "fbd8c8e6-fbdb-4e6a-af06-03a23375455d",
-              "IsCreationKey": false,
-              "Key": 6.0,
-              "Length": 1.0,
-              "resourceType": "Keyframe<SpriteFrameKeyframe>",
-              "resourceVersion": "2.0",
-              "Stretch": false
-            },
-            {
-              "$Keyframe<SpriteFrameKeyframe>": "",
-              "Channels": {
-                "0": {
-                  "$SpriteFrameKeyframe": "",
-                  "Id": {
-                    "name": "59114d5a-f55d-425e-939f-f8bb21c27214",
-                    "path": "sprites/sZero_Hurt/sZero_Hurt.yy"
-                  },
-                  "resourceType": "SpriteFrameKeyframe",
-                  "resourceVersion": "2.0"
-                }
-              },
-              "Disabled": false,
-              "id": "54906e19-827d-4153-9dfa-4480e585c997",
-              "IsCreationKey": false,
-              "Key": 7.0,
               "Length": 1.0,
               "resourceType": "Keyframe<SpriteFrameKeyframe>",
               "resourceVersion": "2.0",
