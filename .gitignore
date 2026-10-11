@@ -1,0 +1,35 @@
+# GameMaker Build and Cache directories
+**/cache/
+**/output/
+**/Build/
+**/.vs/
+**/*.resource_order
+**/*.old
+**/*.yydebug
+**/*.win
+
+# Python temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Linux / Temporary
+*~
+*.swp
+*.bak
