@@ -26,3 +26,6 @@ wall_jump_anim_frame = 0.0;
 // Air & Dash slash tracking
 is_air_slashing = false;
 is_dash_slashing = false;
+
+// Damage status tracking
+is_shocked = false;

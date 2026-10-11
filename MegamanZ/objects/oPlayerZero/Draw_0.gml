@@ -7,8 +7,25 @@ draw_set_alpha(0.3);
 draw_ellipse(x - 8, y - 2, x + 8, y + 2, false);
 draw_set_alpha(1.0);
 
+// 0. HURT & DAMAGE STATE (Rows 20 & 21)
+if (state == PLAYER_STATE.HURT) {
+    if (is_shocked && sprite_exists(sZero_Shock)) {
+        var _shock_f = clamp(floor((1.0 - (hurt_timer / 18.0)) * 6), 0, 5);
+        draw_sprite_ext(sZero_Shock, _shock_f, x, y, facing, 1, 0, c_white, 1);
+    } else if (sprite_exists(sZero_Hurt)) {
+        var _hurt_f = 0;
+        if (!grounded) {
+            // Airborne hurt recoil: frames 4 & 5
+            _hurt_f = ((hurt_timer div 3) % 2 == 0) ? 4 : 5;
+        } else {
+            // Ground hurt recoil & recovery: frames 0..7 based on hurt_timer
+            _hurt_f = clamp(floor((1.0 - (hurt_timer / 18.0)) * 8), 0, 7);
+        }
+        draw_sprite_ext(sZero_Hurt, _hurt_f, x, y, facing, 1, 0, c_white, 1);
+    }
+}
 // 1. Z-SABER COMBAT ATTACKS (Highest priority when slashing!)
-if (slash_anim_timer > 0) {
+else if (slash_anim_timer > 0) {
     var _f_slash = clamp(floor(slash_anim_frame), 0, 8);
     if (!grounded && sprite_exists(sZero_AirSlash)) {
         // Pure mid-air jump slash (Hàng 13)

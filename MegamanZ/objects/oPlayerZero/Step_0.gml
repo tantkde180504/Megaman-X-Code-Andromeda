@@ -1,5 +1,16 @@
 event_inherited();
 
+// Damage interrupts attacks
+if (state == PLAYER_STATE.HURT) {
+    slash_anim_timer = 0;
+    is_air_slashing = false;
+    is_dash_slashing = false;
+    combo_step = 0;
+    combo_timer = 0;
+    technique_state = TECHNIQUE.NONE;
+    technique_timer = 0;
+}
+
 // Techniques input (Special button)
 if (global.input.special_pressed) {
     if (grounded && global.input.up) {
