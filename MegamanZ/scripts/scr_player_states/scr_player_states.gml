@@ -573,8 +573,9 @@ function player_state_intro() {
     hsp = 0;
     vsp = 0;
     
-    // Fallback if intro sprites do not exist (e.g. for Zero)
-    if (!sprite_exists(sX_Teleport_In) && !sprite_exists(sX_Intro)) {
+    // Fallback if intro sprites do not exist
+    var _has_intro = (global.current_char == CHAR_TYPE.ZERO) ? (sprite_exists(sZero_Teleport_In) || sprite_exists(sZero_Intro)) : (sprite_exists(sX_Teleport_In) || sprite_exists(sX_Intro));
+    if (!_has_intro) {
         state = PLAYER_STATE.IDLE;
         return;
     }
@@ -596,7 +597,7 @@ function player_state_intro() {
             intro_hold_timer = 25; // Hold final battle stance
         }
     } else if (intro_phase == 2) {
-        // Phase 2: X materializes and poses (frames 0..8)
+        // Phase 2: Character materializes and poses (frames 0..8)
         if (intro_anim_frame < 8.0) {
             intro_anim_frame += 0.20;
             if (intro_anim_frame >= 8.0) {
@@ -619,18 +620,32 @@ function player_state_intro() {
 function player_state_teleport_out() {
     hsp = 0;
     
-    if (!sprite_exists(sX_Teleport_Out)) {
+    var _has_tout = (global.current_char == CHAR_TYPE.ZERO) ? sprite_exists(sZero_Teleport_Out) : sprite_exists(sX_Teleport_Out);
+    if (!_has_tout) {
         state = PLAYER_STATE.IDLE;
         return;
     }
     
-    if (teleport_out_frame < 4.0) {
-        teleport_out_frame += 0.20;
-        vsp = 0;
+    if (global.current_char == CHAR_TYPE.ZERO) {
+        if (teleport_out_frame < 12.0) {
+            teleport_out_frame += 0.20;
+            vsp = 0;
+        } else {
+            // Frames 12 & 13: Vertical beam shooting into the sky
+            teleport_out_frame += 0.30;
+            if (teleport_out_frame >= 14.0) teleport_out_frame = 12.0;
+            vsp = -14;
+            y += vsp;
+        }
     } else {
-        // Frame 4: vertical beam shooting into the sky
-        teleport_out_frame = 4.0;
-        vsp = -14;
-        y += vsp;
+        if (teleport_out_frame < 4.0) {
+            teleport_out_frame += 0.20;
+            vsp = 0;
+        } else {
+            // Frame 4: vertical beam shooting into the sky
+            teleport_out_frame = 4.0;
+            vsp = -14;
+            y += vsp;
+        }
     }
 }

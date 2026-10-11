@@ -1,14 +1,35 @@
 // Iframes blinking (only after recovering from HURT state so damage animation remains visible)
 if (state != PLAYER_STATE.HURT && iframes > 0 && (iframes div 3) % 2 == 0) return;
 
-// Shadow
-draw_set_color(c_black);
-draw_set_alpha(0.3);
-draw_ellipse(x - 8, y - 2, x + 8, y + 2, false);
-draw_set_alpha(1.0);
+// Shadow (hide during beam drop)
+if (state != PLAYER_STATE.INTRO || intro_phase > 0) {
+    draw_set_color(c_black);
+    draw_set_alpha(0.3);
+    draw_ellipse(x - 8, y - 2, x + 8, y + 2, false);
+    draw_set_alpha(1.0);
+}
 
-// 0. HURT & DAMAGE STATE (Rows 20 & 21)
-if (state == PLAYER_STATE.HURT) {
+// 0. INTRO & TELEPORT (Stage Enter & Stage Clear)
+if (state == PLAYER_STATE.INTRO) {
+    if (intro_phase == 0 && sprite_exists(sZero_Teleport_In)) {
+        // Phase 0: Vertical red beam descending from ceiling
+        draw_sprite_ext(sZero_Teleport_In, 0, x, teleport_beam_y, 1, 1, 0, c_white, 1);
+    } else if (intro_phase == 1 && sprite_exists(sZero_Teleport_In)) {
+        // Phase 1: Red energy dome impact burst & expanding sphere (frames 1..7)
+        var _sph_idx = clamp(floor(teleport_sphere_frame), 1, 7);
+        draw_sprite_ext(sZero_Teleport_In, _sph_idx, x, y, 1, 1, 0, c_white, 1);
+    } else if (intro_phase == 2 && sprite_exists(sZero_Intro)) {
+        // Phase 2: Zero solidifies, steps forward and assumes battle ready pose (frames 0..8)
+        var _in_idx = clamp(floor(intro_anim_frame), 0, 8);
+        draw_sprite_ext(sZero_Intro, _in_idx, x, y, facing, 1, 0, c_white, 1);
+    }
+}
+else if (state == PLAYER_STATE.TELEPORT_OUT && sprite_exists(sZero_Teleport_Out)) {
+    var _to_idx = clamp(floor(teleport_out_frame), 0, 13);
+    draw_sprite_ext(sZero_Teleport_Out, _to_idx, x, y, facing, 1, 0, c_white, 1);
+}
+// 1. HURT & DAMAGE STATE (Rows 20 & 21)
+else if (state == PLAYER_STATE.HURT) {
     if (is_shocked && sprite_exists(sZero_Shock)) {
         var _shock_f = clamp(floor((1.0 - (hurt_timer / 18.0)) * 6), 0, 5);
         draw_sprite_ext(sZero_Shock, _shock_f, x, y, facing, 1, 0, c_white, 1);
