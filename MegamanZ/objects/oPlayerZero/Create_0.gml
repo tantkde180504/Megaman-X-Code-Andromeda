@@ -32,3 +32,6 @@ ladder_anim_frame = 2.0;
 
 // Damage status tracking
 is_shocked = false;
+
+// Active saber hitbox instance reference
+current_saber_hitbox = noone;

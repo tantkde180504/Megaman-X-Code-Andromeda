@@ -1,8 +1,212 @@
-﻿var _tgt = instance_place(x, y, oTargetDummy);
-if (_tgt != noone && ds_list_find_index(hit_list, _tgt) == -1) {
-    ds_list_add(hit_list, _tgt);
-    deal_damage_to_target(_tgt, damage, x, y);
-    camera_shake(2, 6);
+if (!instance_exists(owner)) {
+    instance_destroy();
+    return;
 }
-life--;
-if (life <= 0) instance_destroy();
+
+// Destroy when attack ends
+if (owner.slash_anim_timer <= 0 && owner.technique_timer <= 0) {
+    instance_destroy();
+    return;
+}
+
+var _px = owner.x;
+var _py = owner.y;
+var _facing = owner.facing;
+var _frame = floor(owner.slash_anim_frame);
+var _active = false;
+var _min_x = 0;
+var _max_x = 0;
+var _min_y = 0;
+var _max_y = 0;
+
+// Dynamic Hitbox matching the exact blade geometry in each frame
+switch (slash_type) {
+    case "slash1":
+        // sZero_Slash1 (10 frames)
+        if (_frame == 2) {
+            _active = true; _min_x = 0; _max_x = 32; _min_y = -64; _max_y = -26;
+        } else if (_frame == 3) {
+            _active = true; _min_x = 16; _max_x = 66; _min_y = -64; _max_y = -16;
+        } else if (_frame == 4) {
+            _active = true; _min_x = 30; _max_x = 76; _min_y = -62; _max_y = -2;
+        } else if (_frame == 5) {
+            _active = true; _min_x = 34; _max_x = 80; _min_y = -42; _max_y = -2;
+        } else if (_frame == 6) {
+            _active = true; _min_x = 26; _max_x = 70; _min_y = -38; _max_y = -2;
+        } else if (_frame == 7) {
+            _active = true; _min_x = 24; _max_x = 58; _min_y = -38; _max_y = -2;
+        } else if (_frame == 8) {
+            _active = true; _min_x = 24; _max_x = 52; _min_y = -38; _max_y = -4;
+        }
+        break;
+
+    case "slash2":
+        // sZero_Slash2 (10 frames)
+        if (_frame == 1) {
+            _active = true; _min_x = 14; _max_x = 52; _min_y = -42; _max_y = -20;
+        } else if (_frame == 2) {
+            _active = true; _min_x = -4; _max_x = 68; _min_y = -42; _max_y = -18;
+        } else if (_frame == 3) {
+            // Massive 180 horizontal sweep: covers behind Zero (-36) to far front (+72)
+            _active = true; _min_x = -36; _max_x = 72; _min_y = -44; _max_y = -6;
+        } else if (_frame >= 4 && _frame <= 7) {
+            _active = true; _min_x = -46; _max_x = 6; _min_y = -44; _max_y = -8;
+        }
+        break;
+
+    case "slash3":
+        // sZero_Slash3 (14 frames finisher)
+        if (_frame == 2) {
+            _active = true; _min_x = -26; _max_x = 24; _min_y = -62; _max_y = -24;
+        } else if (_frame == 3) {
+            _active = true; _min_x = -14; _max_x = 72; _min_y = -66; _max_y = -8;
+        } else if (_frame == 4) {
+            // Giant vertical cleave downwards to floor (reaches y+8)
+            _active = true; _min_x = 8; _max_x = 80; _min_y = -65; _max_y = 8;
+        } else if (_frame == 5) {
+            // Impact shockwave into ground
+            _active = true; _min_x = 8; _max_x = 80; _min_y = -56; _max_y = 8;
+        } else if (_frame == 6) {
+            _active = true; _min_x = 8; _max_x = 80; _min_y = -44; _max_y = 0;
+        } else if (_frame == 7) {
+            _active = true; _min_x = 8; _max_x = 48; _min_y = -44; _max_y = 0;
+        } else if (_frame == 8) {
+            _active = true; _min_x = 8; _max_x = 34; _min_y = -44; _max_y = 0;
+        }
+        break;
+
+    case "air_slash":
+        // sZero_AirSlash (9 frames)
+        if (_frame == 1) {
+            _active = true; _min_x = -16; _max_x = 16; _min_y = -78; _max_y = -30;
+        } else if (_frame == 2) {
+            _active = true; _min_x = -14; _max_x = 40; _min_y = -76; _max_y = -30;
+        } else if (_frame == 3) {
+            _active = true; _min_x = -16; _max_x = 60; _min_y = -82; _max_y = -32;
+        } else if (_frame == 4) {
+            // Full 360 circle covering overhead, front and back
+            _active = true; _min_x = -32; _max_x = 72; _min_y = -82; _max_y = -22;
+        } else if (_frame == 5 || _frame == 6) {
+            _active = true; _min_x = -34; _max_x = 12; _min_y = -70; _max_y = -38;
+        }
+        break;
+
+    case "dash_slash":
+        // sZero_DashSlash (9 frames)
+        if (_frame == 1) {
+            _active = true; _min_x = -15; _max_x = 15; _min_y = -76; _max_y = -46;
+        } else if (_frame == 2) {
+            _active = true; _min_x = 0; _max_x = 40; _min_y = -78; _max_y = -44;
+        } else if (_frame == 3) {
+            _active = true; _min_x = -12; _max_x = 62; _min_y = -76; _max_y = -28;
+        } else if (_frame == 4) {
+            // Extended forward thrust sweep reach +76
+            _active = true; _min_x = -26; _max_x = 76; _min_y = -68; _max_y = -10;
+        } else if (_frame == 5 || _frame == 6) {
+            _active = true; _min_x = -30; _max_x = 16; _min_y = -58; _max_y = -26;
+        } else if (_frame == 7) {
+            _active = true; _min_x = -20; _max_x = 12; _min_y = -70; _max_y = -46;
+        }
+        break;
+
+    case "wall_slash":
+        // sZero_WallSlash (9 frames)
+        if (_frame == 1) {
+            _active = true; _min_x = -4; _max_x = 24; _min_y = -66; _max_y = -24;
+        } else if (_frame == 2) {
+            _active = true; _min_x = 18; _max_x = 85; _min_y = -66; _max_y = -20;
+        } else if (_frame == 3 || _frame == 4) {
+            // Peak wall crescent reach +86 away from wall
+            _active = true; _min_x = 18; _max_x = 86; _min_y = -62; _max_y = -20;
+        } else if (_frame == 5) {
+            _active = true; _min_x = 18; _max_x = 66; _min_y = -54; _max_y = -22;
+        } else if (_frame == 6) {
+            _active = true; _min_x = 18; _max_x = 42; _min_y = -56; _max_y = -30;
+        }
+        break;
+
+    case "ladder_slash":
+        // sZero_LadderSlash (9 frames)
+        if (_frame == 2) {
+            _active = true; _min_x = -2; _max_x = 25; _min_y = -66; _max_y = -40;
+        } else if (_frame == 3) {
+            _active = true; _min_x = 22; _max_x = 78; _min_y = -66; _max_y = -12;
+        } else if (_frame == 4 || _frame == 5) {
+            // Horizontal ladder slash reach +85
+            _active = true; _min_x = 20; _max_x = 85; _min_y = -56; _max_y = -4;
+        } else if (_frame == 6) {
+            _active = true; _min_x = 22; _max_x = 62; _min_y = -52; _max_y = -10;
+        }
+        break;
+
+    case "ryuenjin":
+        _active = true; _min_x = -12; _max_x = 24; _min_y = -54; _max_y = 2;
+        break;
+
+    case "hyouretsuzan":
+        _active = true; _min_x = -14; _max_x = 14; _min_y = -12; _max_y = 24;
+        break;
+
+    case "kuuenzan":
+        _active = true; _min_x = -28; _max_x = 28; _min_y = -44; _max_y = 8;
+        break;
+
+    case "raijingeki":
+        _active = true; _min_x = 4; _max_x = 58; _min_y = -26; _max_y = -6;
+        break;
+}
+
+is_active = _active;
+
+if (_active) {
+    // Transform coordinates based on Zero's facing direction
+    var _x1 = (_facing == 1) ? (_px + _min_x) : (_px - _max_x);
+    var _x2 = (_facing == 1) ? (_px + _max_x) : (_px - _min_x);
+    var _y1 = _py + _min_y;
+    var _y2 = _py + _max_y;
+    
+    var _bx1 = min(_x1, _x2);
+    var _bx2 = max(_x1, _x2);
+    var _by1 = min(_y1, _y2);
+    var _by2 = max(_y1, _y2);
+    
+    x = _bx1;
+    y = _by1;
+    image_xscale = max(1, _bx2 - _bx1) / 16.0;
+    image_yscale = max(1, _by2 - _by1) / 16.0;
+    
+    // Check collisions with Target Dummy
+    var _dummies = ds_list_create();
+    var _num_d = instance_place_list(x, y, oTargetDummy, _dummies, false);
+    for (var i = 0; i < _num_d; i++) {
+        var _tgt = _dummies[| i];
+        if (ds_list_find_index(hit_list, _tgt) == -1) {
+            ds_list_add(hit_list, _tgt);
+            deal_damage_to_target(_tgt, damage, _tgt.x, _tgt.y);
+            camera_shake(2, 6);
+        }
+    }
+    ds_list_destroy(_dummies);
+    
+    // Check collisions with Web Trap
+    var _webs = ds_list_create();
+    var _num_w = instance_place_list(x, y, oWebTrap, _webs, false);
+    for (var i = 0; i < _num_w; i++) {
+        var _w = _webs[| i];
+        if (ds_list_find_index(hit_list, _w) == -1) {
+            ds_list_add(hit_list, _w);
+            _w.hp -= damage;
+            _w.flash_timer = 6;
+            if (_w.hp <= 0 && object_exists(oFX_HitSpark)) {
+                instance_create_layer(_w.x, _w.y, "Instances", oFX_HitSpark);
+            }
+        }
+    }
+    ds_list_destroy(_webs);
+} else {
+    // Inactive frame: position out of bounds so no collision occurs
+    x = -9999;
+    y = -9999;
+    image_xscale = 0;
+    image_yscale = 0;
+}

@@ -1,4 +1,4 @@
-﻿if (flash_timer > 0) flash_timer--;
+if (flash_timer > 0) flash_timer--;
 
 // Hit by projectiles
 var _b = instance_place(x, y, oBullet_Buster);
@@ -13,7 +13,8 @@ if (_cb != noone) {
     flash_timer = 6;
 }
 var _sh = instance_place(x, y, oSaberHitbox);
-if (_sh != noone) {
+if (_sh != noone && ds_list_find_index(_sh.hit_list, id) == -1) {
+    ds_list_add(_sh.hit_list, id);
     hp -= _sh.damage;
     flash_timer = 6;
 }

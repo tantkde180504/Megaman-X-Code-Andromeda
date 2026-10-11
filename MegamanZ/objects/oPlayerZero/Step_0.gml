@@ -11,46 +11,70 @@ if (state == PLAYER_STATE.HURT) {
     combo_timer = 0;
     technique_state = TECHNIQUE.NONE;
     technique_timer = 0;
+    if (instance_exists(current_saber_hitbox)) {
+        instance_destroy(current_saber_hitbox);
+        current_saber_hitbox = noone;
+    }
 }
 
 // Techniques input (Special button)
 if (global.input.special_pressed) {
+    if (instance_exists(current_saber_hitbox)) {
+        instance_destroy(current_saber_hitbox);
+        current_saber_hitbox = noone;
+    }
     if (grounded && global.input.up) {
         technique_state = TECHNIQUE.RYUENJIN;
         technique_timer = 24;
         vsp = -6.5;
         hsp = facing * 1.0;
-        var _h = instance_create_layer(x + (facing * 16), y - 24, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "ryuenjin";
         _h.damage = 4;
         _h.element = "fire";
+        current_saber_hitbox = _h;
         camera_shake(3, 8);
     } else if (!grounded && global.input.down) {
         technique_state = TECHNIQUE.HYOURETSUZAN;
         technique_timer = 30;
         vsp = 8.0;
         hsp = 0;
-        var _h = instance_create_layer(x, y + 8, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "hyouretsuzan";
         _h.damage = 4;
         _h.element = "ice";
+        current_saber_hitbox = _h;
     } else if (!grounded) {
         technique_state = TECHNIQUE.KUUENZAN;
         technique_timer = 20;
-        var _h = instance_create_layer(x, y - 16, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "kuuenzan";
         _h.damage = 3;
         _h.element = "slash";
+        current_saber_hitbox = _h;
     } else {
         technique_state = TECHNIQUE.RAIJINGEKI;
         technique_timer = 22;
         hsp = 0;
-        var _h = instance_create_layer(x + (facing * 20), y - 16, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "raijingeki";
         _h.damage = 5;
         _h.element = "electric";
+        current_saber_hitbox = _h;
         camera_shake(2, 8);
     }
 }
 
 // Saber Combos (Attack button)
 if (global.input.shoot_pressed) {
+    if (instance_exists(current_saber_hitbox)) {
+        instance_destroy(current_saber_hitbox);
+        current_saber_hitbox = noone;
+    }
     if (state == PLAYER_STATE.WALL_SLIDE) {
         slash_anim_timer = 14;
         slash_anim_frame = 0.0;
@@ -59,8 +83,11 @@ if (global.input.shoot_pressed) {
         is_ladder_slashing = false;
         is_air_slashing = false;
         is_dash_slashing = false;
-        var _h = instance_create_layer(x + (facing * 24), y - 20, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "wall_slash";
         _h.damage = 3.0;
+        current_saber_hitbox = _h;
     } else if (state == PLAYER_STATE.LADDER) {
         slash_anim_timer = 14;
         slash_anim_frame = 0.0;
@@ -69,8 +96,11 @@ if (global.input.shoot_pressed) {
         is_wall_slashing = false;
         is_air_slashing = false;
         is_dash_slashing = false;
-        var _h = instance_create_layer(x + (facing * 24), y - 20, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "ladder_slash";
         _h.damage = 3.0;
+        current_saber_hitbox = _h;
     } else if (!grounded) {
         slash_anim_timer = 14;
         slash_anim_frame = 0.0;
@@ -79,8 +109,11 @@ if (global.input.shoot_pressed) {
         is_dash_slashing = false;
         is_wall_slashing = false;
         is_ladder_slashing = false;
-        var _h = instance_create_layer(x + (facing * 16), y - 16, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "air_slash";
         _h.damage = 2.5;
+        current_saber_hitbox = _h;
     } else if (state == PLAYER_STATE.DASH) {
         slash_anim_timer = 14;
         slash_anim_frame = 0.0;
@@ -89,8 +122,11 @@ if (global.input.shoot_pressed) {
         is_air_slashing = false;
         is_wall_slashing = false;
         is_ladder_slashing = false;
-        var _h = instance_create_layer(x + (facing * 18), y - 16, "Instances", oSaberHitbox);
+        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+        _h.owner = id;
+        _h.slash_type = "dash_slash";
         _h.damage = 3.0;
+        current_saber_hitbox = _h;
     } else {
         is_air_slashing = false;
         is_dash_slashing = false;
@@ -103,8 +139,11 @@ if (global.input.shoot_pressed) {
             slash_anim_frame = 0.0;
             slash_total_frames = 10;
             hsp = 0;
-            var _h = instance_create_layer(x + (facing * 16), y - 16, "Instances", oSaberHitbox);
+            var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+            _h.owner = id;
+            _h.slash_type = "slash1";
             _h.damage = 2.0;
+            current_saber_hitbox = _h;
         } else if (combo_step == 1) {
             combo_step = 2;
             combo_timer = COMBO_RESET_FRAMES;
@@ -112,8 +151,11 @@ if (global.input.shoot_pressed) {
             slash_anim_frame = 0.0;
             slash_total_frames = 10;
             hsp = 0;
-            var _h = instance_create_layer(x + (facing * 16), y - 16, "Instances", oSaberHitbox);
+            var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+            _h.owner = id;
+            _h.slash_type = "slash2";
             _h.damage = 2.0;
+            current_saber_hitbox = _h;
         } else if (combo_step == 2) {
             combo_step = 3;
             combo_timer = 28;
@@ -121,8 +163,11 @@ if (global.input.shoot_pressed) {
             slash_anim_frame = 0.0;
             slash_total_frames = 14;
             hsp = 0;
-            var _h = instance_create_layer(x + (facing * 22), y - 16, "Instances", oSaberHitbox);
+            var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+            _h.owner = id;
+            _h.slash_type = "slash3";
             _h.damage = 4.0;
+            current_saber_hitbox = _h;
             camera_shake(3, 8);
         }
     }
@@ -134,6 +179,10 @@ if (combo_step == 1 && global.input.dash_pressed) {
     combo_timer = 0;
     slash_anim_timer = 0;
     slash_anim_frame = 0.0;
+    if (instance_exists(current_saber_hitbox)) {
+        instance_destroy(current_saber_hitbox);
+        current_saber_hitbox = noone;
+    }
     state = PLAYER_STATE.DASH;
     dash_timer = DASH_DURATION;
     dash_dir = facing;
@@ -175,6 +224,10 @@ if (slash_anim_timer > 0) {
     is_dash_slashing = false;
     is_wall_slashing = false;
     is_ladder_slashing = false;
+    if (technique_timer <= 0 && instance_exists(current_saber_hitbox)) {
+        instance_destroy(current_saber_hitbox);
+        current_saber_hitbox = noone;
+    }
 }
 
 // -------------------------------------------------------------
