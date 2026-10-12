@@ -141,11 +141,15 @@ switch (state) {
             }
             if (_confirm) {
                 char_confirmed = true;
-                char_confirm_timer = 40; // Hold celebratory pose
-                flash_alpha = 0.9;
+                char_confirm_timer = 55; // Hold celebratory ready animation
+                flash_alpha = 0.85;
+                if (instance_exists(oCamera)) {
+                    camera_shake(2, 8);
+                }
             }
         } else {
             char_confirm_timer--;
+            char_anim_frame += 0.05; // Extra animation tick for ready pose
             if (char_confirm_timer <= 0) {
                 // Advance to Story Cutscene!
                 state = MENU_STATE.CUTSCENE;

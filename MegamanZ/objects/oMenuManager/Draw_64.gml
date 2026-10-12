@@ -253,119 +253,131 @@ switch (state) {
         break;
 
     case MENU_STATE.CHAR_SELECT:
-        // Character Select Screen (Mega Man X4 Style)
-        draw_set_color(make_color_rgb(0, 210, 255));
-        draw_text_transformed(240, 20, "- SELECT YOUR HUNTER -", 1.4, 1.4, 0);
-        draw_set_color(make_color_rgb(180, 200, 225));
-        draw_text(240, 36, "CHOOSE YOUR WARRIOR FOR THE ANDROMEDA CRISIS");
-        
-        // ---------------------------------------------------------
-        // CARD 1: MEGA MAN X (Left Card: 20 .. 232)
-        // ---------------------------------------------------------
-        var _x_sel = (selected_char == 0);
-        var _x_alpha = _x_sel ? 0.95 : 0.45;
-        
-        // Card Background
-        draw_set_color(_x_sel ? make_color_rgb(15, 30, 60) : make_color_rgb(10, 15, 25));
-        draw_set_alpha(_x_alpha);
-        draw_rectangle(20, 48, 232, 248, false);
-        draw_set_alpha(1.0);
-        
-        // Card Border
-        draw_set_color(_x_sel ? make_color_rgb(0, 200, 255) : make_color_rgb(50, 80, 120));
-        draw_rectangle(20, 48, 232, 248, true);
-        if (_x_sel) {
-            // Glowing border
-            draw_set_alpha(0.4 + 0.3 * dsin(anim_timer * 6));
-            draw_rectangle(19, 47, 233, 249, true);
-            draw_set_alpha(1.0);
-        }
-        
-        // X Card Header
-        draw_set_color(_x_sel ? make_color_rgb(0, 220, 255) : make_color_rgb(100, 150, 190));
-        draw_text_transformed(126, 62, "MEGA MAN X", 1.3, 1.3, 0);
-        draw_set_color(make_color_rgb(160, 200, 240));
-        draw_text(126, 78, "CLASS B -> SPECIAL A HUNTER");
-        
-        // Draw Animated X Sprite
-        var _x_spr = sX_Idle;
-        var _x_frame = (floor(char_anim_frame) % 5);
-        if (_x_sel && char_confirmed && sprite_exists(sX_Victory)) {
-            _x_spr = sX_Victory;
-            _x_frame = 0;
-        }
-        if (sprite_exists(_x_spr)) {
-            draw_sprite_ext(_x_spr, _x_frame, 126, 152, 1.4, 1.4, 0, c_white, _x_alpha);
-        }
-        
-        // X Perks & Stats
-        draw_set_halign(fa_left);
-        var _tx = 32;
-        draw_set_color(_x_sel ? c_white : make_color_rgb(140, 150, 170));
-        draw_text(_tx, 172, "- Weapon: X-Buster (Long Range)");
-        draw_text(_tx, 188, "- Skill: 3-Stage Charge Shot");
-        draw_text(_tx, 204, "- Ability: Armor Parts Upgrade");
-        draw_set_color(_x_sel ? make_color_rgb(80, 240, 150) : make_color_rgb(100, 140, 110));
-        draw_text(_tx, 224, "* Style: Balanced, Wide-Area Control");
-        draw_set_halign(fa_center);
-        
-        // ---------------------------------------------------------
-        // CARD 2: ZERO (Right Card: 248 .. 460)
-        // ---------------------------------------------------------
-        var _z_sel = (selected_char == 1);
-        var _z_alpha = _z_sel ? 0.95 : 0.45;
-        
-        // Card Background
-        draw_set_color(_z_sel ? make_color_rgb(50, 15, 15) : make_color_rgb(20, 10, 10));
-        draw_set_alpha(_z_alpha);
-        draw_rectangle(248, 48, 460, 248, false);
-        draw_set_alpha(1.0);
-        
-        // Card Border
-        draw_set_color(_z_sel ? make_color_rgb(255, 60, 60) : make_color_rgb(120, 50, 50));
-        draw_rectangle(248, 48, 460, 248, true);
-        if (_z_sel) {
-            // Glowing border
-            draw_set_alpha(0.4 + 0.3 * dsin(anim_timer * 6));
-            draw_set_color(make_color_rgb(255, 200, 40));
-            draw_rectangle(247, 47, 461, 249, true);
-            draw_set_alpha(1.0);
-        }
-        
-        // Zero Card Header
-        draw_set_color(_z_sel ? make_color_rgb(255, 90, 80) : make_color_rgb(180, 100, 100));
-        draw_text_transformed(354, 62, "ZERO", 1.3, 1.3, 0);
-        draw_set_color(make_color_rgb(255, 190, 80));
-        draw_text(354, 78, "SPECIAL 0TH UNIT COMMANDER");
-        
-        // Draw Animated Zero Sprite
-        var _z_spr = sZero_Idle;
-        var _z_frame = (floor(char_anim_frame) % 5);
-        if (_z_sel && char_confirmed && sprite_exists(sZero_Teleport_Out)) {
-            _z_spr = sZero_Teleport_Out;
-            _z_frame = 6; // Thumbs up victory pose!
-        }
-        if (sprite_exists(_z_spr)) {
-            draw_sprite_ext(_z_spr, _z_frame, 354, 152, 1.4, 1.4, 0, c_white, _z_alpha);
-        }
-        
-        // Zero Perks & Stats
-        draw_set_halign(fa_left);
-        var _zx = 260;
-        draw_set_color(_z_sel ? c_white : make_color_rgb(170, 140, 140));
-        draw_text(_zx, 172, "- Weapon: Z-Saber (Close Combat)");
-        draw_text(_zx, 188, "- Skill: 3-Hit Combo & Dash Slash");
-        draw_text(_zx, 204, "- Ability: Learn Boss Techniques");
-        draw_set_color(_z_sel ? make_color_rgb(255, 180, 50) : make_color_rgb(140, 110, 80));
-        draw_text(_zx, 224, "* Style: High Aggression, High Damage");
-        draw_set_halign(fa_center);
-        
-        // Bottom Hint
-        draw_set_color(make_color_rgb(255, 230, 80));
-        if (!char_confirmed) {
-            draw_text(240, 260, "[LEFT/RIGHT] SELECT  |  [Z/ENTER] CONFIRM  |  [X/ESC] BACK");
-        } else {
-            draw_text(240, 260, "* READY: " + ((selected_char == 0) ? "MEGA MAN X" : "ZERO") + "! COMMENCING MISSION... *");
+        // =========================================================
+        // AUTHENTIC MEGA MAN X4 CHARACTER SELECT SCREEN
+        // =========================================================
+        if (sprite_exists(PlayerSelect)) {
+            // 1. Full Screen Green Tech Background (scaled from 320x240 to 480x270)
+            draw_sprite_part_ext(PlayerSelect, 0, 6, 5, 320, 240, 0, 0, 480 / 320, 270 / 240, c_white, 1.0);
+            
+            // 2. Dual Running "PLAYER SELECT" Banners
+            // Top marquee (scrolls to the left)
+            var _top_scroll = (anim_timer * 1.8) % 240;
+            for (var _bx = -_top_scroll - 40; _bx < VIEW_WIDTH + 240; _bx += 240) {
+                draw_sprite_part(PlayerSelect, 0, 337, 25, 197, 18, _bx, 14);
+            }
+            // Bottom marquee (scrolls to the right)
+            var _bot_scroll = (anim_timer * 1.8) % 240;
+            for (var _bx = -240 + _bot_scroll; _bx < VIEW_WIDTH + 240; _bx += 240) {
+                draw_sprite_part(PlayerSelect, 0, 337, 25, 197, 18, _bx, 238);
+            }
+            
+            // 3. Card Positions
+            var _dx1 = 44, _dy1 = 46;   // X Portrait (188 x 157)
+            var _dx2 = 248, _dy2 = 46;  // Zero Portrait (188 x 157)
+            
+            var _x_sel = (selected_char == 0);
+            var _z_sel = (selected_char == 1);
+            
+            var _x_alpha = _x_sel ? 1.0 : 0.55;
+            var _z_alpha = _z_sel ? 1.0 : 0.55;
+            
+            // 4. Draw Character Portraits
+            draw_sprite_part_ext(PlayerSelect, 0, 8, 267, 188, 157, _dx1, _dy1, 1.0, 1.0, c_white, _x_alpha);
+            draw_sprite_part_ext(PlayerSelect, 0, 202, 267, 188, 157, _dx2, _dy2, 1.0, 1.0, c_white, _z_alpha);
+            
+            // 5. Draw Card Name Labels
+            draw_sprite_part_ext(PlayerSelect, 0, 347, 60, 118, 19, 104, 176, 1.0, 1.0, c_white, _x_alpha);
+            draw_sprite_part_ext(PlayerSelect, 0, 373, 95, 54, 19, 292, 176, 1.0, 1.0, c_white, _z_alpha);
+            
+            // 6. Animated Blinking Neon Brackets & Reticles
+            var _glow_seq = [0, 1, 2, 1];
+            var _glow_frame = char_confirmed ? ((anim_timer % 4 < 2) ? 1 : 2) : _glow_seq[floor((anim_timer / 4) % 4)];
+            
+            if (_x_sel) {
+                // X Neon Brackets (Region 4, Y: 624, H: 169)
+                var _x_left_xs  = [6, 219, 431];
+                var _x_right_xs = [118, 331, 543];
+                var _lx = _x_left_xs[_glow_frame];
+                var _rx = _x_right_xs[_glow_frame];
+                
+                // Draw Left vertical bracket & Right slanted bracket
+                draw_sprite_part(PlayerSelect, 0, _lx, 624, 27, 169, _dx1 - 6, _dy1 - 6);
+                draw_sprite_part(PlayerSelect, 0, _rx, 624, 88, 169, _dx1 - 6 + 112, _dy1 - 6);
+                
+                // Draw Reticle above X's head
+                draw_sprite_part(PlayerSelect, 0, 264, 800, 79, 14, 98, 56);
+            }
+            
+            if (_z_sel) {
+                // Zero Neon Brackets (Region 3, Y: 450, H: 169)
+                var _z_left_xs  = [2, 215, 427];
+                var _z_right_xs = [175, 388, 600];
+                var _lx = _z_left_xs[_glow_frame];
+                var _rx = _z_right_xs[_glow_frame];
+                
+                // Draw Left slanted bracket & Right vertical bracket
+                draw_sprite_part(PlayerSelect, 0, _lx, 450, 88, 169, _dx2 - 6, _dy2 - 6);
+                draw_sprite_part(PlayerSelect, 0, _rx, 450, 27, 169, _dx2 - 6 + 173, _dy2 - 6);
+                
+                // Draw Reticle above Zero's head
+                draw_sprite_part(PlayerSelect, 0, 264, 800, 79, 14, 345, 56);
+            }
+            
+            // 7. Mini In-Game Models & Ready Animations
+            // X Mini Model (bottom-left of X card at x=76, y=194)
+            var _x_mini_spr = sX_Idle;
+            var _x_mini_idx = floor(char_anim_frame) % 5;
+            if (_x_sel && char_confirmed) {
+                if (sprite_exists(sX_Victory)) {
+                    _x_mini_spr = sX_Victory;
+                    _x_mini_idx = min(3, floor((55 - char_confirm_timer) * 0.12));
+                }
+                // Energy Pillar Ready Beam for X
+                var _beam_w = 16 + 6 * dsin(anim_timer * 12);
+                draw_set_color(make_color_rgb(0, 220, 255));
+                draw_set_alpha(0.35 + 0.25 * dsin(anim_timer * 10));
+                draw_rectangle(76 - _beam_w, 46, 76 + _beam_w, 194, false);
+                draw_set_color(c_white);
+                draw_rectangle(76 - 3, 46, 76 + 3, 194, false);
+                draw_set_alpha(1.0);
+            }
+            if (sprite_exists(_x_mini_spr)) {
+                draw_sprite_ext(_x_mini_spr, _x_mini_idx, 76, 194, 1.0, 1.0, 0, c_white, _x_alpha);
+            }
+            
+            // Zero Mini Model (bottom-right of Zero card at x=405, y=194)
+            var _z_mini_spr = sZero_Idle;
+            var _z_mini_idx = floor(char_anim_frame) % 5;
+            if (_z_sel && char_confirmed) {
+                if (sprite_exists(sZero_Teleport_Out)) {
+                    _z_mini_spr = sZero_Teleport_Out;
+                    _z_mini_idx = 6; // Thumbs up pose!
+                }
+                // Energy Pillar Ready Beam for Zero
+                var _beam_w = 16 + 6 * dsin(anim_timer * 12);
+                draw_set_color(make_color_rgb(255, 60, 60));
+                draw_set_alpha(0.35 + 0.25 * dsin(anim_timer * 10));
+                draw_rectangle(405 - _beam_w, 46, 405 + _beam_w, 194, false);
+                draw_set_color(make_color_rgb(255, 230, 80));
+                draw_rectangle(405 - 3, 46, 405 + 3, 194, false);
+                draw_set_alpha(1.0);
+            }
+            if (sprite_exists(_z_mini_spr)) {
+                draw_sprite_ext(_z_mini_spr, _z_mini_idx, 405, 194, 1.0, 1.0, 0, c_white, _z_alpha);
+            }
+            
+            // 8. Status & Controls Hint
+            draw_set_halign(fa_center);
+            if (!char_confirmed) {
+                draw_set_color(make_color_rgb(255, 230, 80));
+                draw_text(240, 218, "[LEFT / RIGHT] SELECT  |  [Z / ENTER] CONFIRM  |  [X / ESC] BACK");
+            } else {
+                var _cname = (_x_sel) ? "MEGA MAN X" : "ZERO";
+                var _pulse_col = (anim_timer % 6 < 3) ? make_color_rgb(255, 255, 120) : make_color_rgb(80, 255, 160);
+                draw_set_color(_pulse_col);
+                draw_text_transformed(240, 218, "*** " + _cname + " READY! COMMENCING MISSION *** ", 1.05, 1.05, 0);
+            }
         }
         break;
 
