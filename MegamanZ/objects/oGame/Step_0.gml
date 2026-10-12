@@ -84,3 +84,19 @@ if (keyboard_check_pressed(ord("O"))) {
         _p.teleport_out_frame = 0.0;
     }
 }
+
+// Boss Shortcut: [B] Summon / Reset Nightmare Zero Boss
+if (keyboard_check_pressed(ord("B"))) {
+    if (instance_exists(oPlayer)) {
+        var _p = instance_find(oPlayer, 0);
+        if (instance_exists(obj_nightmare_zero)) {
+            with (obj_nightmare_zero) instance_destroy();
+        }
+        var _spawn_x = _p.x + ((_p.facing != 0) ? _p.facing * 140 : 140);
+        _spawn_x = clamp(_spawn_x, 64, room_width - 64);
+        var _nz = instance_create_layer(_spawn_x, _p.y, "Instances", obj_nightmare_zero);
+        _nz.facing = (_p.x >= _nz.x) ? 1 : -1;
+        camera_shake(4, 10);
+    }
+}
+

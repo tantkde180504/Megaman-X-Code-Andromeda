@@ -154,5 +154,9 @@ function scr_build_test_room() {
     instance_create_layer(2240, room_height - 90, "Instances", oEnemy_Guardian);
     
     // Target Practice & Combo Dummy
-    instance_create_layer(2340, room_height - 32, "Instances", oTargetDummy);
+    instance_create_layer(2320, room_height - 32, "Instances", oTargetDummy);
+    
+    // Station 10 (x: 2360): Nightmare Zero Boss (Press 'B' anytime to summon directly to player)
+    instance_create_layer(2360, room_height - 32, "Instances", obj_nightmare_zero);
 }
+

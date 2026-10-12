@@ -70,4 +70,4 @@ draw_set_alpha(0.65);
 draw_rectangle(0, VIEW_HEIGHT - 14, VIEW_WIDTH, VIEW_HEIGHT, false);
 draw_set_alpha(1.0);
 draw_set_color(make_color_rgb(200, 220, 240));
-draw_text(4, VIEW_HEIGHT - 13, "Move: Arrows | Z: Jump | X: Atk | C: Dash | V: Spec | 1/2/3: Stage | TAB: Char | F1: Debug");
+draw_text(4, VIEW_HEIGHT - 13, "Move: Arrows | Z: Jump | X: Atk | C: Dash | B: Boss (NZ) | 1/2/3: Stage | TAB: Char | F1: Debug");
