@@ -8,6 +8,11 @@ function input_init() {
         up: false,
         down: false,
         
+        left_pressed: false,
+        right_pressed: false,
+        up_pressed: false,
+        down_pressed: false,
+        
         jump: false,
         jump_pressed: false,
         jump_released: false,
@@ -43,6 +48,11 @@ function input_update() {
     var _k_up    = keyboard_check(vk_up)    || keyboard_check(ord("W"));
     var _k_down  = keyboard_check(vk_down)  || keyboard_check(ord("S"));
     
+    var _k_left_pressed  = keyboard_check_pressed(vk_left)  || keyboard_check_pressed(ord("A"));
+    var _k_right_pressed = keyboard_check_pressed(vk_right) || keyboard_check_pressed(ord("D"));
+    var _k_up_pressed    = keyboard_check_pressed(vk_up)    || keyboard_check_pressed(ord("W"));
+    var _k_down_pressed  = keyboard_check_pressed(vk_down)  || keyboard_check_pressed(ord("S"));
+    
     var _k_jump          = keyboard_check(ord("Z")) || keyboard_check(vk_space);
     var _k_jump_pressed  = keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(vk_space);
     var _k_jump_released = keyboard_check_released(ord("Z")) || keyboard_check_released(vk_space);
@@ -64,6 +74,10 @@ function input_update() {
     var _gp_right = false;
     var _gp_up    = false;
     var _gp_down  = false;
+    var _gp_left_pressed  = false;
+    var _gp_right_pressed = false;
+    var _gp_up_pressed    = false;
+    var _gp_down_pressed  = false;
     var _gp_jump  = false;
     var _gp_jump_pressed  = false;
     var _gp_jump_released = false;
@@ -84,6 +98,11 @@ function input_update() {
         _gp_right = gamepad_button_check(_pad, gp_padr) || (_axis_x > 0.4);
         _gp_up    = gamepad_button_check(_pad, gp_padu) || (_axis_y < -0.4);
         _gp_down  = gamepad_button_check(_pad, gp_padd) || (_axis_y > 0.4);
+        
+        _gp_left_pressed  = gamepad_button_check_pressed(_pad, gp_padl);
+        _gp_right_pressed = gamepad_button_check_pressed(_pad, gp_padr);
+        _gp_up_pressed    = gamepad_button_check_pressed(_pad, gp_padu);
+        _gp_down_pressed  = gamepad_button_check_pressed(_pad, gp_padd);
         
         _gp_jump          = gamepad_button_check(_pad, gp_face1);
         _gp_jump_pressed  = gamepad_button_check_pressed(_pad, gp_face1);
@@ -107,6 +126,11 @@ function input_update() {
     global.input.right = _k_right || _gp_right;
     global.input.up    = _k_up    || _gp_up;
     global.input.down  = _k_down  || _gp_down;
+    
+    global.input.left_pressed  = _k_left_pressed  || _gp_left_pressed;
+    global.input.right_pressed = _k_right_pressed || _gp_right_pressed;
+    global.input.up_pressed    = _k_up_pressed    || _gp_up_pressed;
+    global.input.down_pressed  = _k_down_pressed  || _gp_down_pressed;
     
     global.input.jump          = _k_jump          || _gp_jump;
     global.input.jump_pressed  = _k_jump_pressed  || _gp_jump_pressed;

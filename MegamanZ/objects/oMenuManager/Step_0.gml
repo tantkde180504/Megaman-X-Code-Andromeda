@@ -20,14 +20,14 @@ var _confirm = keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(vk_ent
 var _cancel = keyboard_check_pressed(ord("X")) || keyboard_check_pressed(vk_escape);
 var _skip = keyboard_check_pressed(ord("S")) || keyboard_check_pressed(vk_escape);
 
-// If oInput exists, blend its inputs too
-if (instance_exists(oInput)) {
-    if (global.input.up_pressed) _up = true;
-    if (global.input.down_pressed) _down = true;
-    if (global.input.left_pressed) _left = true;
-    if (global.input.right_pressed) _right = true;
-    if (global.input.jump_pressed) _confirm = true;
-    if (global.input.shoot_pressed) _cancel = true;
+// If oInput exists and global.input exists, blend its inputs too
+if (variable_global_exists("input") && is_struct(global.input)) {
+    if (variable_struct_exists(global.input, "up_pressed") && global.input.up_pressed) _up = true;
+    if (variable_struct_exists(global.input, "down_pressed") && global.input.down_pressed) _down = true;
+    if (variable_struct_exists(global.input, "left_pressed") && global.input.left_pressed) _left = true;
+    if (variable_struct_exists(global.input, "right_pressed") && global.input.right_pressed) _right = true;
+    if (variable_struct_exists(global.input, "jump_pressed") && global.input.jump_pressed) _confirm = true;
+    if (variable_struct_exists(global.input, "shoot_pressed") && global.input.shoot_pressed) _cancel = true;
 }
 
 // -----------------------------------------------------------------
