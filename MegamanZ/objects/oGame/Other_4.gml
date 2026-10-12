@@ -12,8 +12,8 @@ if (room == Room1) {
     scr_build_stage_web_spider();
 }
 
-// Spawn player at checkpoint
-if (!instance_exists(oPlayer)) {
+// Spawn player at checkpoint (playable stages only)
+if (room_get_name(room) != "rTitle" && !instance_exists(oPlayer)) {
     var _obj = (global.current_char == CHAR_TYPE.X) ? oPlayerX : oPlayerZero;
     var _p = instance_create_layer(global.checkpoint_x, global.checkpoint_y, "Instances", _obj);
     _p.has_air_dash = global.has_air_dash;

@@ -1,4 +1,6 @@
-﻿var _cx = camera_get_view_x(view_camera[0]);
+if (room_get_name(room) == "rTitle") return;
+
+var _cx = camera_get_view_x(view_camera[0]);
 var _cy = camera_get_view_y(view_camera[0]);
 
 // Draw Far Mountain Background

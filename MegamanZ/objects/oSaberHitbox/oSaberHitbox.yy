@@ -33,12 +33,12 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name": "sSaberHitbox",
-    "path": "sprites/sSaberHitbox/sSaberHitbox.yy",
+    "name":"sSaberHitbox",
+    "path":"sprites/sSaberHitbox/sSaberHitbox.yy",
   },
   "spriteMaskId":{
-    "name": "sSaberHitbox",
-    "path": "sprites/sSaberHitbox/sSaberHitbox.yy",
+    "name":"sSaberHitbox",
+    "path":"sprites/sSaberHitbox/sSaberHitbox.yy",
   },
   "visible":true,
 }

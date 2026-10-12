@@ -1,3 +1,14 @@
+if (room_get_name(room) == "rTitle") return;
+
+// Return to Title Screen
+if (keyboard_check_pressed(ord("0"))) {
+    if (instance_exists(oPlayer)) {
+        with (oPlayer) instance_destroy();
+    }
+    room_goto(rTitle);
+    return;
+}
+
 // Stage quick selection keys (1: Playground, 2: Intro Stage, 3: Web Spider Stage)
 if (keyboard_check_pressed(ord("1"))) {
     global.checkpoint_x = 64;

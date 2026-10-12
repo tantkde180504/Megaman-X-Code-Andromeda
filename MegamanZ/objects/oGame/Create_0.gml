@@ -1,3 +1,8 @@
+if (instance_number(oGame) > 1) {
+    instance_destroy();
+    return;
+}
+
 window_set_size(VIEW_WIDTH * 2, VIEW_HEIGHT * 2);
 surface_resize(application_surface, VIEW_WIDTH, VIEW_HEIGHT);
 display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);

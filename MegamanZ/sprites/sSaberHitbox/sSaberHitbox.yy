@@ -1,4 +1,4 @@
-﻿{
+{
   "$GMSprite":"v2",
   "%Name":"sSaberHitbox",
   "bboxMode":0,
