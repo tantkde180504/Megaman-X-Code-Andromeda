@@ -202,6 +202,8 @@
     {"id":{"name":"obj_nz_ring_fx","path":"objects/obj_nz_ring_fx/obj_nz_ring_fx.yy",},},
     {"id":{"name":"obj_nz_floor_burst","path":"objects/obj_nz_floor_burst/obj_nz_floor_burst.yy",},},
     {"id":{"name":"obj_nightmare_zero","path":"objects/obj_nightmare_zero/obj_nightmare_zero.yy",},},
+    {"id":{"name":"rBoss_NightmareZero","path":"rooms/rBoss_NightmareZero/rBoss_NightmareZero.yy",},},
+    {"id":{"name":"scr_build_boss_room_nightmare_zero","path":"scripts/scr_build_boss_room_nightmare_zero/scr_build_boss_room_nightmare_zero.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
@@ -210,6 +212,7 @@
     {"roomId":{"name":"rStage_Intro","path":"rooms/rStage_Intro/rStage_Intro.yy",},},
     {"roomId":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"roomId":{"name":"rStage_WebSpider","path":"rooms/rStage_WebSpider/rStage_WebSpider.yy",},},
+    {"roomId":{"name":"rBoss_NightmareZero","path":"rooms/rBoss_NightmareZero/rBoss_NightmareZero.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

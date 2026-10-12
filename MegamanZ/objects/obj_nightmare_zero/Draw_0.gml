@@ -17,8 +17,8 @@ if (phase == 2 && state != NZ_STATE.DEATH) {
     _blend_col = merge_color(c_white, make_color_rgb(255, 120, 180), _pulse * 0.6);
 }
 
-// 3. Hiệu ứng nháy trắng khi nhận sát thương
-if (flash_timer > 0) {
+// 3. Hiệu ứng nháy trắng khi nhận sát thương hoặc đang trong i-frames
+if (flash_timer > 0 || (state == NZ_STATE.HURT && (state_timer % 4 < 2))) {
     gpu_set_fog(true, c_white, 0, 0);
     draw_sprite_ext(anim_sprite, anim_frame, x, y, _draw_facing, 1, 0, c_white, 1);
     gpu_set_fog(false, c_white, 0, 0);

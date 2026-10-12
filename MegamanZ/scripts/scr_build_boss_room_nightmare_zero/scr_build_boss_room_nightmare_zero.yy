@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_build_boss_room_nightmare_zero",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_build_boss_room_nightmare_zero",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

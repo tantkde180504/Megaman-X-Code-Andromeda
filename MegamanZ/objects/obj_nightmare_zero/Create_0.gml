@@ -1,4 +1,4 @@
-/// @desc Nightmare Zero Boss - Initialization & Config
+/// @desc Nightmare Zero Boss - Initialization & Config (Mega Man X6 Mechanics)
 event_inherited();
 
 // -------------------------------------------------------------------------
@@ -10,13 +10,13 @@ enum NZ_STATE {
     CHASE,          // 2: Chạy bộ áp sát mục tiêu
     SLASH_BIG,      // 3: Chém lớn tạo vòng cung khí (Phase 2 bắn thêm kiếm khí)
     DASH_SLASH,     // 4: Lướt thấp tốc độ cao chém quét
-    CRESCENT_SHOT,  // 5: Bắn đạn trăng khuyết (1-3 đạn)
-    GROUND_SPIKES,  // 6: Gồng cắm kiếm, gai trồi lên từ sàn
-    BUSTER_DRILL,   // 7: Giơ Buster bắn mũi khoan tốc độ cao
+    CRESCENT_SHOT,  // 5: Bắn đạn trăng khuyết (Genmurei / Denharei)
+    GROUND_SPIKES,  // 6: Shin Messenkou (Rekkoha) - Gai năng lượng trải khắp phòng
+    BUSTER_DRILL,   // 7: Bắn Double Buster Shot tốc độ cao
     AIR_ATTACK,     // 8: Nhảy chém bổ chéo hào quang xanh, tiếp đất gây địa chấn
-    DOME_TELEPORT,  // 9: (Phase 2) Khiên năng lượng, dịch chuyển sau lưng người chơi
+    DOME_TELEPORT,  // 9: Khiên năng lượng, dịch chuyển tức thời chiến thuật
     SKULL_WAVE,     // 10: (Phase 2) Sọ bóng tối chạy sàn kéo theo gai nổ
-    HURT,           // 11: Bị đánh choáng nhẹ
+    HURT,           // 11: Bị đánh choáng (Stagger) & Nhận i-frames
     DEATH           // 12: Nổ liên hoàn, tan rã thành ooze, mở cổng boss
 }
 
@@ -26,6 +26,7 @@ enum NZ_STATE {
 // 1. Chỉ số cơ bản & Máu
 max_hp = 64;
 hp = max_hp;
+prev_hp = max_hp;
 contact_damage = 4;
 
 // 2. Tốc độ di chuyển
@@ -38,23 +39,23 @@ air_dive_hsp = 4.2;
 air_dive_vsp = 6.8;
 
 // 3. Thời gian chờ giữa các đòn (Cooldown frames)
-idle_wait_p1_min = 40;
-idle_wait_p1_max = 60;
-idle_wait_p2_min = 20;
-idle_wait_p2_max = 35;
+idle_wait_p1_min = 35;
+idle_wait_p1_max = 50;
+idle_wait_p2_min = 18;
+idle_wait_p2_max = 30;
 
 // 4. Sát thương từng kỹ năng
 dmg_slash_big   = 5;
 dmg_dash_slash  = 4;
 dmg_crescent    = 4;
 dmg_spike       = 4;
-dmg_drill       = 5;
+dmg_drill       = 4;
 dmg_air_dive    = 5;
 dmg_shockwave   = 3;
 dmg_skull_wave  = 4;
 
 // 5. Cảnh báo & Hiệu ứng
-spike_warning_frames = 25;
+spike_warning_frames = 20;
 
 // -------------------------------------------------------------------------
 // ĐIỀU KHIỂN ANIMATION THỦ CÔNG (image_speed = 0)
@@ -72,7 +73,7 @@ action_triggered = false;
 // -------------------------------------------------------------------------
 state = NZ_STATE.SPAWN;
 state_timer = 0;
-attack_wait_timer = 50;
+attack_wait_timer = 45;
 last_attack = -1;
 repeat_attack_count = 0;
 
@@ -83,8 +84,8 @@ max_combos = 1; // Cho phép combo tối đa 2 đòn liên tiếp trong Phase 2
 // Biến bổ trợ từng đòn
 air_phase = 0;
 teleport_phase = 0;
-spike_counter = 0;
-spike_timer = 0;
+burst_shot_count = 0;
+burst_shot_timer = 0;
 death_timer = 0;
 
 // Mảng tàn ảnh (Afterimage trail)
@@ -101,6 +102,8 @@ nz_change_state = function(_new_state) {
     anim_done = false;
     action_triggered = false;
     is_invulnerable = false;
+    burst_shot_count = 0;
+    burst_shot_timer = 0;
     
     switch (state) {
         case NZ_STATE.SPAWN:
@@ -147,13 +150,11 @@ nz_change_state = function(_new_state) {
             anim_sprite = spr_nz_ground_charge;
             anim_delay = 6;
             hsp = 0;
-            spike_counter = 0;
-            spike_timer = 0;
             break;
             
         case NZ_STATE.BUSTER_DRILL:
             anim_sprite = spr_nz_shoot;
-            anim_delay = 7;
+            anim_delay = 6;
             hsp = 0;
             break;
             
@@ -165,7 +166,7 @@ nz_change_state = function(_new_state) {
             
         case NZ_STATE.DOME_TELEPORT:
             anim_sprite = spr_nz_dome;
-            anim_delay = 6;
+            anim_delay = 5;
             hsp = 0;
             vsp = 0;
             teleport_phase = 0;
@@ -180,8 +181,12 @@ nz_change_state = function(_new_state) {
             
         case NZ_STATE.HURT:
             anim_sprite = spr_nz_hurt;
-            anim_delay = 8;
+            anim_delay = 6;
             hsp = -facing * 1.5;
+            vsp = 0;
+            is_invulnerable = true;
+            invulnerability_timer = 45; // Khung bất tử i-frames
+            flash_timer = 20;
             break;
             
         case NZ_STATE.DEATH:
@@ -196,7 +201,7 @@ nz_change_state = function(_new_state) {
 };
 
 // -------------------------------------------------------------------------
-// HÀM CHỌN ĐÒN TẤN CÔNG THEO TRỌNG SỐ (Weighted Attack Chooser)
+// HÀM CHỌN ĐÒN TẤN CÔNG THEO TRỌNG SỐ (Weighted Attack Chooser - MM X6 Style)
 // -------------------------------------------------------------------------
 nz_choose_attack = function() {
     var _p_dist = 999;
@@ -208,24 +213,21 @@ nz_choose_attack = function() {
     var _attacks = [];
     var _weights = [];
     
-    if (_p_dist < 120) {
-        // CỰ LY GẦN (< 120px)
+    if (_p_dist < 110) {
+        // CỰ LY GẦN (< 110px): Ưu tiên chém, lướt quét, hoặc teleport né
         array_push(_attacks, NZ_STATE.SLASH_BIG);     array_push(_weights, 35);
         array_push(_attacks, NZ_STATE.DASH_SLASH);    array_push(_weights, 30);
-        array_push(_attacks, NZ_STATE.GROUND_SPIKES); array_push(_weights, 20);
+        array_push(_attacks, NZ_STATE.DOME_TELEPORT); array_push(_weights, 20);
+        array_push(_attacks, NZ_STATE.GROUND_SPIKES); array_push(_weights, 15);
+    } else {
+        // CỰ LY XA (>= 110px): Bắn kiếm khí, Double Buster, hoặc bay chém/teleport
+        array_push(_attacks, NZ_STATE.CRESCENT_SHOT); array_push(_weights, 30);
+        array_push(_attacks, NZ_STATE.BUSTER_DRILL);  array_push(_weights, 30);
+        array_push(_attacks, NZ_STATE.DOME_TELEPORT); array_push(_weights, 25);
         array_push(_attacks, NZ_STATE.AIR_ATTACK);    array_push(_weights, 15);
         if (phase == 2) {
-            array_push(_attacks, NZ_STATE.DOME_TELEPORT); array_push(_weights, 25);
-        }
-    } else {
-        // CỰ LY XA (>= 120px)
-        array_push(_attacks, NZ_STATE.CHASE);         array_push(_weights, 25);
-        array_push(_attacks, NZ_STATE.CRESCENT_SHOT); array_push(_weights, 30);
-        array_push(_attacks, NZ_STATE.BUSTER_DRILL);  array_push(_weights, 25);
-        array_push(_attacks, NZ_STATE.AIR_ATTACK);    array_push(_weights, 20);
-        if (phase == 2) {
-            array_push(_attacks, NZ_STATE.DOME_TELEPORT); array_push(_weights, 25);
             array_push(_attacks, NZ_STATE.SKULL_WAVE);    array_push(_weights, 20);
+            array_push(_attacks, NZ_STATE.GROUND_SPIKES); array_push(_weights, 20);
         }
     }
     

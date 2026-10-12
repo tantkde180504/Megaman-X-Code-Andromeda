@@ -25,6 +25,12 @@ if (keyboard_check_pressed(ord("3"))) {
     global.checkpoint_y = 750;
     room_goto(rStage_WebSpider);
 }
+if (keyboard_check_pressed(ord("4"))) {
+    global.checkpoint_x = 80;
+    global.checkpoint_y = 240;
+    room_goto(rBoss_NightmareZero);
+}
+
 
 // Tab toggles character
 if (global.input.tab_pressed) {

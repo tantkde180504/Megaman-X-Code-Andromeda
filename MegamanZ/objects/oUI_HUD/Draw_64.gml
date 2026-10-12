@@ -48,6 +48,7 @@ if (global.current_char == CHAR_TYPE.X) {
 var _st_name = "TEST PLAYGROUND";
 if (room_get_name(room) == "rStage_Intro") _st_name = "INTRO STAGE: RUINED HIGHWAY";
 else if (room_get_name(room) == "rStage_WebSpider") _st_name = "STAGE 1: WEB SPIDER JUNGLE";
+else if (room_get_name(room) == "rBoss_NightmareZero") _st_name = "NIGHTMARE AREA: BOSS BATTLE";
 
 draw_set_color(c_black);
 draw_set_alpha(0.6);
@@ -70,4 +71,5 @@ draw_set_alpha(0.65);
 draw_rectangle(0, VIEW_HEIGHT - 14, VIEW_WIDTH, VIEW_HEIGHT, false);
 draw_set_alpha(1.0);
 draw_set_color(make_color_rgb(200, 220, 240));
-draw_text(4, VIEW_HEIGHT - 13, "Move: Arrows | Z: Jump | X: Atk | C: Dash | B: Boss (NZ) | 1/2/3: Stage | TAB: Char | F1: Debug");
+draw_text(4, VIEW_HEIGHT - 13, "Move: Arrows | Z: Jump | X: Atk | C: Dash | 1/2/3/4: Stages & Boss | TAB: Char | F1: Debug");
+
