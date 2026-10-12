@@ -54,73 +54,65 @@ cutscene_is_typing = false;
 cutscene_type_speed = 0.8; // Authentic typewriter cadence
 cutscene_scanline = 0;
 
-// Dynamic dialogue font for Vietnamese diacritics support
-dialogue_font = -1;
-try {
-    dialogue_font = font_add("Segoe UI", 10, true, false, 32, 8000);
-} catch (_ex) {
-    dialogue_font = -1;
-}
-
-// Cutscene Steps Script:
-// Phase 1: Prologue Lore (No mugshots, text at bottom)
-// Phase 2: Character Dialogue (Hero on left, Alia on right, animated mouths while typing)
+// Cutscene Steps Script (English Localized - Mega Man X4 Authentic Style):
+// Phase 1: Prologue Lore (No mugshots, narrative text in lower box)
+// Phase 2: Character Dialogue (Hero on left, Alia on right, animated talking mouths)
 cutscene_script = [
     // Step 0: Prologue Title
     {
         is_dialogue: false,
         speaker_key: "",
         speaker_name: "",
-        text: "2126: MegaMan X Code: Andromeda"
+        text: "2126: MEGAMAN X CODE: ANDROMEDA"
     },
     // Step 1: Prologue Lore
     {
         is_dialogue: false,
         speaker_key: "",
         speaker_name: "",
-        text: "Sau cuộc chiến với Sigma, [HERO] tiếp tục trên hành trình của một Maverick Hunter, tiêu diệt những Reploid nhiễm virus Maverick và tàn dư của Sigma."
+        text: "Following the fierce battles against Sigma, [HERO] continues the perilous duty of a Maverick Hunter, purging rogue Reploids infected by the Maverick virus and wiping out the remnants of Sigma's forces."
     },
     // Step 2: Alia calls Hero
     {
         is_dialogue: true,
         speaker_key: "alia",
         speaker_name: "ALIA",
-        text: "[HERO]..[HERO]..nghe thấy tôi nói không?"
+        text: "[HERO]! [HERO]! Can you hear me?"
     },
     // Step 3: Hero responds
     {
         is_dialogue: true,
         speaker_key: "hero",
         speaker_name: "[CHAR_NAME]",
-        text: "Tôi nghe, có chuyện gì vậy Alia?"
+        text: "Loud and clear. What's the situation, Alia?"
     },
     // Step 4: Alia briefs about Jungle
     {
         is_dialogue: true,
         speaker_key: "alia",
         speaker_name: "ALIA",
-        text: "Ở khu vực jungle đang có một nhóm Reploid bị mất kiểm soát, hãy tới đó kiểm tra."
+        text: "A contingent of Reploids in the Jungle Sector has gone completely berserk. Head to the area and investigate at once!"
     },
     // Step 5: Hero acknowledges
     {
         is_dialogue: true,
         speaker_key: "hero",
         speaker_name: "[CHAR_NAME]",
-        text: "Đã rõ!"
+        text: "Understood! On my way."
     },
     // Step 6: Alia warns of mysterious signal
     {
         is_dialogue: true,
         speaker_key: "alia",
         speaker_name: "ALIA",
-        text: "Tuy nhiên ở sâu trong khu vực phát hiện tính hiệu lạ, sau khi kiểm soát đám Reploid, hãy tìm kiếm tính hiệu đó. Có thể nó là lý do đám Reploid có hành động lạ."
+        text: "Wait--sensors are detecting an anomalous energy signature deep within the jungle core. After neutralizing the hostile Reploids, trace that signal. It may be the catalyst driving them mad."
     },
     // Step 7: Hero departs
     {
         is_dialogue: true,
         speaker_key: "hero",
         speaker_name: "[CHAR_NAME]",
-        text: "Đã rõ, tôi sẽ đi ngay!"
+        text: "Roger that, Alia. I'm moving out now!"
     }
 ];
 cutscene_step_count = array_length(cutscene_script);

@@ -463,7 +463,7 @@ switch (state) {
             draw_set_halign(fa_center);
             draw_set_valign(fa_top);
             draw_set_color(make_color_rgb(140, 170, 210));
-            draw_text(240, 256, "[Z / ENTER] TIẾP TỤC  |  [S / ESC] BỎ QUA");
+            draw_text(240, 256, "[Z / ENTER] NEXT  |  [S / ESC] SKIP");
         }
         // -------------------------------------------------------------
         // PHASE 2: THOẠI NHÂN VẬT (CHARACTER DIALOGUE - Steps 2..7)
@@ -502,45 +502,22 @@ switch (state) {
                 // 1. LEFT MUGSHOT BOX: HERO (MEGA MAN X / ZERO)
                 // =====================================================
                 var _lx = 44, _ly = 20;
-                
-                // Amber speedlines background tile inside mugshot box
-                draw_sprite_part(Mugshots, 0, 243, 8, 94, 112, _lx, _ly);
-                
                 var _hero_is_speaking = (cutscene_is_typing && cutscene_speaker_key == "hero");
                 
                 if (selected_char == 0) {
-                    // MEGA MAN X (Clipped to stay precisely inside 94x112 box)
-                    // Base head: 144, 120, 94, 98 drawn at (_lx, _ly + 9)
-                    draw_sprite_part(Mugshots, 0, 144, 120, 94, 98, _lx, _ly + 9);
-                    
-                    // Talking mouth animation:
-                    // When typing, toggle mouth open/closed every 5 frames
-                    if (_hero_is_speaking) {
-                        var _x_mouth_open = (floor(anim_timer / 5) % 2 == 1);
-                        if (_x_mouth_open) {
-                            draw_sprite_part(Mugshots, 0, 160, 223, 51, 36, _lx + 16, _ly + 63);
-                        }
-                    }
+                    // MEGA MAN X (Pre-baked 94x112 frames)
+                    // Frame 0: closed mouth (X=196)
+                    // Frame 1: open talking mouth (X=294)
+                    var _x_frame = _hero_is_speaking ? ((floor(anim_timer / 6) % 2 == 0) ? 0 : 1) : 0;
+                    var _src_x = (_x_frame == 0) ? 196 : 294;
+                    draw_sprite_part(Mugshots, 0, _src_x, 0, 94, 112, _lx, _ly);
                 } else {
-                    // ZERO (Clipped to stay precisely inside 94x112 box)
-                    // Base head: 358, 130, 94, 94 drawn at (_lx, _ly + 18)
-                    draw_sprite_part(Mugshots, 0, 358, 130, 94, 94, _lx, _ly + 18);
-                    
-                    // Talking mouth animation:
-                    // When typing, alternate Mouth 1 and Mouth 2 every 6 frames
-                    if (_hero_is_speaking) {
-                        var _z_mouth_open = (floor(anim_timer / 6) % 2 == 1);
-                        if (_z_mouth_open) {
-                            // Mouth 2 (open talking)
-                            draw_sprite_part(Mugshots, 0, 417, 225, 32, 16, _lx + 41, _ly + 80);
-                        } else {
-                            // Mouth 1 (half open)
-                            draw_sprite_part(Mugshots, 0, 381, 225, 32, 16, _lx + 41, _ly + 80);
-                        }
-                    } else {
-                        // Listening / idle: closed mouth (Mouth 1)
-                        draw_sprite_part(Mugshots, 0, 381, 225, 32, 16, _lx + 41, _ly + 80);
-                    }
+                    // ZERO (Pre-baked 94x112 frames)
+                    // Frame 0: closed mouth (X=392)
+                    // Frame 1: open talking mouth (X=490)
+                    var _z_frame = _hero_is_speaking ? ((floor(anim_timer / 6) % 2 == 0) ? 0 : 1) : 0;
+                    var _src_x = (_z_frame == 0) ? 392 : 490;
+                    draw_sprite_part(Mugshots, 0, _src_x, 0, 94, 112, _lx, _ly);
                 }
                 
                 // Left box borders
@@ -567,15 +544,11 @@ switch (state) {
                 var _rx = 342, _ry = 20;
                 var _alia_is_speaking = (cutscene_is_typing && cutscene_speaker_key == "alia");
                 
-                if (_alia_is_speaking) {
-                    // Alternate talking mouth frames 1 and 2
-                    var _alia_frame = (floor(anim_timer / 6) % 2 == 0) ? 1 : 2;
-                    var _alia_src_x = (_alia_frame == 1) ? 350 : 450;
-                    draw_sprite_part(Mugshots, 0, _alia_src_x, 4, 94, 112, _rx, _ry);
-                } else {
-                    // Frame 0 (closed mouth / listening)
-                    draw_sprite_part(Mugshots, 0, 10, 4, 94, 112, _rx, _ry);
-                }
+                // Pre-baked Frame 0: closed mouth (X=0)
+                // Pre-baked Frame 1: open talking mouth (X=98)
+                var _alia_frame = _alia_is_speaking ? ((floor(anim_timer / 6) % 2 == 0) ? 0 : 1) : 0;
+                var _alia_src_x = (_alia_frame == 0) ? 0 : 98;
+                draw_sprite_part(Mugshots, 0, _alia_src_x, 0, 94, 112, _rx, _ry);
                 
                 // Right box borders
                 draw_set_color(c_black);
@@ -647,7 +620,7 @@ switch (state) {
             draw_set_halign(fa_center);
             draw_set_valign(fa_top);
             draw_set_color(make_color_rgb(140, 170, 210));
-            draw_text(240, 256, "[Z / ENTER] TIẾP TỤC  |  [S / ESC] BỎ QUA");
+            draw_text(240, 256, "[Z / ENTER] NEXT  |  [S / ESC] SKIP");
         }
 
         // Reset font to default for safety
