@@ -1,7 +1,10 @@
 var _flash = (flash_timer > 0);
+// Mettaur D2 faces LEFT natively in sprite sheet, so flip when facing == 1
+var _draw_facing = -facing;
+
 switch (state) {
     case 0: // Guard: tucked under hard hat
-        enemy_draw_sprite(MettaurD2_Sheet, 159, 12, 24, 23, 12, 23, x, y, facing, _flash);
+        enemy_draw_sprite(MettaurD2_Sheet, 159, 12, 24, 23, 12, 23, x, y, _draw_facing, _flash);
         break;
 
     case 1: // Peek / Pop-up
@@ -11,7 +14,7 @@ switch (state) {
         ];
         var _fi = clamp(floor(state_timer / 10), 0, 1);
         var _f = _peek_frames[_fi];
-        enemy_draw_sprite(MettaurD2_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, facing, _flash);
+        enemy_draw_sprite(MettaurD2_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, _draw_facing, _flash);
         break;
 
     case 2: // Full 7-frame Buster Attack Sequence
@@ -26,7 +29,7 @@ switch (state) {
         ];
         var _fi = clamp(floor(state_timer / 4), 0, 6);
         var _f = _shoot_frames[_fi];
-        enemy_draw_sprite(MettaurD2_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, facing, _flash);
+        enemy_draw_sprite(MettaurD2_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, _draw_facing, _flash);
         break;
 
     case 3: // Walk Shuffle (Row 1, 10 frames)
@@ -44,7 +47,7 @@ switch (state) {
         ];
         var _fi = floor(anim_timer / 4) % 10;
         var _f = _walk_frames[_fi];
-        enemy_draw_sprite(MettaurD2_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, facing, _flash);
+        enemy_draw_sprite(MettaurD2_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, _draw_facing, _flash);
         break;
 }
 

@@ -19,10 +19,12 @@ switch (state) {
         ];
         var _fi = clamp(floor(state_timer / 6), 0, 1);
         var _f = _open[_fi];
-        enemy_draw_sprite(TentoroidRS_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, facing, _flash);
+        var _sf = (_fi == 0) ? facing : -facing;
+        enemy_draw_sprite(TentoroidRS_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, _sf, _flash);
         break;
 
     case 2: // Horizontal Rocket Boost Charge: Rear blue flame jets rocket forward!
+        // Row 1 frames face LEFT natively (flame on right), so flip with -facing when moving right
         var _boost = [
             [29, 84, 54, 34, 27, 17],
             [92, 84, 57, 35, 28, 17],
@@ -30,7 +32,7 @@ switch (state) {
         ];
         var _fi = floor(anim_timer / 3) % 3;
         var _f = _boost[_fi];
-        enemy_draw_sprite(TentoroidRS_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, facing, _flash);
+        enemy_draw_sprite(TentoroidRS_Sheet, _f[0], _f[1], _f[2], _f[3], _f[4], _f[5], x, y, -facing, _flash);
         break;
 
     case 3: // Recover / Brake: Closes shell, resumes vertical hover
