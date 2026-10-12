@@ -72,6 +72,8 @@
     {"id":{"name":"scr_input","path":"scripts/scr_input/scr_input.yy",},},
     {"id":{"name":"scr_player_physics","path":"scripts/scr_player_physics/scr_player_physics.yy",},},
     {"id":{"name":"scr_player_states","path":"scripts/scr_player_states/scr_player_states.yy",},},
+    {"id":{"name":"LogoCapcom","path":"sprites/LogoCapcom/LogoCapcom.yy",},},
+    {"id":{"name":"LogoGame","path":"sprites/LogoGame/LogoGame.yy",},},
     {"id":{"name":"sBG_Far","path":"sprites/sBG_Far/sBG_Far.yy",},},
     {"id":{"name":"sBG_Mid","path":"sprites/sBG_Mid/sBG_Mid.yy",},},
     {"id":{"name":"sBossGate","path":"sprites/sBossGate/sBossGate.yy",},},

@@ -42,12 +42,23 @@ switch (state) {
     case MENU_STATE.SPLASH:
         // Capcom & Fanmade Splash
         if (state_timer < 140) {
-            // Screen 1: Capcom Tribute
-            draw_set_color(make_color_rgb(255, 215, 0)); // Capcom Gold
-            draw_text_transformed(240, 110, "CAPCOM", 2.2, 2.2, 0);
+            // Screen 1: Capcom Official Logo Tribute
+            if (sprite_exists(LogoCapcom)) {
+                var _cw = sprite_get_width(LogoCapcom);
+                var _ch = sprite_get_height(LogoCapcom);
+                var _c_scale = 220 / _cw;
+                var _c_ox = sprite_get_xoffset(LogoCapcom);
+                var _c_oy = sprite_get_yoffset(LogoCapcom);
+                var _c_dx = 240 - (_cw * 0.5 - _c_ox) * _c_scale;
+                var _c_dy = 100 - (_ch * 0.5 - _c_oy) * _c_scale;
+                draw_sprite_ext(LogoCapcom, 0, _c_dx, _c_dy, _c_scale, _c_scale, 0, c_white, 1.0);
+            } else {
+                draw_set_color(make_color_rgb(255, 215, 0)); // Capcom Gold
+                draw_text_transformed(240, 100, "CAPCOM", 2.2, 2.2, 0);
+            }
             
             draw_set_color(make_color_rgb(80, 200, 255)); // Cyan
-            draw_text(240, 142, "PRESENTS");
+            draw_text(240, 140, "PRESENTS");
             
             draw_set_color(make_color_rgb(180, 190, 210));
             draw_text(240, 175, "A TRIBUTE TO THE LEGENDARY MEGA MAN X SERIES");
@@ -56,62 +67,96 @@ switch (state) {
         } else {
             // Screen 2: Andromeda Fanmade Splash
             draw_set_color(make_color_rgb(40, 220, 255));
-            draw_text(240, 100, "MEGAMAN X FANMADE PRODUCTION");
+            draw_text(240, 60, "MEGAMAN X FANMADE PRODUCTION");
             
-            draw_set_color(make_color_rgb(255, 200, 40));
-            draw_text_transformed(240, 135, "CODE: ANDROMEDA", 1.8, 1.8, 0);
+            if (sprite_exists(LogoGame)) {
+                var _gw = sprite_get_width(LogoGame);
+                var _gh = sprite_get_height(LogoGame);
+                var _g_scale = 230 / _gw;
+                var _g_ox = sprite_get_xoffset(LogoGame);
+                var _g_oy = sprite_get_yoffset(LogoGame);
+                var _g_dx = 240 - (_gw * 0.5 - _g_ox) * _g_scale;
+                var _g_dy = 125 - (_gh * 0.5 - _g_oy) * _g_scale;
+                draw_sprite_ext(LogoGame, 0, _g_dx, _g_dy, _g_scale, _g_scale, 0, c_white, 1.0);
+            } else {
+                draw_set_color(make_color_rgb(255, 200, 40));
+                draw_text_transformed(240, 125, "CODE: ANDROMEDA", 1.8, 1.8, 0);
+            }
             
             draw_set_color(make_color_rgb(170, 180, 200));
-            draw_text(240, 170, "DEEPMIND AGENTIC PAIR-PROGRAMMING ENGINE");
+            draw_text(240, 185, "DEEPMIND AGENTIC PAIR-PROGRAMMING ENGINE");
             draw_set_color(make_color_rgb(120, 130, 150));
             draw_text(240, 240, "[ PRESS ANY KEY TO SKIP ]");
         }
         break;
 
     case MENU_STATE.TITLE:
-        // Logo: MEGA MAN X
-        // 3D Shadow layer
-        draw_set_color(make_color_rgb(10, 20, 50));
-        draw_text_transformed(242, 67, "MEGA MAN X", 2.6, 2.6, 0);
-        // Bevel glow layer
-        draw_set_color(make_color_rgb(0, 120, 220));
-        draw_text_transformed(240, 66, "MEGA MAN X", 2.5, 2.5, 0);
-        // Core layer
-        draw_set_color(make_color_rgb(180, 240, 255));
-        draw_text_transformed(240, 64, "MEGA MAN X", 2.4, 2.4, 0);
-        
-        // Subtitle: CODE ANDROMEDA
-        var _pulse = 0.85 + 0.15 * dsin(anim_timer * 4);
-        draw_set_color(make_color_rgb(255, 180, 30));
-        draw_set_alpha(_pulse);
-        draw_text_transformed(240, 106, "— CODE ANDROMEDA —", 1.5, 1.5, 0);
-        draw_set_alpha(1.0);
-        
-        // Light shimmer bar
-        var _shim_x = (anim_timer * 4) % (VIEW_WIDTH + 100) - 50;
-        draw_set_color(c_white);
-        draw_set_alpha(0.25);
-        draw_rectangle(_shim_x - 12, 50, _shim_x + 12, 120, false);
-        draw_set_alpha(1.0);
+        // Draw LogoGame with floating effect and cyber bloom
+        var _float_y = 82 + 2.0 * dsin(anim_timer * 2.5);
+        if (sprite_exists(LogoGame)) {
+            var _gw = sprite_get_width(LogoGame);
+            var _gh = sprite_get_height(LogoGame);
+            var _pulse = 1.0 + 0.015 * dsin(anim_timer * 3);
+            var _g_scale = (290 / _gw) * _pulse;
+            var _g_ox = sprite_get_xoffset(LogoGame);
+            var _g_oy = sprite_get_yoffset(LogoGame);
+            var _g_dx = 240 - (_gw * 0.5 - _g_ox) * _g_scale;
+            var _g_dy = _float_y - (_gh * 0.5 - _g_oy) * _g_scale;
+            
+            // Cyber glow halo behind logo
+            draw_set_color(make_color_rgb(0, 140, 255));
+            draw_set_alpha(0.18 + 0.08 * dsin(anim_timer * 4));
+            draw_ellipse(240 - 150, _float_y - 45, 240 + 150, _float_y + 45, false);
+            draw_set_alpha(1.0);
+            
+            // Draw Main Game Logo
+            draw_sprite_ext(LogoGame, 0, _g_dx, _g_dy, _g_scale, _g_scale, 0, c_white, 1.0);
+            
+            // Light shimmer bar
+            var _shim_x = (anim_timer * 5) % (VIEW_WIDTH + 140) - 70;
+            draw_set_color(c_white);
+            draw_set_alpha(0.18);
+            draw_rectangle(_shim_x - 12, _float_y - 50, _shim_x + 12, _float_y + 50, false);
+            draw_set_alpha(1.0);
+        } else {
+            // Fallback text if sprite missing
+            draw_set_color(make_color_rgb(10, 20, 50));
+            draw_text_transformed(242, 67, "MEGA MAN X", 2.6, 2.6, 0);
+            draw_set_color(make_color_rgb(180, 240, 255));
+            draw_text_transformed(240, 64, "MEGA MAN X", 2.4, 2.4, 0);
+            draw_set_color(make_color_rgb(255, 180, 30));
+            draw_text_transformed(240, 106, "- CODE ANDROMEDA -", 1.5, 1.5, 0);
+        }
         
         // Press Start prompt (pulsing)
         var _start_alpha = max(0, dsin(anim_timer * 5));
         draw_set_color(make_color_rgb(255, 255, 100));
         draw_set_alpha(_start_alpha);
-        draw_text_transformed(240, 182, "— PRESS START —", 1.3, 1.3, 0);
+        draw_text_transformed(240, 180, "- PRESS START -", 1.3, 1.3, 0);
         draw_set_color(c_white);
-        draw_text(240, 204, "[ PRESS ENTER / SPACE / Z ]");
+        draw_text(240, 202, "[ PRESS ENTER / SPACE / Z ]");
         draw_set_alpha(1.0);
         
         // Footer
         draw_set_color(make_color_rgb(100, 115, 145));
-        draw_text(240, 254, "© 2026 FANMADE TRIBUTE PROJECT // FOR FANS BY FANS");
+        draw_text(240, 254, "(C) 2026 FANMADE TRIBUTE PROJECT // FOR FANS BY FANS");
         break;
 
     case MENU_STATE.MAIN_MENU:
-        // Mini Header
-        draw_set_color(make_color_rgb(0, 180, 255));
-        draw_text_transformed(240, 35, "MEGA MAN X: CODE ANDROMEDA", 1.3, 1.3, 0);
+        // Mini Header using LogoGame
+        if (sprite_exists(LogoGame)) {
+            var _gw = sprite_get_width(LogoGame);
+            var _gh = sprite_get_height(LogoGame);
+            var _m_scale = 135 / _gw;
+            var _m_ox = sprite_get_xoffset(LogoGame);
+            var _m_oy = sprite_get_yoffset(LogoGame);
+            var _m_dx = 240 - (_gw * 0.5 - _m_ox) * _m_scale;
+            var _m_dy = 36 - (_gh * 0.5 - _m_oy) * _m_scale;
+            draw_sprite_ext(LogoGame, 0, _m_dx, _m_dy, _m_scale, _m_scale, 0, c_white, 0.95);
+        } else {
+            draw_set_color(make_color_rgb(0, 180, 255));
+            draw_text_transformed(240, 35, "MEGA MAN X: CODE ANDROMEDA", 1.3, 1.3, 0);
+        }
         
         // Menu Panel Box
         var _mx1 = 140, _my1 = 70, _mx2 = 340, _my2 = 215;
