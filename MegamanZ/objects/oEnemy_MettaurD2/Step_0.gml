@@ -28,24 +28,24 @@ switch (state) {
         }
         break;
 
-    case 2: // ATTACK: Fires 3 spread energy pellets
+    case 2: // ATTACK: Fires 3 spread energy pellets during frame 2 (muzzle flash)
         is_invulnerable = false;
         hsp = 0;
         state_timer++;
-        if (state_timer == 2) {
-            var _b1 = instance_create_layer(x + facing * 12, y - 12, "Instances", oEnemyBullet);
+        if (state_timer == 8) {
+            var _b1 = instance_create_layer(x + facing * 12, y - 14, "Instances", oEnemyBullet);
             _b1.damage = projectile_damage;
             _b1.hsp = facing * 2.8; _b1.vsp = 0;
             
-            var _b2 = instance_create_layer(x + facing * 12, y - 12, "Instances", oEnemyBullet);
+            var _b2 = instance_create_layer(x + facing * 12, y - 14, "Instances", oEnemyBullet);
             _b2.damage = projectile_damage;
             _b2.hsp = facing * 2.5; _b2.vsp = -1.2;
             
-            var _b3 = instance_create_layer(x + facing * 12, y - 12, "Instances", oEnemyBullet);
+            var _b3 = instance_create_layer(x + facing * 12, y - 14, "Instances", oEnemyBullet);
             _b3.damage = projectile_damage;
             _b3.hsp = facing * 2.5; _b3.vsp = 1.2;
         }
-        if (state_timer > 25) {
+        if (state_timer >= 28) {
             state = 3;
             state_timer = 0;
         }

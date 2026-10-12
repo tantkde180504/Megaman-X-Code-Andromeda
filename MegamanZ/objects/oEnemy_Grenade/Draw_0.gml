@@ -4,4 +4,4 @@ var _gf = [
 ];
 var _idx = floor(timer / 4) % 4;
 var _f = _gf[_idx];
-enemy_draw_part(KnotBeretB_Sheet, _f[0], _f[1], _f[2], _f[3], x, y, 1, false);
+enemy_draw_sprite(KnotBeretB_Sheet, _f[0], _f[1], _f[2], _f[3], 6, 6, x, y, 1, false);

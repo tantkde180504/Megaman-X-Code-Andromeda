@@ -86,8 +86,8 @@ function scr_build_stage_intro() {
     // Mid-Stage Checkpoint
     instance_create_layer(1100, room_height - 48, "Instances", oTrigger_Checkpoint);
     
-    // 8. Tentoroid RS: Crawling beetle on highway, opening shell & pincer rush
-    instance_create_layer(1180, room_height - 32, "Instances", oEnemy_TentoroidRS);
+    // 8. Tentoroid RS: Jet Mechaniloid hovering above highway, rocket boost charge
+    instance_create_layer(1180, room_height - 70, "Instances", oEnemy_TentoroidRS);
     
     // Knot Beret B & Spiky Mk-II after checkpoint
     instance_create_layer(1320, room_height - 32, "Instances", oEnemy_KnotBeretB);

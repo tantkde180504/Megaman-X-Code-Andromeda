@@ -27,10 +27,10 @@ switch (state) {
         }
         break;
 
-    case 2: // FIRE_RIFLE: Fires 2 horizontal rifle rounds with recoil
+    case 2: // FIRE_RIFLE: Fires 2 horizontal rifle rounds with recoil kick
         hsp = 0;
         state_timer++;
-        if (state_timer == 2 || state_timer == 14) {
+        if (state_timer == 2 || state_timer == 16) {
             var _b = instance_create_layer(x + facing * 24, y - 26, "Instances", oEnemyBullet);
             _b.damage = projectile_damage;
             _b.hsp = facing * bullet_speed;

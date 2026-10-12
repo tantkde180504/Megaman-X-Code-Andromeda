@@ -2,8 +2,9 @@ event_inherited();
 if (is_dead) return;
 
 switch (state) {
-    case 0: // PATROL_ROLL: Rolls along floor
+    case 0: // PATROL_ROLL: Smooth rolling along floor
         is_invulnerable = false;
+        shield_direction = 0;
         hsp = facing * 1.4;
         
         if (place_meeting(x + hsp, y, oSolid) || !place_meeting(x + facing * 16, y + 8, oSolid)) {
@@ -13,21 +14,32 @@ switch (state) {
         x += hsp;
         
         // Spot player in front
-        if (target != noone && abs(target.y - y) < 32 && (target.x - x) * facing > 0 && abs(target.x - x) < 180) {
-            state = 1; // CHARGE
+        if (target != noone && abs(target.y - y) < 32 && (target.x - x) * facing > 0 && abs(target.x - x) < 200) {
+            state = 1; // ALERT_DEPLOY
             state_timer = 0;
             camera_shake(1, 4);
         }
         break;
 
-    case 1: // CHARGE: Rapid rolling charge
+    case 1: // ALERT_DEPLOY: Pauses and expands spikes outward
         is_invulnerable = false;
-        hsp = facing * 3.8;
-        if (state_timer % 8 == 0) instance_create_layer(x, y, "Instances", oFX_DashDust);
+        hsp = 0;
+        state_timer++;
+        if (state_timer >= 16) {
+            state = 2; // SPIKE_CHARGE
+            state_timer = 0;
+        }
+        break;
+
+    case 2: // SPIKE_CHARGE: Fast lethal rolling charge with spikes out (frontal deflection active!)
+        is_invulnerable = false;
+        shield_direction = 1; // Frontal spikes deflect buster shots!
+        hsp = facing * 4.0;
+        if (state_timer % 6 == 0) instance_create_layer(x, y, "Instances", oFX_DashDust);
         
         if (place_meeting(x + hsp, y, oSolid)) {
-            // Impact with wall transitions to DEFENSE_SPIKED!
-            state = 2; // DEFENSE
+            // Impact with wall
+            state = 3; // RECOVER
             state_timer = 0;
             camera_shake(2, 6);
         } else {
@@ -35,31 +47,20 @@ switch (state) {
         }
         
         state_timer++;
-        if (state_timer > 80) {
-            state = 2; // Transitions into DEFENSE
+        if (state_timer > 70) {
+            state = 3; // RECOVER
             state_timer = 0;
         }
         break;
 
-    case 2: // DEFENSE_SPIKED: Deploys heavy defensive spikes! Incoming damage deflected
-        is_invulnerable = true;
+    case 3: // RECOVER: Retracts spikes back into shell, vulnerable window
+        is_invulnerable = false;
         shield_direction = 0;
         hsp = 0;
         state_timer++;
-        if (state_timer > 60) {
-            state = 3; // RECOVER
-            state_timer = 0;
-            is_invulnerable = false;
-        }
-        break;
-
-    case 3: // RECOVER: Retracts spikes, vulnerable window before resuming patrol
-        is_invulnerable = false;
-        hsp = 0;
-        state_timer++;
-        if (state_timer > 20) {
+        if (state_timer >= 16) {
             facing = -facing;
-            state = 0;
+            state = 0; // Back to normal patrol
             state_timer = 0;
         }
         break;

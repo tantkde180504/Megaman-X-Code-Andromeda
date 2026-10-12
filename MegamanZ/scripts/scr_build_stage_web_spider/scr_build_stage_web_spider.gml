@@ -66,8 +66,8 @@ function scr_build_stage_web_spider() {
         instance_create_layer(_x, room_height - 240, "Instances", oSolid);
     }
     
-    // Tentoroid RS crawling on canopy branch
-    instance_create_layer(680, room_height - 240, "Instances", oEnemy_TentoroidRS);
+    // Tentoroid RS hovering above canopy branch
+    instance_create_layer(680, room_height - 275, "Instances", oEnemy_TentoroidRS);
     
     // Batton hanging under canopy
     instance_create_layer(740, room_height - 210, "Instances", oEnemy_Batton);
@@ -108,8 +108,8 @@ function scr_build_stage_web_spider() {
         instance_create_layer(_x, room_height - 32, "Instances", oIceSurface);
     }
     
-    // Tentoroid RS crawling on ice floor
-    instance_create_layer(1600, room_height - 32, "Instances", oEnemy_TentoroidRS);
+    // Tentoroid RS hovering above ice floor
+    instance_create_layer(1600, room_height - 70, "Instances", oEnemy_TentoroidRS);
     
     // High pillar holding the Heart Tank (+2 Max HP)
     for (var _y = room_height - 280; _y < room_height - 32; _y += _bs) {

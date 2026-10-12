@@ -27,17 +27,17 @@ switch (state) {
         }
         break;
 
-    case 2: // GRENADE_THROW: Spawns arcing grenade projectile!
+    case 2: // GRENADE_THROW: Spawns arcing grenade projectile on throw release!
         hsp = 0;
         state_timer++;
-        if (state_timer == 2) {
+        if (state_timer == 8) {
             var _g = instance_create_layer(x + facing * 16, y - 36, "Instances", oEnemy_Grenade);
             _g.damage = projectile_damage;
             _g.hsp = facing * grenade_speed_x;
             _g.vsp = grenade_speed_y;
             camera_shake(1, 3);
         }
-        if (state_timer > 25) {
+        if (state_timer > 24) {
             state = 3; // RECOVER
             state_timer = 0;
         }
