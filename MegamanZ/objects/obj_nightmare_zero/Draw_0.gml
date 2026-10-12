@@ -1,4 +1,4 @@
-/// @desc Nightmare Zero - Draw Event (Manual Frame, Afterimage, Aura & Hurt Flash)
+/// @desc Zero Nightmare - Draw Event (Manual Frame, Afterimage, Aura & Hurt Flash)
 // 1. Vẽ các tàn ảnh phía sau
 for (var _i = 0; _i < array_length(afterimages); _i++) {
     var _ai = afterimages[_i];
@@ -12,7 +12,7 @@ for (var _i = 0; _i < array_length(afterimages); _i++) {
 var _draw_facing = -facing; // Sprite gốc quay trái -> facing = 1 thì scale = -1
 var _blend_col = c_white;
 
-if (phase == 2 && state != NZ_STATE.DEATH) {
+if (phase == 2 && state != NZ_STATE.DEFEAT) {
     var _pulse = 0.5 + 0.5 * sin(current_time * 0.008);
     _blend_col = merge_color(c_white, make_color_rgb(255, 120, 180), _pulse * 0.6);
 }

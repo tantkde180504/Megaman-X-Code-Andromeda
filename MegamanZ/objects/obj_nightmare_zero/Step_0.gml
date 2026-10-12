@@ -1,21 +1,22 @@
-/// @desc Nightmare Zero - Step Event (Mega Man X6 Video Mechanics)
+/// @desc Zero Nightmare (Nightmare Zero) - Complete Step Logic (Mega Man X6)
 // -------------------------------------------------------------------------
-// 1. Kiểm tra Tử Trận (Death Trigger) & Giới Hạn Tọa Độ Đấu Trường
+// 1. KIỂM TRA TỬ TRẬN & KHÓNG CHẾ TỌA ĐỘ ĐẤU TRƯỜNG
 // -------------------------------------------------------------------------
-if (hp <= 0 && state != NZ_STATE.DEATH) {
-    nz_change_state(NZ_STATE.DEATH);
+if (hp <= 0 && state != NZ_STATE.DEFEAT) {
+    nz_change_state(NZ_STATE.DEFEAT);
 }
 
-// KHÓNG CHẾ TỌA ĐỘ: Đảm bảo Boss KHÔNG BAO GIỜ lọt ra ngoài đấu trường
+// Giới hạn tuyệt đối tọa độ x nằm trong lòng đấu trường
 x = clamp(x, 32, room_width - 32);
 
-// Phản ứng khi nhận sát thương nặng từ Buster/Saber (Stagger & Invincibility)
+// Phản ứng khi nhận sát thương nặng từ Buster/Saber (Stagger Flinch & i-frames)
 if (hp < prev_hp) {
     var _dmg_taken = prev_hp - hp;
     prev_hp = hp;
     
-    if (state != NZ_STATE.SPAWN && state != NZ_STATE.DEATH && state != NZ_STATE.DOME_TELEPORT && state != NZ_STATE.HURT) {
-        // Đòn Charged Buster hoặc đòn mạnh làm khựng boss (Stagger Flinch)
+    if (state != NZ_STATE.INTRO && state != NZ_STATE.DEFEAT && 
+        state != NZ_STATE.TELEPORT_OUT && state != NZ_STATE.TELEPORT_IN && state != NZ_STATE.HURT) {
+        // Đòn Charged Buster hoặc đòn mạnh làm khựng boss (Stagger)
         if (_dmg_taken >= 2) {
             nz_change_state(NZ_STATE.HURT);
         } else {
@@ -26,11 +27,11 @@ if (hp < prev_hp) {
     prev_hp = hp;
 }
 
-// Gọi Step cơ sở của obj_boss_parent (Trừ khi đang ở AIR_ATTACK, DOME_TELEPORT hay DEATH)
-if (state != NZ_STATE.AIR_ATTACK && state != NZ_STATE.DOME_TELEPORT && state != NZ_STATE.DEATH) {
+// Gọi Step cơ sở của obj_boss_parent (Trừ khi JUMP, TELEPORT, hoặc DEFEAT tự xử lý vật lý)
+if (state != NZ_STATE.JUMP && state != NZ_STATE.TELEPORT_OUT && 
+    state != NZ_STATE.TELEPORT_IN && state != NZ_STATE.DEFEAT) {
     event_inherited();
 } else {
-    // Vẫn cập nhật target và flash timer
     if (flash_timer > 0) flash_timer--;
     if (invulnerability_timer > 0) invulnerability_timer--;
     if (instance_exists(oPlayer)) target = instance_nearest(x, y, oPlayer);
@@ -39,7 +40,7 @@ if (state != NZ_STATE.AIR_ATTACK && state != NZ_STATE.DOME_TELEPORT && state != 
 state_timer++;
 
 // -------------------------------------------------------------------------
-// 2. Diễn hoạt Animation thủ công (image_speed = 0)
+// 2. DIỄN HOẠT ANIMATION THỦ CÔNG (image_speed = 0)
 // -------------------------------------------------------------------------
 anim_timer++;
 if (anim_timer >= anim_delay) {
@@ -53,9 +54,10 @@ if (anim_timer >= anim_delay) {
 }
 
 // -------------------------------------------------------------------------
-// 3. Cập nhật Hiệu ứng Tàn Ảnh (Afterimage Trail)
+// 3. HIỆU ỨNG TÀN ẢNH (Afterimage Trail)
 // -------------------------------------------------------------------------
-if (state == NZ_STATE.DASH_SLASH || state == NZ_STATE.AIR_ATTACK || state == NZ_STATE.DOME_TELEPORT) {
+if (state == NZ_STATE.DASH || state == NZ_STATE.JUMP || 
+    state == NZ_STATE.TELEPORT_OUT || state == NZ_STATE.TELEPORT_IN) {
     if (state_timer % 3 == 0) {
         if (array_length(afterimages) >= 4) {
             array_delete(afterimages, 0, 1);
@@ -76,14 +78,14 @@ for (var _i = 0; _i < array_length(afterimages); _i++) {
 }
 
 // -------------------------------------------------------------------------
-// 4. State Machine (13 Trạng thái chuẩn Mega Man X6)
+// 4. BỘ ĐIỀU KHIỂN FINITE STATE MACHINE (16 TRẠNG THÁI)
 // -------------------------------------------------------------------------
 switch (state) {
 
     // =====================================================================
-    // 0. SPAWN: Ooze phồng lên rồi hóa thành người
+    // 0. INTRO: Trồi lên từ ooze & Nạp đầy thanh máu
     // =====================================================================
-    case NZ_STATE.SPAWN:
+    case NZ_STATE.INTRO:
         hsp = 0;
         vsp = 0;
         is_invulnerable = true;
@@ -104,7 +106,6 @@ switch (state) {
         if (instance_exists(target)) {
             facing = (target.x >= x) ? 1 : -1;
         }
-        
         attack_wait_timer--;
         if (attack_wait_timer <= 0) {
             nz_choose_attack();
@@ -112,9 +113,9 @@ switch (state) {
         break;
 
     // =====================================================================
-    // 2. CHASE: Chạy bộ áp sát người chơi
+    // 2. APPROACH: Chạy bộ áp sát người chơi
     // =====================================================================
-    case NZ_STATE.CHASE:
+    case NZ_STATE.APPROACH:
         if (anim_done) {
             anim_frame = 0;
             anim_done = false;
@@ -123,10 +124,9 @@ switch (state) {
             facing = (target.x >= x) ? 1 : -1;
             var _spd = (phase == 1) ? run_speed_p1 : run_speed_p2;
             hsp = facing * _spd;
-            
             if (abs(target.x - x) < 80 || state_timer >= 60) {
                 hsp = 0;
-                nz_change_state((random(100) < 55) ? NZ_STATE.SLASH_BIG : NZ_STATE.DASH_SLASH);
+                nz_change_state((random(100) < 55) ? NZ_STATE.SABER_ATTACK : NZ_STATE.DASH);
             }
         } else {
             nz_change_state(NZ_STATE.IDLE);
@@ -134,176 +134,29 @@ switch (state) {
         break;
 
     // =====================================================================
-    // 3. SLASH_BIG: Lùi nhẹ, chém lớn vòng cung khí; Phase 2 bắn thêm đạn
+    // 3. RETREAT: Lùi bước tạo khoảng cách
     // =====================================================================
-    case NZ_STATE.SLASH_BIG:
-        if (anim_frame <= 1) {
-            hsp = -facing * 1.0;
-        } else {
+    case NZ_STATE.RETREAT:
+        if (anim_done) {
+            anim_frame = 0;
+            anim_done = false;
+        }
+        if (instance_exists(target)) {
+            facing = (target.x >= x) ? 1 : -1;
+            hsp = -facing * run_speed_p1 * 1.1;
+        }
+        if (state_timer >= 35 || place_meeting(x + hsp, y, oSolid)) {
             hsp = 0;
-        }
-        
-        if (anim_frame == 2 && !action_triggered) {
-            action_triggered = true;
-            camera_shake(5, 10);
-            
-            var _hb = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_slash_hitbox);
-            _hb.damage = (phase == 1) ? dmg_slash_big : dmg_slash_big + 1;
-            _hb.source_boss = self;
-            
-            // Phase 2: Kèm theo đạn trăng khuyết bay thẳng
-            if (phase == 2) {
-                var _c = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
-                _c.hsp = facing * 4.5;
-                _c.vsp = 0;
-                _c.damage = dmg_crescent;
-            }
-        }
-        
-        if (anim_done) {
-            if (phase == 2 && combo_count < max_combos) {
-                combo_count++;
-                nz_change_state(NZ_STATE.CRESCENT_SHOT);
-            } else {
-                nz_change_state(NZ_STATE.IDLE);
-            }
+            nz_change_state((random(100) < 50) ? NZ_STATE.BUSTER_ATTACK : NZ_STATE.SABER_WAVE);
         }
         break;
 
     // =====================================================================
-    // 4. DASH_SLASH: Lao ngang tốc độ cao, hitbox thấp, trượt dừng
+    // 4. JUMP: Nhảy cao & Bổ chém hào quang xanh (Air Dive Slash)
     // =====================================================================
-    case NZ_STATE.DASH_SLASH:
-        if (anim_frame == 0) {
-            hsp = 0;
-        } else if (anim_frame >= 1 && anim_frame <= 3) {
-            var _d_spd = (phase == 1) ? dash_speed_p1 : dash_speed_p2;
-            hsp = facing * _d_spd;
-            
-            if (anim_frame == 1 && !action_triggered) {
-                action_triggered = true;
-                var _hb = instance_create_layer(x + facing * 20, y - 16, "Instances", obj_nz_slash_hitbox);
-                _hb.damage = dmg_dash_slash;
-                _hb.source_boss = self;
-            }
-        } else if (anim_frame >= 4) {
-            hsp *= 0.55;
-        }
-        
-        if (anim_done) {
-            if (phase == 2 && combo_count < max_combos) {
-                combo_count++;
-                nz_change_state(NZ_STATE.SLASH_BIG);
-            } else {
-                nz_change_state(NZ_STATE.IDLE);
-            }
-        }
-        break;
-
-    // =====================================================================
-    // 5. CRESCENT_SHOT: Bắn đạn trăng khuyết (Genmurei / Denharei)
-    // =====================================================================
-    case NZ_STATE.CRESCENT_SHOT:
-        hsp = 0;
-        if (anim_frame == 2 && !action_triggered) {
-            action_triggered = true;
-            camera_shake(3, 8);
-            
-            // Đạn 1: Bay ngang
-            var _c1 = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
-            _c1.hsp = facing * 4.2;
-            _c1.vsp = 0;
-            _c1.damage = dmg_crescent;
-            
-            // Đạn 2: Chếch lên
-            var _c2 = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
-            _c2.hsp = facing * 3.8;
-            _c2.vsp = -1.8;
-            _c2.damage = dmg_crescent;
-            
-            // Đạn 3 (Phase 2): Chếch xuống tạo thế kẹp góc
-            if (phase == 2) {
-                var _c3 = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
-                _c3.hsp = facing * 3.8;
-                _c3.vsp = 1.8;
-                _c3.damage = dmg_crescent;
-            }
-        }
-        
-        if (anim_done) {
-            nz_change_state(NZ_STATE.IDLE);
-        }
-        break;
-
-    // =====================================================================
-    // 6. GROUND_SPIKES: Shin Messenkou (Rekkoha) - Cột gai trải khắp sàn đấu
-    // =====================================================================
-    case NZ_STATE.GROUND_SPIKES:
-        hsp = 0;
-        if (anim_frame == 2 && !action_triggered) {
-            action_triggered = true;
-            camera_shake(6, 16);
-            
-            // Trải các cột gai năng lượng khắp đấu trường có khoảng cách an toàn
-            var _spike_xs = [64, 128, 192, 256, 320, 384, 420];
-            for (var _i = 0; _i < array_length(_spike_xs); _i++) {
-                var _sx = _spike_xs[_i];
-                var _sy = y;
-                while (!place_meeting(_sx, _sy + 1, oSolid) && _sy < room_height - 16) _sy++;
-                while (place_meeting(_sx, _sy, oSolid) && _sy > 16) _sy--;
-                
-                var _sp = instance_create_layer(_sx, _sy, "Instances", obj_nz_spike);
-                _sp.damage = dmg_spike;
-            }
-        }
-        
-        if (anim_done) {
-            nz_change_state(NZ_STATE.IDLE);
-        }
-        break;
-
-    // =====================================================================
-    // 7. BUSTER_DRILL: Double Buster Shot siêu tốc
-    // =====================================================================
-    case NZ_STATE.BUSTER_DRILL:
-        hsp = 0;
-        if (anim_frame == 1 && !action_triggered) {
-            instance_create_layer(x + facing * 22, y - 28, "Instances", obj_nz_ring_fx);
-        }
-        
-        if (anim_frame == 2) {
-            burst_shot_timer++;
-            // Bắn phát 1
-            if (burst_shot_count == 0) {
-                burst_shot_count = 1;
-                burst_shot_timer = 0;
-                camera_shake(2, 6);
-                var _drill1 = instance_create_layer(x + facing * 26, y - 28, "Instances", obj_nz_drill);
-                _drill1.hsp = facing * 6.5;
-                _drill1.damage = dmg_drill;
-                hsp = -facing * 1.5;
-            } 
-            // Bắn phát 2 sau 12 frames
-            else if (burst_shot_count == 1 && burst_shot_timer >= 12) {
-                burst_shot_count = 2;
-                camera_shake(2, 6);
-                var _drill2 = instance_create_layer(x + facing * 26, y - 28, "Instances", obj_nz_drill);
-                _drill2.hsp = facing * 6.5;
-                _drill2.damage = dmg_drill;
-                hsp = -facing * 1.0;
-            }
-        }
-        
-        if (anim_done && burst_shot_count >= 2) {
-            nz_change_state(NZ_STATE.IDLE);
-        }
-        break;
-
-    // =====================================================================
-    // 8. AIR_ATTACK: Nhảy lên, lao chém chéo viền xanh, hạ cánh nổ địa chấn
-    // =====================================================================
-    case NZ_STATE.AIR_ATTACK:
+    case NZ_STATE.JUMP:
         if (air_phase == 0) {
+            // Giai đoạn A: Nhảy chéo lên không
             if (state_timer == 1) {
                 vsp = air_jump_vsp;
                 hsp = facing * 2.2;
@@ -312,12 +165,10 @@ switch (state) {
             vsp += grav;
             x += hsp;
             y += vsp;
-            
             anim_frame = min(anim_frame, 3);
-            if (vsp >= -0.5) {
-                air_phase = 1;
-            }
+            if (vsp >= -0.5) air_phase = 1;
         } else if (air_phase == 1) {
+            // Giai đoạn B: Bổ chém dốc xuống với hào quang xanh
             vsp = air_dive_vsp;
             hsp = facing * air_dive_hsp;
             anim_frame = clamp(anim_frame, 4, 8);
@@ -335,10 +186,11 @@ switch (state) {
                 air_phase = 2;
                 camera_shake(6, 14);
                 
+                // Sinh sóng xung kích chấn động hai bên
                 var _b1 = instance_create_layer(x - 24, y, "Instances", obj_nz_floor_burst);
-                _b1.damage = dmg_shockwave;
+                _b1.damage = dmg_floor_burst;
                 var _b2 = instance_create_layer(x + 24, y, "Instances", obj_nz_floor_burst);
-                _b2.damage = dmg_shockwave;
+                _b2.damage = dmg_floor_burst;
                 
                 anim_frame = 9;
                 state_timer = 0;
@@ -346,6 +198,7 @@ switch (state) {
                 y += vsp;
             }
             
+            // Va chạm gây sát thương lúc bổ xuống
             if (instance_exists(target) && place_meeting(x, y, target)) {
                 if (target.iframes <= 0 && target.state != PLAYER_STATE.HURT && target.state != PLAYER_STATE.DEATH) {
                     player_take_damage(dmg_air_dive, facing);
@@ -355,103 +208,256 @@ switch (state) {
             hsp = 0;
             vsp = 0;
             if (state_timer >= 15) {
-                nz_change_state(NZ_STATE.IDLE);
+                nz_change_state(NZ_STATE.RECOVERY);
             }
         }
         break;
 
     // =====================================================================
-    // 9. DOME_TELEPORT: Tạo khiên bất tử, dịch chuyển chiến thuật (MM X6)
+    // 5. DASH: Lướt thấp tốc độ cao chém quét
     // =====================================================================
-    case NZ_STATE.DOME_TELEPORT:
-        hsp = 0;
-        vsp = 0;
-        is_invulnerable = true;
-        
-        if (teleport_phase == 0) {
-            // Khiên mở rộng bao bọc Zero
-            if (anim_done) {
-                teleport_phase = 1;
-                state_timer = 0;
-                image_alpha = 0; // Tàng hình
+    case NZ_STATE.DASH:
+        if (anim_frame == 0) {
+            hsp = 0;
+        } else if (anim_frame >= 1 && anim_frame <= 3) {
+            var _d_spd = (phase == 1) ? dash_speed_p1 : dash_speed_p2;
+            hsp = facing * _d_spd;
+            if (anim_frame == 1 && !action_triggered) {
+                action_triggered = true;
+                var _hb = instance_create_layer(x + facing * 20, y - 16, "Instances", obj_nz_slash_hitbox);
+                _hb.damage = dmg_dash_slash;
+                _hb.source_boss = self;
             }
-        } else if (teleport_phase == 1) {
-            // Chọn tọa độ dịch chuyển chiến thuật (3 phương án chuẩn X6)
-            if (state_timer >= 12) {
-                if (instance_exists(target)) {
-                    var _choice = irandom(2);
-                    var _dest_x = target.x;
-                    if (_choice == 0) {
-                        // Sau lưng người chơi
-                        _dest_x = target.x - target.facing * 56;
-                    } else if (_choice == 1) {
-                        // Phía đối diện người chơi
-                        _dest_x = (target.x > room_width * 0.5) ? 96 : room_width - 96;
-                    } else {
-                        // Trung tâm sàn đấu
-                        _dest_x = room_width * 0.5 + irandom_range(-30, 30);
-                    }
-                    
-                    // Giới hạn tuyệt đối trong đấu trường
-                    _dest_x = clamp(_dest_x, 64, room_width - 64);
-                    x = _dest_x;
-                    y = target.y;
-                    
-                    // Căn chỉnh mặt sàn
-                    while (!place_meeting(x, y + 1, oSolid) && y < room_height - 16) y++;
-                    while (place_meeting(x, y, oSolid) && y > 16) y--;
-                    
-                    facing = (target.x >= x) ? 1 : -1;
-                }
-                image_alpha = 1;
-                anim_frame = 0;
-                anim_done = false;
-                teleport_phase = 2;
-            }
-        } else if (teleport_phase == 2) {
-            // Khiên thu nhỏ kết thúc -> Lập tức phản đòn!
-            if (anim_done) {
-                is_invulnerable = false;
-                var _dist = (instance_exists(target)) ? abs(target.x - x) : 200;
-                if (_dist < 110) {
-                    nz_change_state((random(100) < 55) ? NZ_STATE.SLASH_BIG : NZ_STATE.DASH_SLASH);
-                } else {
-                    nz_change_state((random(100) < 50) ? NZ_STATE.BUSTER_DRILL : NZ_STATE.CRESCENT_SHOT);
-                }
-            }
-        }
-        break;
-
-    // =====================================================================
-    // 10. SKULL_WAVE (Phase 2): Đầu lâu tối chạy sàn kéo theo gai nổ
-    // =====================================================================
-    case NZ_STATE.SKULL_WAVE:
-        hsp = 0;
-        if (anim_frame == 2 && !action_triggered) {
-            action_triggered = true;
-            camera_shake(4, 10);
-            
-            var _sk = instance_create_layer(x + facing * 20, y - 4, "Instances", obj_nz_skull_wave);
-            _sk.hsp = facing * 3.5;
-            _sk.damage = dmg_skull_wave;
+        } else if (anim_frame >= 4) {
+            hsp *= 0.55;
         }
         
         if (anim_done) {
+            if (phase == 2 && combo_count < max_combos) {
+                combo_count++;
+                nz_change_state(NZ_STATE.SABER_ATTACK);
+            } else {
+                nz_change_state(NZ_STATE.RECOVERY);
+            }
+        }
+        break;
+
+    // =====================================================================
+    // 6. TELEPORT_OUT: Kích hoạt khiên năng lượng, tàng hình biến mất
+    // =====================================================================
+    case NZ_STATE.TELEPORT_OUT:
+        hsp = 0;
+        vsp = 0;
+        is_invulnerable = true;
+        if (anim_done) {
+            image_alpha = 0; // Tàng hình
+            
+            // Chọn tọa độ dịch chuyển an toàn bên trong đấu trường
+            if (instance_exists(target)) {
+                var _choice = irandom(2);
+                var _dest = target.x;
+                if (_choice == 0) {
+                    _dest = target.x - target.facing * 56; // Sau lưng người chơi
+                } else if (_choice == 1) {
+                    _dest = (target.x > room_width * 0.5) ? 96 : room_width - 96; // Góc đối diện
+                } else {
+                    _dest = room_width * 0.5 + irandom_range(-30, 30); // Trung tâm sàn
+                }
+                
+                _dest = clamp(_dest, 64, room_width - 64);
+                teleport_dest_x = _dest;
+                teleport_dest_y = target.y;
+                
+                // Căn chỉnh sát mặt sàn
+                while (!place_meeting(teleport_dest_x, teleport_dest_y + 1, oSolid) && teleport_dest_y < room_height - 16) teleport_dest_y++;
+                while (place_meeting(teleport_dest_x, teleport_dest_y, oSolid) && teleport_dest_y > 16) teleport_dest_y--;
+            }
+            
+            nz_change_state(NZ_STATE.TELEPORT_IN);
+        }
+        break;
+
+    // =====================================================================
+    // 7. TELEPORT_IN: Tái xuất hiện tại tọa độ mới & Lập tức ra đòn
+    // =====================================================================
+    case NZ_STATE.TELEPORT_IN:
+        x = teleport_dest_x;
+        y = teleport_dest_y;
+        if (instance_exists(target)) {
+            facing = (target.x >= x) ? 1 : -1;
+        }
+        if (anim_done) {
+            is_invulnerable = false;
+            var _dist = (instance_exists(target)) ? abs(target.x - x) : 200;
+            if (_dist < 110) {
+                nz_change_state((random(100) < 55) ? NZ_STATE.SABER_ATTACK : NZ_STATE.DASH);
+            } else {
+                nz_change_state((random(100) < 50) ? NZ_STATE.BUSTER_ATTACK : NZ_STATE.SABER_WAVE);
+            }
+        }
+        break;
+
+    // =====================================================================
+    // 8. BUSTER_ATTACK: Z-Buster - Double Buster Plasma siêu tốc
+    // =====================================================================
+    case NZ_STATE.BUSTER_ATTACK:
+        hsp = 0;
+        if (anim_frame == 1 && !action_triggered) {
+            instance_create_layer(x + facing * 22, y - 28, "Instances", obj_nz_ring_fx);
+        }
+        if (anim_frame == 2) {
+            burst_shot_timer++;
+            if (burst_shot_count == 0) {
+                burst_shot_count = 1;
+                burst_shot_timer = 0;
+                camera_shake(2, 6);
+                var _b1 = instance_create_layer(x + facing * 26, y - 28, "Instances", obj_nz_drill);
+                _b1.hsp = facing * 6.5;
+                _b1.damage = dmg_buster;
+                hsp = -facing * 1.5;
+            } else if (burst_shot_count == 1 && burst_shot_timer >= 12) {
+                burst_shot_count = 2;
+                camera_shake(2, 6);
+                var _b2 = instance_create_layer(x + facing * 26, y - 28, "Instances", obj_nz_drill);
+                _b2.hsp = facing * 6.5;
+                _b2.damage = dmg_buster;
+                hsp = -facing * 1.0;
+            }
+        }
+        if (anim_done && burst_shot_count >= 2) {
+            nz_change_state(NZ_STATE.RECOVERY);
+        }
+        break;
+
+    // =====================================================================
+    // 9. SABER_ATTACK: Z-Saber Slash - Chém cận chiến vòng cung lớn
+    // =====================================================================
+    case NZ_STATE.SABER_ATTACK:
+        if (anim_frame <= 1) {
+            hsp = -facing * 1.0;
+        } else {
+            hsp = 0;
+        }
+        if (anim_frame == 2 && !action_triggered) {
+            action_triggered = true;
+            camera_shake(5, 10);
+            var _hb = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_slash_hitbox);
+            _hb.damage = (phase == 1) ? dmg_saber_slash : dmg_saber_slash + 1;
+            _hb.source_boss = self;
+            
+            // Phase 2: Kèm theo kiếm khí trăng khuyết bay thẳng
+            if (phase == 2) {
+                var _c = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
+                _c.hsp = facing * 4.5;
+                _c.vsp = 0;
+                _c.damage = dmg_saber_wave;
+            }
+        }
+        if (anim_done) {
+            if (phase == 2 && combo_count < max_combos) {
+                combo_count++;
+                nz_change_state(NZ_STATE.SABER_WAVE);
+            } else {
+                nz_change_state(NZ_STATE.RECOVERY);
+            }
+        }
+        break;
+
+    // =====================================================================
+    // 10. SABER_WAVE: Phóng 1 luồng kiếm khí trăng khuyết bay ngang
+    // =====================================================================
+    case NZ_STATE.SABER_WAVE:
+        hsp = 0;
+        if (anim_frame == 2 && !action_triggered) {
+            action_triggered = true;
+            camera_shake(3, 8);
+            var _c1 = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
+            _c1.hsp = facing * 4.2;
+            _c1.vsp = 0;
+            _c1.damage = dmg_saber_wave;
+        }
+        if (anim_done) {
+            nz_change_state(NZ_STATE.RECOVERY);
+        }
+        break;
+
+    // =====================================================================
+    // 11. GENMU_ZERO_KAI: Đại kiếm khí trăng khuyết đa tầng (Special)
+    // =====================================================================
+    case NZ_STATE.GENMU_ZERO_KAI:
+        hsp = 0;
+        if (anim_frame == 2 && !action_triggered) {
+            action_triggered = true;
+            camera_shake(4, 12);
+            
+            // Đạn 1: Ngang
+            var _c1 = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
+            _c1.hsp = facing * 4.5;
+            _c1.vsp = 0;
+            _c1.damage = dmg_genmu_kai;
+            
+            // Đạn 2: Chếch lên
+            var _c2 = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
+            _c2.hsp = facing * 4.0;
+            _c2.vsp = -2.0;
+            _c2.damage = dmg_genmu_kai;
+            
+            // Đạn 3: Chếch xuống kẹp góc
+            var _c3 = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_crescent);
+            _c3.hsp = facing * 4.0;
+            _c3.vsp = 2.0;
+            _c3.damage = dmg_genmu_kai;
+        }
+        if (anim_done) {
+            nz_change_state(NZ_STATE.RECOVERY);
+        }
+        break;
+
+    // =====================================================================
+    // 12. SHIN_MESSENKOU: Cột gai năng lượng toàn sàn (Rekkoha)
+    // =====================================================================
+    case NZ_STATE.SHIN_MESSENKOU:
+        hsp = 0;
+        if (anim_frame == 2 && !action_triggered) {
+            action_triggered = true;
+            camera_shake(6, 16);
+            
+            // Sinh các cột gai năng lượng trải khắp sàn đấu có khoảng cách an toàn
+            var _spike_xs = [64, 128, 192, 256, 320, 384, 420];
+            for (var _i = 0; _i < array_length(_spike_xs); _i++) {
+                var _sx = _spike_xs[_i];
+                var _sy = y;
+                while (!place_meeting(_sx, _sy + 1, oSolid) && _sy < room_height - 16) _sy++;
+                while (place_meeting(_sx, _sy, oSolid) && _sy > 16) _sy--;
+                var _sp = instance_create_layer(_sx, _sy, "Instances", obj_nz_spike);
+                _sp.damage = dmg_messenkou;
+            }
+        }
+        if (anim_done) {
+            nz_change_state(NZ_STATE.RECOVERY);
+        }
+        break;
+
+    // =====================================================================
+    // 13. RECOVERY: Khoảng nghỉ hồi phục (Thời cơ phản công cho người chơi)
+    // =====================================================================
+    case NZ_STATE.RECOVERY:
+        hsp = 0;
+        if (state_timer >= recovery_time) {
             nz_change_state(NZ_STATE.IDLE);
         }
         break;
 
     // =====================================================================
-    // 11. HURT: Choáng đòn (Stagger Flinch) & Kích hoạt i-frames né đòn
+    // 14. HURT: Choáng đòn (Stagger) & Kích hoạt i-frames
     // =====================================================================
     case NZ_STATE.HURT:
         hsp *= 0.85;
         is_invulnerable = true;
-        // Sau 22 frames khựng choáng:
         if (state_timer >= 22) {
-            // Theo cơ chế video X6: Boss sau khi bị bắn trúng sẽ bật khiên teleport để phá thế ép góc
+            // Theo video X6: Boss sau khi bị bắn trúng sẽ lập tức teleport để phá thế ép góc
             if (random(100) < 80) {
-                nz_change_state(NZ_STATE.DOME_TELEPORT);
+                nz_change_state(NZ_STATE.TELEPORT_OUT);
             } else {
                 nz_change_state(NZ_STATE.IDLE);
             }
@@ -459,9 +465,9 @@ switch (state) {
         break;
 
     // =====================================================================
-    // 12. DEATH: Nổ liên hoàn, ooze tan rã, xóa object và mở cổng Boss
+    // 15. DEFEAT: Nổ liên hoàn, ooze tan rã, xóa object và mở cổng Boss
     // =====================================================================
-    case NZ_STATE.DEATH:
+    case NZ_STATE.DEFEAT:
         hsp = 0;
         vsp = 0;
         is_invulnerable = true;

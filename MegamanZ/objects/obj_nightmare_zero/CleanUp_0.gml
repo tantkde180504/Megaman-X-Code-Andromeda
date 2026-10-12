@@ -1,2 +1,2 @@
-/// @desc Cleanup Data Structures
+/// @desc Cleanup Data Structures & Projectiles
 afterimages = [];
