@@ -29,19 +29,30 @@ function scr_build_stage_intro() {
         instance_create_layer(_x, room_height - 96, "Instances", oOneWayPlatform);
     }
     
-    // Enemies in Section 1 (Knot Beret & Spiky Mk-II)
-    instance_create_layer(250, room_height - 32, "Instances", oEnemy_KnotBeretB);
-    instance_create_layer(290, room_height - 96, "Instances", oEnemy_KnotBeretG);
-    instance_create_layer(460, room_height - 32, "Instances", oEnemy_SpikyMKII);
-    
     // Sub-Tank on high pillar
     for (var _y = room_height - 128; _y < room_height - 32; _y += _bs) {
         instance_create_layer(420, _y, "Instances", oSolid);
     }
     instance_create_layer(420, room_height - 144, "Instances", oPickup_SubTank);
     
+    // --- SECTION 1 ENEMIES (All available right from start!) ---
+    // 1. Mettaur D2: Hard hat guard, peeking, 3-spread shot, walking
+    instance_create_layer(180, room_height - 32, "Instances", oEnemy_MettaurD2);
+    
+    // 2. Batton Bone B81: Hanging under overhead girder, swoops & drops bomb
+    instance_create_layer(260, room_height - 96, "Instances", oEnemy_Batton);
+    
+    // 3. Knot Beret G: Standing on girder, firing rifle bursts
+    instance_create_layer(310, room_height - 96, "Instances", oEnemy_KnotBeretG);
+    
+    // 4. Knot Beret B: Standing on highway floor, lobbing bouncing grenades
+    instance_create_layer(360, room_height - 32, "Instances", oEnemy_KnotBeretB);
+    
+    // 5. Spiky Mk-II: Rolling patrol & high-speed spike charge
+    instance_create_layer(480, room_height - 32, "Instances", oEnemy_SpikyMKII);
+    
     // -----------------------------------------------------------------
-    // Section 2: Collapsed Highway Gap & Falling Platforms (x: 600 .. 1200)
+    // Section 2: Collapsed Highway Gap & Falling Platforms (x: 600 .. 1500)
     // -----------------------------------------------------------------
     // Stepping stones
     for (var _x = 640; _x < 740; _x += _bs) {
@@ -53,13 +64,17 @@ function scr_build_stage_intro() {
     instance_create_layer(860, room_height - 80, "Instances", oPlatform_Falling);
     instance_create_layer(940, room_height - 64, "Instances", oPlatform_Falling);
     
-    // Fly Gunner hovering over the collapsed gap
-    instance_create_layer(860, room_height - 130, "Instances", oEnemy_FlyGunner);
-    
     // Hazard Spikes at the bottom of the gap
     for (var _x = 760; _x < 1000; _x += _bs) {
         instance_create_layer(_x, room_height - 16, "Instances", oHazardSpike);
     }
+    
+    // --- SECTION 2 AIRBORNE & GAP ENEMIES ---
+    // 6. Fly Gunner: Hovering over the collapsed gap, aimed cannon
+    instance_create_layer(780, room_height - 120, "Instances", oEnemy_FlyGunner);
+    
+    // 7. Tonboroid S: Mechanical dragonfly hovering & dropping bombs
+    instance_create_layer(920, room_height - 130, "Instances", oEnemy_TonboroidS);
     
     // Solid ground resumes
     for (var _x = 1020; _x < 1500; _x += _bs) {
@@ -71,9 +86,12 @@ function scr_build_stage_intro() {
     // Mid-Stage Checkpoint
     instance_create_layer(1100, room_height - 48, "Instances", oTrigger_Checkpoint);
     
-    // Enemies in Section 2 (Knot Beret & Spiky Mk-II)
-    instance_create_layer(1180, room_height - 32, "Instances", oEnemy_KnotBeretB);
-    instance_create_layer(1360, room_height - 32, "Instances", oEnemy_SpikyMKII);
+    // 8. Tentoroid RS: Crawling beetle on highway, opening shell & pincer rush
+    instance_create_layer(1180, room_height - 32, "Instances", oEnemy_TentoroidRS);
+    
+    // Knot Beret B & Spiky Mk-II after checkpoint
+    instance_create_layer(1320, room_height - 32, "Instances", oEnemy_KnotBeretB);
+    instance_create_layer(1420, room_height - 32, "Instances", oEnemy_SpikyMKII);
     
     // -----------------------------------------------------------------
     // Section 3: Water Reservoir Drainage & Ice Pipe (x: 1500 .. 1900)
@@ -88,15 +106,18 @@ function scr_build_stage_intro() {
     }
     
     // Fly Gunner hovering over water reservoir
-    instance_create_layer(1580, room_height - 120, "Instances", oEnemy_FlyGunner);
+    instance_create_layer(1600, room_height - 120, "Instances", oEnemy_FlyGunner);
     
     // Frozen ice pipeline after water
     for (var _x = 1700; _x < 1900; _x += _bs) {
         instance_create_layer(_x, room_height - 32, "Instances", oIceSurface);
     }
     
-    // Guardian drone scanning the frozen pipeline
-    instance_create_layer(1800, room_height - 90, "Instances", oEnemy_Guardian);
+    // 9. Guardian: Drone scanning pipeline with frontal shield & dual lasers!
+    instance_create_layer(1780, room_height - 90, "Instances", oEnemy_Guardian);
+    
+    // Mettaur D2 on ice floor
+    instance_create_layer(1860, room_height - 32, "Instances", oEnemy_MettaurD2);
     
     // -----------------------------------------------------------------
     // Section 4: Boss Gate & Arena (x: 1900 .. 2400)
@@ -117,7 +138,8 @@ function scr_build_stage_intro() {
     // Boss Gate Door!
     instance_create_layer(2060, room_height - 80, "Instances", oTrigger_BossGate);
     
-    // Target Dummies inside the Boss Arena
+    // Arena Testing Sandbox (after passing gate):
     instance_create_layer(2200, room_height - 32, "Instances", oTargetDummy);
-    instance_create_layer(2280, room_height - 32, "Instances", oTargetDummy);
+    instance_create_layer(2260, room_height - 90, "Instances", oEnemy_Guardian);
+    instance_create_layer(2320, room_height - 32, "Instances", oTargetDummy);
 }

@@ -95,8 +95,64 @@ function scr_build_test_room() {
     }
     
     // -------------------------------------------------------------
-    // 7. Combat Testing Arena (Target Dummies)
+    // 7. Mobility Gym Test Enemies (Quick Test Right From Start)
     // -------------------------------------------------------------
-    instance_create_layer(1020, room_height - 32, "Instances", oTargetDummy);
-    instance_create_layer(1100, room_height - 32, "Instances", oTargetDummy);
+    // Mettaur D2: On floor before stepping stones
+    instance_create_layer(210, room_height - 32, "Instances", oEnemy_MettaurD2);
+    
+    // Batton Bone B81: Perched under medium platform
+    instance_create_layer(310, room_height - 96, "Instances", oEnemy_Batton);
+    
+    // Knot Beret G: Standing on high platform with rifle
+    instance_create_layer(405, room_height - 144, "Instances", oEnemy_KnotBeretG);
+    
+    // Spiky Mk-II: Patrolling floor under one-way platforms
+    instance_create_layer(650, room_height - 32, "Instances", oEnemy_SpikyMKII);
+    
+    // Fly Gunner: Hovering over the hazard spike pit
+    instance_create_layer(880, room_height - 150, "Instances", oEnemy_FlyGunner);
+    
+    // -------------------------------------------------------------
+    // 8. Dedicated 9-Enemy Testing Gallery (x: 960 .. 2400)
+    // -------------------------------------------------------------
+    // Divider pillar at entrance of gallery
+    for (var _by = room_height - 120; _by < room_height - 32; _by += _block_sz) {
+        instance_create_layer(960, _by, "Instances", oSolid);
+    }
+    
+    // Station 1 (x: 1040): Mettaur D2 — Helmet guard & 3-way spread shot
+    instance_create_layer(1040, room_height - 32, "Instances", oEnemy_MettaurD2);
+    
+    // Station 2 (x: 1180): Spiky Mk-II — Patrol, spike deploy & high-speed charge
+    instance_create_layer(1180, room_height - 32, "Instances", oEnemy_SpikyMKII);
+    
+    // Station 3 (x: 1320): Knot Beret B — Parabolic bouncing grenade thrower
+    instance_create_layer(1320, room_height - 32, "Instances", oEnemy_KnotBeretB);
+    
+    // Station 4 (x: 1460): Knot Beret G — Sniper rifle bursts on elevated girder
+    for (var _bx = 1420; _bx <= 1500; _bx += _block_sz) {
+        instance_create_layer(_bx, room_height - 64, "Instances", oOneWayPlatform);
+    }
+    instance_create_layer(1460, room_height - 64, "Instances", oEnemy_KnotBeretG);
+    
+    // Station 5 (x: 1620): Batton Bone B81 — Ceiling roost, dive swoop & bomb drop
+    for (var _bx = 1580; _bx <= 1660; _bx += _block_sz) {
+        instance_create_layer(_bx, room_height - 130, "Instances", oSolid);
+    }
+    instance_create_layer(1620, room_height - 130, "Instances", oEnemy_Batton);
+    
+    // Station 6 (x: 1780): Fly Gunner — Airborne hover, laser tracking & plasma cannon
+    instance_create_layer(1780, room_height - 120, "Instances", oEnemy_FlyGunner);
+    
+    // Station 7 (x: 1940): Tonboroid S — Dragonfly wing flaps & aerial bomb drops
+    instance_create_layer(1940, room_height - 130, "Instances", oEnemy_TonboroidS);
+    
+    // Station 8 (x: 2100): Tentoroid RS — Armored beetle crawl & charging pincer crush
+    instance_create_layer(2100, room_height - 32, "Instances", oEnemy_TentoroidRS);
+    
+    // Station 9 (x: 2240): Guardian — Frontal barrier shield & dual laser blasts
+    instance_create_layer(2240, room_height - 90, "Instances", oEnemy_Guardian);
+    
+    // Target Practice & Combo Dummy
+    instance_create_layer(2340, room_height - 32, "Instances", oTargetDummy);
 }
