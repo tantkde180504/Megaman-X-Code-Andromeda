@@ -18,9 +18,10 @@ enum NZ_STATE {
     SABER_WAVE,         // 10: Saber Wave - Phóng 1 luồng kiếm khí trăng khuyết
     GENMU_ZERO_KAI,     // 11: Genmu Zero Kai - Đại kiếm khí trăng khuyết đa tầng
     SHIN_MESSENKOU,     // 12: Shin Messenkou (Rekkoha) - Cột gai năng lượng toàn sàn
-    RECOVERY,           // 13: Trạng thái hồi phục sau đòn đánh (Cơ hội cho người chơi)
-    HURT,               // 14: Bị đánh choáng (Stagger) & Khung bất tử i-frames
-    DEFEAT              // 15: Nổ liên hoàn, tan rã ooze, mở cổng boss
+    SKULL_WAVE,         // 13: Skull Wave - Sóng kiếm đầu lâu bay bám sàn
+    RECOVERY,           // 14: Trạng thái hồi phục sau đòn đánh (Cơ hội cho người chơi)
+    HURT,               // 15: Bị đánh choáng (Stagger) & Khung bất tử i-frames
+    DEFEAT              // 16: Nổ liên hoàn, tan rã ooze, mở cổng boss
 }
 
 // -------------------------------------------------------------------------
@@ -96,6 +97,7 @@ teleport_dest_y = y;
 burst_shot_count = 0;
 burst_shot_timer = 0;
 death_timer = 0;
+warning_timer = 90;
 
 // Mảng tàn ảnh (Afterimage trail)
 afterimages = [];
@@ -199,6 +201,12 @@ nz_change_state = function(_new_state) {
             hsp = 0;
             break;
             
+        case NZ_STATE.SKULL_WAVE:
+            anim_sprite = spr_nz_slash_big;
+            anim_delay = 5;
+            hsp = 0;
+            break;
+            
         case NZ_STATE.RECOVERY:
             anim_sprite = spr_nz_idle;
             anim_delay = 8;
@@ -254,10 +262,11 @@ nz_choose_attack = function() {
         array_push(_attacks, NZ_STATE.APPROACH);      array_push(_weights, 15);
         array_push(_attacks, NZ_STATE.JUMP);          array_push(_weights, 15);
         
-        // Phase 2 hoặc khi máu dưới 50%: kích hoạt tuyệt kỹ Genmu Zero Kai & Messenkou
+        // Phase 2 hoặc khi máu dưới 50%: kích hoạt tuyệt kỹ Genmu Zero Kai, Messenkou & Skull Wave
         if (phase == 2) {
             array_push(_attacks, NZ_STATE.GENMU_ZERO_KAI); array_push(_weights, 20);
             array_push(_attacks, NZ_STATE.SHIN_MESSENKOU);  array_push(_weights, 15);
+            array_push(_attacks, NZ_STATE.SKULL_WAVE);      array_push(_weights, 20);
         }
     }
     

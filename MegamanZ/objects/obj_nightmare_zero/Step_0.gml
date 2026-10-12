@@ -89,8 +89,16 @@ switch (state) {
         hsp = 0;
         vsp = 0;
         is_invulnerable = true;
-        if (anim_done && intro_done) {
-            nz_change_state(NZ_STATE.IDLE);
+        if (warning_timer > 0) {
+            warning_timer--;
+            image_alpha = 0;
+            anim_frame = 0;
+            anim_timer = 0;
+        } else {
+            image_alpha = 1;
+            if (anim_done && intro_done) {
+                nz_change_state(NZ_STATE.IDLE);
+            }
         }
         break;
 
@@ -322,6 +330,13 @@ switch (state) {
                 _b2.hsp = facing * 6.5;
                 _b2.damage = dmg_buster;
                 hsp = -facing * 1.0;
+                
+                // Cơ hội bắn kèm vòng năng lượng (Energy Ring)
+                if (random(100) < 40) {
+                    var _ring = instance_create_layer(x + facing * 26, y - 28, "Instances", obj_nz_ring_fx);
+                    _ring.hsp = facing * 5.2;
+                    _ring.damage = dmg_buster;
+                }
             }
         }
         if (anim_done && burst_shot_count >= 2) {
@@ -432,6 +447,23 @@ switch (state) {
                 var _sp = instance_create_layer(_sx, _sy, "Instances", obj_nz_spike);
                 _sp.damage = dmg_messenkou;
             }
+        }
+        if (anim_done) {
+            nz_change_state(NZ_STATE.RECOVERY);
+        }
+        break;
+
+    // =====================================================================
+    // 13. SKULL_WAVE: Sóng kiếm đầu lâu bám sàn (Skull Wave)
+    // =====================================================================
+    case NZ_STATE.SKULL_WAVE:
+        hsp = 0;
+        if (anim_frame == 2 && !action_triggered) {
+            action_triggered = true;
+            camera_shake(4, 10);
+            var _sk = instance_create_layer(x + facing * 24, y - 8, "Instances", obj_nz_skull_wave);
+            _sk.hsp = facing * 4.0;
+            _sk.damage = dmg_floor_burst + 1;
         }
         if (anim_done) {
             nz_change_state(NZ_STATE.RECOVERY);
