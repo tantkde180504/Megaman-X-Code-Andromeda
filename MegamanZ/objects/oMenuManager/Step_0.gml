@@ -153,12 +153,19 @@ switch (state) {
             if (char_confirm_timer <= 0) {
                 // Advance to Story Cutscene!
                 state = MENU_STATE.CUTSCENE;
-                cutscene_page = 0;
-                cutscene_char_idx = 0;
+                cutscene_step = 0;
+                cutscene_char_idx = 0.0;
                 cutscene_text = "";
-                var _cname = (selected_char == 0) ? "MEGA MAN X" : "ZERO";
-                cutscene_target_text = string_replace_all(story_pages[0], "[CHAR_NAME]", _cname);
+                cutscene_is_typing = true;
                 flash_alpha = 0.7;
+                
+                var _step_data = cutscene_script[0];
+                var _cname = (selected_char == 0) ? "MEGA MAN X" : "ZERO";
+                var _chero = (selected_char == 0) ? "X" : "Zero";
+                cutscene_target_text = string_replace_all(_step_data.text, "[HERO]", _chero);
+                cutscene_target_text = string_replace_all(cutscene_target_text, "[CHAR_NAME]", _cname);
+                cutscene_speaker_name = string_replace_all(_step_data.speaker_name, "[CHAR_NAME]", _cname);
+                cutscene_speaker_key = _step_data.speaker_key;
             }
         }
         break;
@@ -170,30 +177,41 @@ switch (state) {
         // Typewriter progression
         var _total_len = string_length(cutscene_target_text);
         if (cutscene_char_idx < _total_len) {
+            cutscene_is_typing = true;
             cutscene_char_idx += cutscene_type_speed;
             cutscene_text = string_copy(cutscene_target_text, 1, floor(cutscene_char_idx));
+        } else {
+            cutscene_is_typing = false;
+            cutscene_text = cutscene_target_text;
         }
         
-        // Skip current page or entire cutscene
+        // Skip entire cutscene
         if (_skip) {
-            // Skip straight to mission
             state = MENU_STATE.TRANSITION_OUT;
             fade_alpha = 0.0;
         } else if (_confirm) {
-            if (cutscene_char_idx < _total_len) {
-                // Finish typing immediately
+            if (cutscene_is_typing) {
+                // Finish typing current line immediately
                 cutscene_char_idx = _total_len;
                 cutscene_text = cutscene_target_text;
+                cutscene_is_typing = false;
             } else {
-                // Next page
-                cutscene_page++;
-                if (cutscene_page < array_length(story_pages)) {
-                    cutscene_char_idx = 0;
+                // Advance to next cutscene step
+                cutscene_step++;
+                if (cutscene_step < cutscene_step_count) {
+                    cutscene_char_idx = 0.0;
                     cutscene_text = "";
+                    cutscene_is_typing = true;
+                    
+                    var _step_data = cutscene_script[cutscene_step];
                     var _cname = (selected_char == 0) ? "MEGA MAN X" : "ZERO";
-                    cutscene_target_text = string_replace_all(story_pages[cutscene_page], "[CHAR_NAME]", _cname);
+                    var _chero = (selected_char == 0) ? "X" : "Zero";
+                    cutscene_target_text = string_replace_all(_step_data.text, "[HERO]", _chero);
+                    cutscene_target_text = string_replace_all(cutscene_target_text, "[CHAR_NAME]", _cname);
+                    cutscene_speaker_name = string_replace_all(_step_data.speaker_name, "[CHAR_NAME]", _cname);
+                    cutscene_speaker_key = _step_data.speaker_key;
                 } else {
-                    // All pages complete! Transition to Stage Intro
+                    // All cutscene steps complete! Transition to Stage Intro
                     state = MENU_STATE.TRANSITION_OUT;
                     fade_alpha = 0.0;
                 }

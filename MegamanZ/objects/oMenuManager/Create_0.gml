@@ -43,24 +43,84 @@ char_anim_frame = 0.0;
 char_confirmed = false;
 char_confirm_timer = 0;
 
-// Cutscene data (MMX5 Typewriter Engine)
-cutscene_page = 0;
+// Cutscene Data & Typewriter Engine (Mega Man X4 Post-Character Select Cutscene)
+cutscene_step = 0;
+cutscene_char_idx = 0.0;
 cutscene_text = "";
 cutscene_target_text = "";
-cutscene_char_idx = 0;
-cutscene_type_speed = 0.9;
-cutscene_timer = 0;
+cutscene_speaker_name = "";
+cutscene_speaker_key = ""; // "hero", "alia", or ""
+cutscene_is_typing = false;
+cutscene_type_speed = 0.8; // Authentic typewriter cadence
 cutscene_scanline = 0;
-cutscene_speaker = "OPERATOR // HUNTER BASE";
 
-// Story Pages Script (Context & Mission Briefing)
-story_pages = [
-    // Page 0: Background Context
-    "YEAR 21XX...\n\nFollowing countless fierce battles against Maverick uprisings, Earth has achieved a temporary era of peace.\n\nHowever, a catastrophic surge of ancient cosmic energy designated 'CODE ANDROMEDA' has suddenly erupted within the Frontier Orbital Defense Satellite!\n\nA virulent Maverick virus has seized total control of the security grid, turning thousands of automated defense units into a rogue army threatening to bombard Earth!",
-    
-    // Page 1: Emergency Transmission
-    "CRITICAL DISPATCH // HUNTER BASE COMMAND:\n\nScout Squad 17 has ceased all transmissions immediately upon entering the orbital skyway sector.\n\nAutomated defense siege cannons are aligning their targeting coordinates toward planetary population centers. Time is rapidly running out before catastrophic bombardment!\n\nThe Maverick Hunters have mobilized. Our elite vanguard must deploy immediately!",
-    
-    // Page 2: Mission Briefing
-    "MISSION DIRECTIVE: [ORBITAL HIGHWAY INFILTRATION]\n\n* DEPLOYED HUNTER: [CHAR_NAME]\n* PRIMARY OBJECTIVE: Penetrate the Ruined Skyway defense perimeter, neutralize all rogue mechaniloids, and reach the gateway to the Andromeda core!\n\nWarp Beam coordinates locked...\nDeploy immediately, Hunter!"
+// Dynamic dialogue font for Vietnamese diacritics support
+dialogue_font = -1;
+try {
+    dialogue_font = font_add("Segoe UI", 10, true, false, 32, 8000);
+} catch (_ex) {
+    dialogue_font = -1;
+}
+
+// Cutscene Steps Script:
+// Phase 1: Prologue Lore (No mugshots, text at bottom)
+// Phase 2: Character Dialogue (Hero on left, Alia on right, animated mouths while typing)
+cutscene_script = [
+    // Step 0: Prologue Title
+    {
+        is_dialogue: false,
+        speaker_key: "",
+        speaker_name: "",
+        text: "2126: MegaMan X Code: Andromeda"
+    },
+    // Step 1: Prologue Lore
+    {
+        is_dialogue: false,
+        speaker_key: "",
+        speaker_name: "",
+        text: "Sau cuộc chiến với Sigma, [HERO] tiếp tục trên hành trình của một Maverick Hunter, tiêu diệt những Reploid nhiễm virus Maverick và tàn dư của Sigma."
+    },
+    // Step 2: Alia calls Hero
+    {
+        is_dialogue: true,
+        speaker_key: "alia",
+        speaker_name: "ALIA",
+        text: "[HERO]..[HERO]..nghe thấy tôi nói không?"
+    },
+    // Step 3: Hero responds
+    {
+        is_dialogue: true,
+        speaker_key: "hero",
+        speaker_name: "[CHAR_NAME]",
+        text: "Tôi nghe, có chuyện gì vậy Alia?"
+    },
+    // Step 4: Alia briefs about Jungle
+    {
+        is_dialogue: true,
+        speaker_key: "alia",
+        speaker_name: "ALIA",
+        text: "Ở khu vực jungle đang có một nhóm Reploid bị mất kiểm soát, hãy tới đó kiểm tra."
+    },
+    // Step 5: Hero acknowledges
+    {
+        is_dialogue: true,
+        speaker_key: "hero",
+        speaker_name: "[CHAR_NAME]",
+        text: "Đã rõ!"
+    },
+    // Step 6: Alia warns of mysterious signal
+    {
+        is_dialogue: true,
+        speaker_key: "alia",
+        speaker_name: "ALIA",
+        text: "Tuy nhiên ở sâu trong khu vực phát hiện tính hiệu lạ, sau khi kiểm soát đám Reploid, hãy tìm kiếm tính hiệu đó. Có thể nó là lý do đám Reploid có hành động lạ."
+    },
+    // Step 7: Hero departs
+    {
+        is_dialogue: true,
+        speaker_key: "hero",
+        speaker_name: "[CHAR_NAME]",
+        text: "Đã rõ, tôi sẽ đi ngay!"
+    }
 ];
+cutscene_step_count = array_length(cutscene_script);

@@ -382,90 +382,276 @@ switch (state) {
         break;
 
     case MENU_STATE.CUTSCENE:
-        // Story Cutscene (Mega Man X5 Typewriter Style)
-        // Outer Terminal Frame
-        draw_set_color(make_color_rgb(6, 10, 18));
-        draw_set_alpha(0.95);
-        draw_rectangle(15, 10, 465, 260, false);
-        draw_set_alpha(1.0);
-        
-        draw_set_color(make_color_rgb(30, 120, 200));
-        draw_rectangle(15, 10, 465, 260, true);
-        
-        // Terminal Header
-        draw_set_color(make_color_rgb(20, 60, 110));
-        draw_rectangle(16, 11, 464, 30, false);
-        draw_set_color(make_color_rgb(0, 230, 255));
-        draw_text(240, 20, "HUNTER BASE // EMERGENCY TRANSMISSION // CODE: ANDROMEDA");
-        
-        // Scanlines effect
-        draw_set_color(make_color_rgb(0, 255, 200));
-        draw_set_alpha(0.2);
-        draw_line(15, cutscene_scanline, 465, cutscene_scanline);
-        draw_set_alpha(1.0);
-        
-        // Top Left: Hologram Radar / Transmission Box (25..120, 38..130)
-        draw_set_color(make_color_rgb(10, 24, 45));
-        draw_rectangle(25, 38, 120, 130, false);
-        draw_set_color(make_color_rgb(0, 180, 220));
-        draw_rectangle(25, 38, 120, 130, true);
-        
-        // Hologram Scanner Circles
-        draw_set_color(make_color_rgb(0, 200, 255));
-        draw_set_alpha(0.5);
-        draw_circle(72, 84, 28, true);
-        draw_circle(72, 84, 16, true);
-        draw_line(72, 56, 72, 112);
-        draw_line(44, 84, 100, 84);
-        var _sweep_ang = anim_timer * 4;
-        draw_line(72, 84, 72 + lengthdir_x(28, _sweep_ang), 84 + lengthdir_y(28, _sweep_ang));
-        draw_set_alpha(1.0);
-        draw_text(72, 120, "LIVE FEED: HQ");
-        
-        // Top Right: Mission Intel & Threat Level (130..455, 38..130)
-        draw_set_color(make_color_rgb(10, 24, 45));
-        draw_rectangle(130, 38, 455, 130, false);
-        draw_set_color(make_color_rgb(0, 180, 220));
-        draw_rectangle(130, 38, 455, 130, true);
-        
-        draw_set_halign(fa_left);
-        draw_set_color(make_color_rgb(255, 60, 60));
-        draw_text(142, 52, "- STATUS: EMERGENCY ALERT // CODE RED");
-        draw_set_color(make_color_rgb(255, 200, 40));
-        draw_text(142, 70, "- SECTOR: ORBITAL HIGHWAY (RUINED SKYWAY)");
-        draw_set_color(make_color_rgb(100, 220, 255));
-        draw_text(142, 88, "- SCOUT UNIT: UNIT 17 (SIGNAL LOST)");
-        draw_set_color(make_color_rgb(180, 240, 255));
-        var _c_str = (selected_char == 0) ? "MEGA MAN X (DEPLOYED)" : "ZERO (DEPLOYED)";
-        draw_text(142, 106, "- HUNTER: " + _c_str);
-        draw_set_halign(fa_center);
-        
-        // Bottom: Dialogue Box (25..455, 138..248)
-        draw_set_color(make_color_rgb(10, 18, 35));
-        draw_rectangle(25, 138, 455, 248, false);
-        draw_set_color(make_color_rgb(0, 160, 230));
-        draw_rectangle(25, 138, 455, 248, true);
-        
-        // Speaker Badge
-        draw_set_color(make_color_rgb(0, 80, 160));
-        draw_rectangle(30, 142, 230, 158, false);
-        draw_set_color(make_color_rgb(255, 220, 40));
-        draw_set_halign(fa_left);
-        draw_text(36, 150, "> " + cutscene_speaker);
-        
-        // Page counter
-        draw_set_halign(fa_right);
-        draw_set_color(make_color_rgb(140, 170, 210));
-        draw_text(448, 150, "PAGE " + string(cutscene_page + 1) + "/3");
-        
-        // Dialogue Text
-        draw_set_color(c_white);
-        draw_text_ext(36, 172, cutscene_text, 14, 410);
-        draw_set_halign(fa_center);
-        
-        // Cutscene Controls Hint
-        draw_set_color(make_color_rgb(255, 200, 40));
-        draw_text(240, 254, "[Z / ENTER] NEXT  |  [S / ESC] SKIP CUTSCENE");
+        // Set dynamic font if available for full Vietnamese character rendering
+        if (variable_instance_exists(id, "dialogue_font") && font_exists(dialogue_font)) {
+            draw_set_font(dialogue_font);
+        }
+
+        var _cur_step = cutscene_script[cutscene_step];
+        var _is_diag = _cur_step.is_dialogue;
+
+        // -------------------------------------------------------------
+        // PHASE 1: BỐI CẢNH (PROLOGUE / CONTEXT - Steps 0 & 1)
+        // -------------------------------------------------------------
+        if (!_is_diag) {
+            // Draw background (sci-fi deep space atmosphere; user can replace with sCutscene_BG later)
+            if (asset_get_index("sCutscene_BG") != -1) {
+                draw_sprite_stretched(asset_get_index("sCutscene_BG"), 0, 0, 0, VIEW_WIDTH, VIEW_HEIGHT);
+            } else {
+                draw_set_color(make_color_rgb(4, 8, 18));
+                draw_rectangle(0, 0, VIEW_WIDTH, VIEW_HEIGHT, false);
+                
+                // Subtle nebula & space glow
+                draw_set_color(make_color_rgb(18, 40, 85));
+                draw_set_alpha(0.35);
+                draw_circle(240, 135, 140, false);
+                draw_set_alpha(1.0);
+            }
+
+            // Lower dialogue box (Mega Man X4 style)
+            var _bx1 = 36, _by1 = 152, _bx2 = 444, _by2 = 252;
+            
+            // Box deep navy background
+            draw_set_color(make_color_rgb(8, 28, 75));
+            draw_set_alpha(0.92);
+            draw_rectangle(_bx1, _by1, _bx2, _by2, false);
+            draw_set_alpha(1.0);
+            
+            // Double border: 2px white outer, 1px ice blue inner
+            draw_set_color(c_white);
+            draw_rectangle(_bx1, _by1, _bx2, _by2, true);
+            draw_rectangle(_bx1 + 1, _by1 + 1, _bx2 - 1, _by2 - 1, true);
+            draw_set_color(make_color_rgb(80, 180, 255));
+            draw_rectangle(_bx1 + 3, _by1 + 3, _bx2 - 3, _by2 - 3, true);
+
+            // Text display
+            if (cutscene_step == 0) {
+                // Step 0: Prologue Title "2126: MegaMan X Code: Andromeda"
+                draw_set_halign(fa_center);
+                draw_set_valign(fa_middle);
+                
+                // Shadow
+                draw_set_color(c_black);
+                draw_text(241, 203, cutscene_text);
+                // Glowing text
+                draw_set_color(make_color_rgb(255, 220, 60));
+                draw_text(240, 202, cutscene_text);
+            } else {
+                // Step 1: Prologue Lore
+                draw_set_halign(fa_left);
+                draw_set_valign(fa_top);
+                
+                // Shadow
+                draw_set_color(c_black);
+                draw_text_ext(_bx1 + 17, _by1 + 15, cutscene_text, 18, 376);
+                // White text
+                draw_set_color(c_white);
+                draw_text_ext(_bx1 + 16, _by1 + 14, cutscene_text, 18, 376);
+            }
+            
+            // Blinking prompt arrow when typing finished
+            if (!cutscene_is_typing) {
+                if (anim_timer % 30 < 18) {
+                    draw_set_halign(fa_center);
+                    draw_set_valign(fa_middle);
+                    draw_set_color(make_color_rgb(255, 230, 80));
+                    draw_text(_bx2 - 14, _by2 - 14, "▼");
+                }
+            }
+
+            // Controls Hint footer
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_top);
+            draw_set_color(make_color_rgb(140, 170, 210));
+            draw_text(240, 256, "[Z / ENTER] TIẾP TỤC  |  [S / ESC] BỎ QUA");
+        }
+        // -------------------------------------------------------------
+        // PHASE 2: THOẠI NHÂN VẬT (CHARACTER DIALOGUE - Steps 2..7)
+        // -------------------------------------------------------------
+        else {
+            // Background: Hunter Base Tactical Transmission Feed
+            draw_set_color(make_color_rgb(6, 12, 24));
+            draw_rectangle(0, 0, VIEW_WIDTH, VIEW_HEIGHT, false);
+            
+            // Transmission scanlines
+            draw_set_color(make_color_rgb(0, 180, 240));
+            draw_set_alpha(0.12);
+            draw_line(0, cutscene_scanline, VIEW_WIDTH, cutscene_scanline);
+            draw_set_alpha(1.0);
+            
+            // Hunter Base HUD tech telemetry in center gap
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_top);
+            draw_set_color(make_color_rgb(0, 200, 255));
+            draw_text(240, 22, "HUNTER BASE HQ");
+            draw_set_color(make_color_rgb(255, 60, 60));
+            draw_text(240, 38, "[SECTOR: JUNGLE]");
+            
+            // Audio visualizer equalizer in center
+            var _wave_center = 240;
+            var _wave_y = 75;
+            for (var w = -42; w <= 42; w += 6) {
+                var _bar_h = cutscene_is_typing ? (3 + 9 * abs(sin(anim_timer * 0.2 + w * 0.1))) : 2;
+                var _bar_col = (cutscene_speaker_key == "alia") ? make_color_rgb(255, 120, 200) : make_color_rgb(80, 200, 255);
+                draw_set_color(_bar_col);
+                draw_line(_wave_center + w, _wave_y - _bar_h, _wave_center + w, _wave_y + _bar_h);
+            }
+
+            if (sprite_exists(Mugshots)) {
+                // =====================================================
+                // 1. LEFT MUGSHOT BOX: HERO (MEGA MAN X / ZERO)
+                // =====================================================
+                var _lx = 44, _ly = 20;
+                
+                // Amber speedlines background tile inside mugshot box
+                draw_sprite_part(Mugshots, 0, 243, 8, 94, 112, _lx, _ly);
+                
+                var _hero_is_speaking = (cutscene_is_typing && cutscene_speaker_key == "hero");
+                
+                if (selected_char == 0) {
+                    // MEGA MAN X (Clipped to stay precisely inside 94x112 box)
+                    // Base head: 144, 120, 94, 98 drawn at (_lx, _ly + 9)
+                    draw_sprite_part(Mugshots, 0, 144, 120, 94, 98, _lx, _ly + 9);
+                    
+                    // Talking mouth animation:
+                    // When typing, toggle mouth open/closed every 5 frames
+                    if (_hero_is_speaking) {
+                        var _x_mouth_open = (floor(anim_timer / 5) % 2 == 1);
+                        if (_x_mouth_open) {
+                            draw_sprite_part(Mugshots, 0, 160, 223, 51, 36, _lx + 16, _ly + 63);
+                        }
+                    }
+                } else {
+                    // ZERO (Clipped to stay precisely inside 94x112 box)
+                    // Base head: 358, 130, 94, 94 drawn at (_lx, _ly + 18)
+                    draw_sprite_part(Mugshots, 0, 358, 130, 94, 94, _lx, _ly + 18);
+                    
+                    // Talking mouth animation:
+                    // When typing, alternate Mouth 1 and Mouth 2 every 6 frames
+                    if (_hero_is_speaking) {
+                        var _z_mouth_open = (floor(anim_timer / 6) % 2 == 1);
+                        if (_z_mouth_open) {
+                            // Mouth 2 (open talking)
+                            draw_sprite_part(Mugshots, 0, 417, 225, 32, 16, _lx + 41, _ly + 80);
+                        } else {
+                            // Mouth 1 (half open)
+                            draw_sprite_part(Mugshots, 0, 381, 225, 32, 16, _lx + 41, _ly + 80);
+                        }
+                    } else {
+                        // Listening / idle: closed mouth (Mouth 1)
+                        draw_sprite_part(Mugshots, 0, 381, 225, 32, 16, _lx + 41, _ly + 80);
+                    }
+                }
+                
+                // Left box borders
+                draw_set_color(c_black);
+                draw_rectangle(_lx - 1, _ly - 1, _lx + 94, _ly + 112, true);
+                var _l_frame_col = _hero_is_speaking ? make_color_rgb(255, 220, 80) : make_color_rgb(100, 160, 220);
+                draw_set_color(_l_frame_col);
+                draw_rectangle(_lx - 2, _ly - 2, _lx + 95, _ly + 113, true);
+                
+                // Name plate under left box
+                var _hero_title = (selected_char == 0) ? "MEGA MAN X" : "ZERO";
+                draw_set_color(make_color_rgb(8, 20, 45));
+                draw_rectangle(_lx - 2, _ly + 114, _lx + 95, _ly + 125, false);
+                draw_set_color(_l_frame_col);
+                draw_rectangle(_lx - 2, _ly + 114, _lx + 95, _ly + 125, true);
+                draw_set_halign(fa_center);
+                draw_set_valign(fa_middle);
+                draw_set_color(c_white);
+                draw_text(_lx + 46, _ly + 119, _hero_title);
+
+                // =====================================================
+                // 2. RIGHT MUGSHOT BOX: ALIA (THE NAVIGATOR)
+                // =====================================================
+                var _rx = 342, _ry = 20;
+                var _alia_is_speaking = (cutscene_is_typing && cutscene_speaker_key == "alia");
+                
+                if (_alia_is_speaking) {
+                    // Alternate talking mouth frames 1 and 2
+                    var _alia_frame = (floor(anim_timer / 6) % 2 == 0) ? 1 : 2;
+                    var _alia_src_x = (_alia_frame == 1) ? 350 : 450;
+                    draw_sprite_part(Mugshots, 0, _alia_src_x, 4, 94, 112, _rx, _ry);
+                } else {
+                    // Frame 0 (closed mouth / listening)
+                    draw_sprite_part(Mugshots, 0, 10, 4, 94, 112, _rx, _ry);
+                }
+                
+                // Right box borders
+                draw_set_color(c_black);
+                draw_rectangle(_rx - 1, _ry - 1, _rx + 94, _ry + 112, true);
+                var _r_frame_col = _alia_is_speaking ? make_color_rgb(255, 220, 80) : make_color_rgb(220, 120, 200);
+                draw_set_color(_r_frame_col);
+                draw_rectangle(_rx - 2, _ry - 2, _rx + 95, _ry + 113, true);
+                
+                // Name plate under right box
+                draw_set_color(make_color_rgb(8, 20, 45));
+                draw_rectangle(_rx - 2, _ry + 114, _rx + 95, _ry + 125, false);
+                draw_set_color(_r_frame_col);
+                draw_rectangle(_rx - 2, _ry + 114, _rx + 95, _ry + 125, true);
+                draw_set_halign(fa_center);
+                draw_set_valign(fa_middle);
+                draw_set_color(c_white);
+                draw_text(_rx + 46, _ry + 119, "ALIA");
+            }
+
+            // =========================================================
+            // 3. LOWER DIALOGUE BOX (MEGA MAN X4 STYLE)
+            // =========================================================
+            var _dx1 = 40, _dy1 = 148, _dx2 = 440, _dy2 = 252;
+            
+            // Box deep navy background
+            draw_set_color(make_color_rgb(8, 28, 75));
+            draw_set_alpha(0.92);
+            draw_rectangle(_dx1, _dy1, _dx2, _dy2, false);
+            draw_set_alpha(1.0);
+            
+            // Double border: 2px white outer, 1px ice blue inner
+            draw_set_color(c_white);
+            draw_rectangle(_dx1, _dy1, _dx2, _dy2, true);
+            draw_rectangle(_dx1 + 1, _dy1 + 1, _dx2 - 1, _dy2 - 1, true);
+            draw_set_color(make_color_rgb(80, 180, 255));
+            draw_rectangle(_dx1 + 3, _dy1 + 3, _dx2 - 3, _dy2 - 3, true);
+
+            // Speaker Name Header
+            draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
+            
+            var _speaker_display = cutscene_speaker_name;
+            // Shadow
+            draw_set_color(c_black);
+            draw_text(_dx1 + 15, _dy1 + 11, _speaker_display);
+            // Glowing Yellow Name Header
+            draw_set_color(make_color_rgb(255, 230, 80));
+            draw_text(_dx1 + 14, _dy1 + 10, _speaker_display);
+            
+            // Dialogue Text
+            // Subtle black shadow
+            draw_set_color(c_black);
+            draw_text_ext(_dx1 + 15, _dy1 + 31, cutscene_text, 18, 368);
+            // White body text
+            draw_set_color(c_white);
+            draw_text_ext(_dx1 + 14, _dy1 + 30, cutscene_text, 18, 368);
+            
+            // Blinking prompt arrow when typing finished
+            if (!cutscene_is_typing) {
+                if (anim_timer % 30 < 18) {
+                    draw_set_halign(fa_center);
+                    draw_set_valign(fa_middle);
+                    draw_set_color(make_color_rgb(255, 230, 80));
+                    draw_text(_dx2 - 14, _dy2 - 14, "▼");
+                }
+            }
+
+            // Controls Hint footer
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_top);
+            draw_set_color(make_color_rgb(140, 170, 210));
+            draw_text(240, 256, "[Z / ENTER] TIẾP TỤC  |  [S / ESC] BỎ QUA");
+        }
+
+        // Reset font to default for safety
+        draw_set_font(-1);
         break;
 
     case MENU_STATE.TRANSITION_OUT:
