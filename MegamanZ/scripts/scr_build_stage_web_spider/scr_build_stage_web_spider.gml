@@ -36,6 +36,9 @@ function scr_build_stage_web_spider() {
     instance_create_layer(360, room_height - 48, "Instances", oWebTrap);
     instance_create_layer(480, room_height - 64, "Instances", oWebTrap);
     
+    // Mettaur D2 on the jungle ground
+    instance_create_layer(280, room_height - 32, "Instances", oEnemy_MettaurD2);
+    
     // Low tree branches (One-Way)
     for (var _x = 180; _x < 320; _x += _bs) {
         instance_create_layer(_x, room_height - 96, "Instances", oOneWayPlatform);
@@ -43,6 +46,12 @@ function scr_build_stage_web_spider() {
     for (var _x = 380; _x < 520; _x += _bs) {
         instance_create_layer(_x, room_height - 144, "Instances", oOneWayPlatform);
     }
+    
+    // Mettaur D2 guarding branch platform
+    instance_create_layer(440, room_height - 144, "Instances", oEnemy_MettaurD2);
+    
+    // Batton hanging from high branch
+    instance_create_layer(310, room_height - 160, "Instances", oEnemy_Batton);
     
     // Vine ladders climbing up into canopy
     for (var _y = room_height - 240; _y < room_height - 32; _y += _bs) {
@@ -57,8 +66,17 @@ function scr_build_stage_web_spider() {
         instance_create_layer(_x, room_height - 240, "Instances", oSolid);
     }
     
+    // Tentoroid RS crawling on canopy branch
+    instance_create_layer(680, room_height - 240, "Instances", oEnemy_TentoroidRS);
+    
+    // Batton hanging under canopy
+    instance_create_layer(740, room_height - 210, "Instances", oEnemy_Batton);
+    
     // Hidden chamber with Dr. Light's Capsule (Leg Parts / Air Dash!)
     instance_create_layer(800, room_height - 240, "Instances", oCapsule_Light);
+    
+    // Tonboroid S flying above upper canopy
+    instance_create_layer(880, room_height - 280, "Instances", oEnemy_TonboroidS);
     
     // Falling leaf platforms in the upper trees
     instance_create_layer(1040, room_height - 240, "Instances", oPlatform_Falling);
@@ -66,6 +84,9 @@ function scr_build_stage_web_spider() {
     
     // Ground level checkpoint
     instance_create_layer(1200, room_height - 48, "Instances", oTrigger_Checkpoint);
+    
+    // Mettaur D2 near checkpoint
+    instance_create_layer(1100, room_height - 32, "Instances", oEnemy_MettaurD2);
     
     // -----------------------------------------------------------------
     // Section 3: Waterfall Cave & Heart Tank (x: 1200 .. 1800)
@@ -76,10 +97,19 @@ function scr_build_stage_web_spider() {
         instance_create_layer(_x, room_height - 32, "Instances", oWater);
     }
     
+    // Tonboroid S hovering above waterfall
+    instance_create_layer(1420, room_height - 140, "Instances", oEnemy_TonboroidS);
+    
+    // Batton hanging in waterfall cave
+    instance_create_layer(1500, room_height - 180, "Instances", oEnemy_Batton);
+    
     // Slippery ice cave floor
     for (var _x = 1550; _x < 1750; _x += _bs) {
         instance_create_layer(_x, room_height - 32, "Instances", oIceSurface);
     }
+    
+    // Tentoroid RS crawling on ice floor
+    instance_create_layer(1600, room_height - 32, "Instances", oEnemy_TentoroidRS);
     
     // High pillar holding the Heart Tank (+2 Max HP)
     for (var _y = room_height - 280; _y < room_height - 32; _y += _bs) {
@@ -95,6 +125,10 @@ function scr_build_stage_web_spider() {
     // -----------------------------------------------------------------
     // Section 4: Web Spider Boss Gate & Arena (x: 1800 .. 2400)
     // -----------------------------------------------------------------
+    // Knot Beret Green guarding entrance to Boss Gate
+    var _kb = instance_create_layer(1960, room_height - 32, "Instances", oEnemy_KnotBeret);
+    _kb.beret_type = 1;
+    
     // Boss Gate Door!
     instance_create_layer(2060, room_height - 80, "Instances", oTrigger_BossGate);
     

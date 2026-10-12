@@ -1,0 +1,14 @@
+hp_max = 4;
+hp = 4;
+contact_damage = 3;
+flash_timer = 0;
+is_deflecting = false;
+facing = -1;
+hsp = 0;
+vsp = 0;
+grav = 0.25;
+grounded = false;
+anim_timer = 0;
+active_dist = 420;
+state = 0;
+state_timer = 0;

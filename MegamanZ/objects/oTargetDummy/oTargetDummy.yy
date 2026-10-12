@@ -1,4 +1,4 @@
-﻿{
+{
   "$GMObject":"",
   "%Name":"oTargetDummy",
   "eventList":[
@@ -13,7 +13,10 @@
     "name":"Environment",
     "path":"folders/Objects/Environment.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oEnemyParent",
+    "path":"objects/oEnemyParent/oEnemyParent.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

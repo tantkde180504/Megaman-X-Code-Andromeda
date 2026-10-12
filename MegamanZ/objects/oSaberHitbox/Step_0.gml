@@ -175,18 +175,23 @@ if (_active) {
     image_xscale = max(1, _bx2 - _bx1) / 16.0;
     image_yscale = max(1, _by2 - _by1) / 16.0;
     
-    // Check collisions with Target Dummy
-    var _dummies = ds_list_create();
-    var _num_d = instance_place_list(x, y, oTargetDummy, _dummies, false);
-    for (var i = 0; i < _num_d; i++) {
-        var _tgt = _dummies[| i];
+    // Check collisions with Enemies (oEnemyParent, includes oTargetDummy and all 8 enemies)
+    var _enemies = ds_list_create();
+    var _num_e = instance_place_list(x, y, oEnemyParent, _enemies, false);
+    for (var i = 0; i < _num_e; i++) {
+        var _tgt = _enemies[| i];
         if (ds_list_find_index(hit_list, _tgt) == -1) {
             ds_list_add(hit_list, _tgt);
-            deal_damage_to_target(_tgt, damage, _tgt.x, _tgt.y);
-            camera_shake(2, 6);
+            if (variable_instance_exists(_tgt, "is_deflecting") && _tgt.is_deflecting && slash_type != "slash3") {
+                instance_create_layer(_tgt.x, _tgt.y - 12, "Instances", oFX_HitSpark);
+                camera_shake(1, 4);
+            } else {
+                deal_damage_to_target(_tgt, damage, _tgt.x, _tgt.y - 12);
+                camera_shake(2, 6);
+            }
         }
     }
-    ds_list_destroy(_dummies);
+    ds_list_destroy(_enemies);
     
     // Check collisions with Web Trap
     var _webs = ds_list_create();
