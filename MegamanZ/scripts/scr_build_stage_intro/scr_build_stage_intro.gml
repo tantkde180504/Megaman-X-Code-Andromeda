@@ -30,12 +30,8 @@ function scr_build_stage_intro() {
     }
     
     // Enemies in Section 1 (Knot Beret & Spiky Mk-II)
-    var _kb1 = instance_create_layer(250, room_height - 32, "Instances", oEnemy_KnotBeret);
-    _kb1.beret_type = 0; // Blue
-    
-    var _kb2 = instance_create_layer(290, room_height - 96, "Instances", oEnemy_KnotBeret);
-    _kb2.beret_type = 1; // Green
-    
+    instance_create_layer(250, room_height - 32, "Instances", oEnemy_KnotBeretB);
+    instance_create_layer(290, room_height - 96, "Instances", oEnemy_KnotBeretG);
     instance_create_layer(460, room_height - 32, "Instances", oEnemy_SpikyMKII);
     
     // Sub-Tank on high pillar
@@ -76,8 +72,7 @@ function scr_build_stage_intro() {
     instance_create_layer(1100, room_height - 48, "Instances", oTrigger_Checkpoint);
     
     // Enemies in Section 2 (Knot Beret & Spiky Mk-II)
-    var _kb3 = instance_create_layer(1180, room_height - 32, "Instances", oEnemy_KnotBeret);
-    _kb3.beret_type = 0;
+    instance_create_layer(1180, room_height - 32, "Instances", oEnemy_KnotBeretB);
     instance_create_layer(1360, room_height - 32, "Instances", oEnemy_SpikyMKII);
     
     // -----------------------------------------------------------------
@@ -117,8 +112,7 @@ function scr_build_stage_intro() {
     }
     
     // Knot Beret Green guarding gate approach
-    var _kb4 = instance_create_layer(1980, room_height - 32, "Instances", oEnemy_KnotBeret);
-    _kb4.beret_type = 1;
+    instance_create_layer(1980, room_height - 32, "Instances", oEnemy_KnotBeretG);
     
     // Boss Gate Door!
     instance_create_layer(2060, room_height - 80, "Instances", oTrigger_BossGate);

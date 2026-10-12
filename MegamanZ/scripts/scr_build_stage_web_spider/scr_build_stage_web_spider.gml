@@ -126,8 +126,7 @@ function scr_build_stage_web_spider() {
     // Section 4: Web Spider Boss Gate & Arena (x: 1800 .. 2400)
     // -----------------------------------------------------------------
     // Knot Beret Green guarding entrance to Boss Gate
-    var _kb = instance_create_layer(1960, room_height - 32, "Instances", oEnemy_KnotBeret);
-    _kb.beret_type = 1;
+    instance_create_layer(1960, room_height - 32, "Instances", oEnemy_KnotBeretG);
     
     // Boss Gate Door!
     instance_create_layer(2060, room_height - 80, "Instances", oTrigger_BossGate);

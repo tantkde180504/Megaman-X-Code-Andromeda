@@ -1,8 +1,10 @@
 event_inherited();
-hp_max = 6;
 hp = 6;
+max_hp = 6;
 contact_damage = 4;
-is_deflecting = false;
-facing = -1;
-state = 0; // 0: PATROL, 1: CHARGE
+is_invulnerable = false;
+shield_direction = 0;
+
+// States: 0: PATROL_ROLL, 1: CHARGE, 2: DEFENSE_SPIKED, 3: RECOVER
+state = 0;
 state_timer = 0;

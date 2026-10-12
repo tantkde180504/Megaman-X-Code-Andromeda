@@ -32,11 +32,31 @@ function player_take_damage(_amount, _knockback_dir) {
 
 function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y) {
     if (instance_exists(_target)) {
+        // Check invulnerability and directional shield (e.g. Guardian, Mettaur, Batton)
+        if (variable_instance_exists(_target, "is_invulnerable") && _target.is_invulnerable) {
+            var _blocked = true;
+            if (variable_instance_exists(_target, "shield_direction") && _target.shield_direction == 1) {
+                // Directional frontal shield: blocks if incoming attack hits the front
+                var _tfacing = variable_instance_exists(_target, "facing") ? _target.facing : 1;
+                _blocked = ((_tfacing == 1 && _hit_x >= _target.x - 6) || (_tfacing == -1 && _hit_x <= _target.x + 6));
+            }
+            if (_blocked) {
+                if (object_exists(oFX_HitSpark)) {
+                    instance_create_layer(_hit_x, _hit_y, "Instances", oFX_HitSpark);
+                }
+                camera_shake(1, 4);
+                return; // Attack bounced off with zero damage!
+            }
+        }
+        
         if (variable_instance_exists(_target, "hp")) {
             _target.hp = max(0, _target.hp - _damage);
         }
         if (variable_instance_exists(_target, "flash_timer")) {
             _target.flash_timer = 8;
+        }
+        if (variable_instance_exists(_target, "invulnerability_timer")) {
+            _target.invulnerability_timer = 8;
         }
         
         // Spawn hit spark FX

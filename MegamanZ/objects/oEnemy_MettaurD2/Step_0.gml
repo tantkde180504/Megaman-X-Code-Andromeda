@@ -1,46 +1,48 @@
 event_inherited();
-if (hp <= 0) return;
+if (is_dead) return;
 
-// State Machine
 switch (state) {
-    case 0: // GUARD (ducking in helmet, invulnerable)
-        is_deflecting = true;
+    case 0: // GUARD: Completely invulnerable under helmet
+        is_invulnerable = true;
+        shield_direction = 0;
         hsp = 0;
-        if (instance_exists(oPlayer) && point_distance(x, y, oPlayer.x, oPlayer.y) < 160) {
+        if (target != noone && point_distance(x, y, target.x, target.y) < 160) {
             state_timer++;
             if (state_timer > 50) {
                 state = 1;
                 state_timer = 0;
-                is_deflecting = false;
-                facing = (oPlayer.x >= x) ? 1 : -1;
+                is_invulnerable = false;
+                facing = (target.x >= x) ? 1 : -1;
             }
         }
         break;
 
-    case 1: // PEEK (pops head out)
-        is_deflecting = false;
+    case 1: // PEEK: Reveals head, exposed and vulnerable
+        is_invulnerable = false;
         hsp = 0;
         state_timer++;
-        if (instance_exists(oPlayer)) facing = (oPlayer.x >= x) ? 1 : -1;
+        if (target != noone) facing = (target.x >= x) ? 1 : -1;
         if (state_timer > 20) {
             state = 2;
             state_timer = 0;
         }
         break;
 
-    case 2: // SHOOT 3 BULLETS
-        is_deflecting = false;
+    case 2: // ATTACK: Fires 3 spread energy pellets
+        is_invulnerable = false;
         hsp = 0;
         state_timer++;
         if (state_timer == 2) {
-            // Spawn 3 energy pellets (straight, up 25 deg, down 25 deg)
             var _b1 = instance_create_layer(x + facing * 12, y - 12, "Instances", oEnemyBullet);
+            _b1.damage = projectile_damage;
             _b1.hsp = facing * 2.8; _b1.vsp = 0;
             
             var _b2 = instance_create_layer(x + facing * 12, y - 12, "Instances", oEnemyBullet);
+            _b2.damage = projectile_damage;
             _b2.hsp = facing * 2.5; _b2.vsp = -1.2;
             
             var _b3 = instance_create_layer(x + facing * 12, y - 12, "Instances", oEnemyBullet);
+            _b3.damage = projectile_damage;
             _b3.hsp = facing * 2.5; _b3.vsp = 1.2;
         }
         if (state_timer > 25) {
@@ -49,12 +51,10 @@ switch (state) {
         }
         break;
 
-    case 3: // WALK
-        is_deflecting = false;
+    case 3: // WALK: Walks on feet, vulnerable
+        is_invulnerable = false;
         hsp = facing * 1.1;
-        
-        // Turn around on wall
-        if (place_meeting(x + hsp, y, oSolid)) {
+        if (place_meeting(x + hsp, y, oSolid) || !place_meeting(x + facing * 16, y + 8, oSolid)) {
             facing = -facing;
             hsp = facing * 1.1;
         }
@@ -64,7 +64,7 @@ switch (state) {
         if (state_timer > 65) {
             state = 0;
             state_timer = 0;
-            is_deflecting = true;
+            is_invulnerable = true;
         }
         break;
 }

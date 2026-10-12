@@ -1,8 +1,18 @@
 anim_timer++;
 if (flash_timer > 0) flash_timer--;
+if (invulnerability_timer > 0) invulnerability_timer--;
+if (attack_cooldown > 0) attack_cooldown--;
 
-// Check death
-if (hp <= 0) {
+// Target Acquisition
+if (instance_exists(oPlayer)) {
+    target = instance_nearest(x, y, oPlayer);
+} else {
+    target = noone;
+}
+
+// Check Death
+if (hp <= 0 && !is_dead) {
+    is_dead = true;
     var _ey = (bbox_bottom + bbox_top) / 2;
     instance_create_layer(x, _ey, "Instances", oFX_EnemyExplosion);
     camera_shake(2, 6);
@@ -21,11 +31,12 @@ if (hp <= 0) {
     return;
 }
 
-// Contact damage to player
-if (instance_exists(oPlayer)) {
-    var _p = instance_place(x, y, oPlayer);
-    if (_p != noone && _p.iframes <= 0 && _p.state != PLAYER_STATE.HURT && _p.state != PLAYER_STATE.DEATH) {
-        var _kdir = (_p.x >= x) ? 1 : -1;
-        player_take_damage(contact_damage, _kdir);
+// Contact Damage with Player
+if (!is_dead && target != noone) {
+    if (place_meeting(x, y, target)) {
+        if (target.iframes <= 0 && target.state != PLAYER_STATE.HURT && target.state != PLAYER_STATE.DEATH) {
+            var _kdir = (target.x >= x) ? 1 : -1;
+            player_take_damage(contact_damage, _kdir);
+        }
     }
 }

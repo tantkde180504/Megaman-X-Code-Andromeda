@@ -1,9 +1,12 @@
 event_inherited();
-hp_max = 5;
 hp = 5;
+max_hp = 5;
 contact_damage = 3;
-is_deflecting = false;
-facing = 1;
-state = 0; // 0: FLY, 1: DROP BOMB
+projectile_damage = 3;
+is_invulnerable = false;
+shield_direction = 0;
+
+// States: 0: FLY_PATROL, 1: SWOOP_APPROACH, 2: DROP_BOMB, 3: RETURN
+state = 0;
 state_timer = 0;
 start_y = y;
