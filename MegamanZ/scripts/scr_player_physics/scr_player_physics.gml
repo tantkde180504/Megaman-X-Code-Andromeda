@@ -68,16 +68,44 @@ function player_handle_movement_and_collision() {
     y_subpixel -= _vsp_int;
     
     // ----------------------------------------------------
-    // 3. Horizontal Collision Step-by-Step
+    // 3. Horizontal Collision Step-by-Step with Slope Handling
     // ----------------------------------------------------
     repeat (abs(_hsp_int)) {
         var _step = sign(_hsp_int);
+        
+        // 1. Gặp vật cản phía trước: Kiểm tra leo dốc (Slope Climb / Step-Up)
         if (player_is_solid_at(x + _step, y)) {
-            hsp = 0;
-            x_subpixel = 0;
-            break;
+            var _climbed = false;
+            // Kiểm tra tối đa 8 pixel chiều cao (dốc hoặc bậc nhỏ)
+            for (var _sub = 1; _sub <= 8; _sub++) {
+                if (!player_is_solid_at(x + _step, y - _sub)) {
+                    x += _step;
+                    y -= _sub;
+                    _climbed = true;
+                    break;
+                }
+            }
+            if (!_climbed) {
+                hsp = 0;
+                x_subpixel = 0;
+                break;
+            }
         } else {
-            x += _step;
+            // 2. Không gặp vật cản: Kiểm tra xuống dốc bám sàn (Slope Descent / Snap-Down)
+            var _descended = false;
+            if (grounded && !player_is_solid_at(x + _step, y + 1)) {
+                for (var _sub = 1; _sub <= 8; _sub++) {
+                    if (player_is_solid_at(x + _step, y + _sub + 1)) {
+                        x += _step;
+                        y += _sub;
+                        _descended = true;
+                        break;
+                    }
+                }
+            }
+            if (!_descended) {
+                x += _step;
+            }
         }
     }
     

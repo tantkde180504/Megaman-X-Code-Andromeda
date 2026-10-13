@@ -21,14 +21,23 @@ if (room_get_name(room) == "rStage_WebSpider") {
         var _x2 = _cx + _cw + 32;
         var _y2 = _cy + _ch + 32;
         
-        // Sàn và tường cứng oSolid (Màu đỏ)
+        // Sàn và tường cứng oSolid (Màu đỏ, loại trừ oSlope)
         with (oSolid) {
+            if (object_index != oSlope && !object_is_ancestor(object_index, oSlope)) {
+                if (bbox_right >= _x1 && bbox_left <= _x2 && bbox_bottom >= _y1 && bbox_top <= _y2) {
+                    draw_set_color(c_red);
+                    draw_set_alpha(0.35);
+                    draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, false);
+                    draw_set_alpha(0.9);
+                    draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
+                }
+            }
+        }
+        
+        // Dốc tam giác oSlope (Màu lục lam Cyan)
+        with (oSlope) {
             if (bbox_right >= _x1 && bbox_left <= _x2 && bbox_bottom >= _y1 && bbox_top <= _y2) {
-                draw_set_color(c_red);
-                draw_set_alpha(0.35);
-                draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, false);
-                draw_set_alpha(0.9);
-                draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
+                draw_sprite_ext(sprite_index, 0, x, y, image_xscale, image_yscale, 0, c_aqua, 0.6);
             }
         }
         
