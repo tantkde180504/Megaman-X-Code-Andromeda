@@ -4,7 +4,7 @@
   "bboxMode": 0,
   "bbox_bottom": 63,
   "bbox_left": 0,
-  "bbox_right": 83,
+  "bbox_right": 33,
   "bbox_top": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -14,36 +14,29 @@
   "frames": [
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "7d48a51e-982b-40f2-b224-0a1efe0e51f1",
-      "name": "7d48a51e-982b-40f2-b224-0a1efe0e51f1",
+      "%Name": "fce62de1-1e11-42db-bf02-6978287fbfa0",
+      "name": "fce62de1-1e11-42db-bf02-6978287fbfa0",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "9d3f46f0-924f-4fe9-ade6-07afc6eab006",
-      "name": "9d3f46f0-924f-4fe9-ade6-07afc6eab006",
+      "%Name": "92d1bea9-957a-4bd2-999e-beda03c99ab1",
+      "name": "92d1bea9-957a-4bd2-999e-beda03c99ab1",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "56f43bbf-c0e2-43cb-8cc6-d8d5775de1b0",
-      "name": "56f43bbf-c0e2-43cb-8cc6-d8d5775de1b0",
+      "%Name": "03d5f185-7758-48b8-8639-cd8617e051aa",
+      "name": "03d5f185-7758-48b8-8639-cd8617e051aa",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "f44f8bf9-db9e-4e44-8a33-ec53005bd4dc",
-      "name": "f44f8bf9-db9e-4e44-8a33-ec53005bd4dc",
-      "resourceType": "GMSpriteFrame",
-      "resourceVersion": "2.0"
-    },
-    {
-      "$GMSpriteFrame": "v1",
-      "%Name": "a2b7f7f0-d4c9-477b-8bb0-829589174fd7",
-      "name": "a2b7f7f0-d4c9-477b-8bb0-829589174fd7",
+      "%Name": "dd52ff40-3315-476f-b001-8fe4ffa35c5b",
+      "name": "dd52ff40-3315-476f-b001-8fe4ffa35c5b",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     }
@@ -55,11 +48,11 @@
   "layers": [
     {
       "$GMImageLayer": "",
-      "%Name": "72292bc3-e2c9-4ad6-b9f7-6d0bc6358da0",
+      "%Name": "7a083d21-8636-42da-9c2f-11697f75bd36",
       "blendMode": 0,
       "displayName": "default",
       "isLocked": false,
-      "name": "72292bc3-e2c9-4ad6-b9f7-6d0bc6358da0",
+      "name": "7a083d21-8636-42da-9c2f-11697f75bd36",
       "opacity": 100.0,
       "resourceType": "GMImageLayer",
       "resourceVersion": "2.0",
@@ -94,7 +87,7 @@
     },
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 5.0,
+    "length": 4.0,
     "lockOrigin": false,
     "moments": {
       "$KeyframeStore<MomentsEventKeyframe>": "",
@@ -104,7 +97,7 @@
     },
     "name": "spr_nz_messenkou_beam",
     "playback": 1,
-    "playbackSpeed": 12.0,
+    "playbackSpeed": 10.0,
     "playbackSpeedType": 0,
     "resourceType": "GMSequence",
     "resourceVersion": "2.0",
@@ -128,7 +121,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "7d48a51e-982b-40f2-b224-0a1efe0e51f1",
+                    "name": "fce62de1-1e11-42db-bf02-6978287fbfa0",
                     "path": "sprites/spr_nz_messenkou_beam/spr_nz_messenkou_beam.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -136,7 +129,7 @@
                 }
               },
               "Disabled": false,
-              "id": "bfcf86f6-0c5b-4732-9774-53a330f47f78",
+              "id": "cc896786-b6ff-4e6c-ad4d-d2f903502526",
               "IsCreationKey": false,
               "Key": 0.0,
               "Length": 1.0,
@@ -150,7 +143,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "9d3f46f0-924f-4fe9-ade6-07afc6eab006",
+                    "name": "92d1bea9-957a-4bd2-999e-beda03c99ab1",
                     "path": "sprites/spr_nz_messenkou_beam/spr_nz_messenkou_beam.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -158,7 +151,7 @@
                 }
               },
               "Disabled": false,
-              "id": "2dffe4ea-cb04-4884-93c7-4ff5e684a82a",
+              "id": "6f245fcd-b9b3-473c-8f38-c799f3a06a8f",
               "IsCreationKey": false,
               "Key": 1.0,
               "Length": 1.0,
@@ -172,7 +165,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "56f43bbf-c0e2-43cb-8cc6-d8d5775de1b0",
+                    "name": "03d5f185-7758-48b8-8639-cd8617e051aa",
                     "path": "sprites/spr_nz_messenkou_beam/spr_nz_messenkou_beam.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -180,7 +173,7 @@
                 }
               },
               "Disabled": false,
-              "id": "0f50aac4-dc2c-4149-a421-3a19cb63b841",
+              "id": "60ee9850-3540-4404-9d99-927361cdeda2",
               "IsCreationKey": false,
               "Key": 2.0,
               "Length": 1.0,
@@ -194,7 +187,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "f44f8bf9-db9e-4e44-8a33-ec53005bd4dc",
+                    "name": "dd52ff40-3315-476f-b001-8fe4ffa35c5b",
                     "path": "sprites/spr_nz_messenkou_beam/spr_nz_messenkou_beam.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -202,31 +195,9 @@
                 }
               },
               "Disabled": false,
-              "id": "e25e1cf1-30fb-42df-a2b3-6f925507d04e",
+              "id": "3fb60982-0f0e-404e-8d78-d4b9b125d8d8",
               "IsCreationKey": false,
               "Key": 3.0,
-              "Length": 1.0,
-              "resourceType": "Keyframe<SpriteFrameKeyframe>",
-              "resourceVersion": "2.0",
-              "Stretch": false
-            },
-            {
-              "$Keyframe<SpriteFrameKeyframe>": "",
-              "Channels": {
-                "0": {
-                  "$SpriteFrameKeyframe": "",
-                  "Id": {
-                    "name": "a2b7f7f0-d4c9-477b-8bb0-829589174fd7",
-                    "path": "sprites/spr_nz_messenkou_beam/spr_nz_messenkou_beam.yy"
-                  },
-                  "resourceType": "SpriteFrameKeyframe",
-                  "resourceVersion": "2.0"
-                }
-              },
-              "Disabled": false,
-              "id": "46174fbf-a608-44c4-9ceb-72ea7434b7d5",
-              "IsCreationKey": false,
-              "Key": 4.0,
               "Length": 1.0,
               "resourceType": "Keyframe<SpriteFrameKeyframe>",
               "resourceVersion": "2.0",
@@ -248,7 +219,7 @@
     ],
     "visibleRange": null,
     "volume": 1.0,
-    "xorigin": 42,
+    "xorigin": 17,
     "yorigin": 63
   },
   "swatchColours": null,
@@ -259,5 +230,5 @@
   },
   "type": 0,
   "VTile": false,
-  "width": 84
+  "width": 34
 }
