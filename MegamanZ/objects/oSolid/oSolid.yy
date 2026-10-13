@@ -1,4 +1,4 @@
-﻿{
+{
   "$GMObject":"",
   "%Name":"oSolid",
   "eventList":[
@@ -37,5 +37,5 @@
     "name": "sSolid",
     "path": "sprites/sSolid/sSolid.yy",
   },
-  "visible":true,
+  "visible":false,
 }

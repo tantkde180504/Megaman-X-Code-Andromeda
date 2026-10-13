@@ -1,4 +1,4 @@
-﻿{
+{
   "$GMObject":"",
   "%Name":"oOneWayPlatform",
   "eventList":[
@@ -37,5 +37,5 @@
     "name": "sOneWayPlatform",
     "path": "sprites/sOneWayPlatform/sOneWayPlatform.yy",
   },
-  "visible":true,
+  "visible":false,
 }

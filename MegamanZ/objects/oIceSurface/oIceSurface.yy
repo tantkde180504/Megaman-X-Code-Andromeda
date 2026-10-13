@@ -1,4 +1,4 @@
-﻿{
+{
   "$GMObject":"",
   "%Name":"oIceSurface",
   "eventList":[
@@ -37,5 +37,5 @@
     "name": "sIce",
     "path": "sprites/sIce/sIce.yy",
   },
-  "visible":true,
+  "visible":false,
 }

@@ -14,6 +14,12 @@ if (room == Room1) {
     scr_build_boss_room_nightmare_zero();
 }
 
+// Ensure all collision markers (placed manually or generated) are completely invisible in game
+with (oSolid) visible = false;
+with (oOneWayPlatform) visible = false;
+with (oLadder) visible = false;
+with (oIceSurface) visible = false;
+
 // Spawn player at checkpoint (playable stages only)
 if (room_get_name(room) != "rTitle" && !instance_exists(oPlayer)) {
     var _spawn_x = global.checkpoint_x;

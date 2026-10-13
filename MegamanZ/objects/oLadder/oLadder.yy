@@ -1,4 +1,4 @@
-﻿{
+{
   "$GMObject":"",
   "%Name":"oLadder",
   "eventList":[
@@ -37,5 +37,5 @@
     "name": "sLadder",
     "path": "sprites/sLadder/sLadder.yy",
   },
-  "visible":true,
+  "visible":false,
 }
