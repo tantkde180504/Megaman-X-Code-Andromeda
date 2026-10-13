@@ -1,12 +1,14 @@
 /// @desc Zero Nightmare - Draw Event (Manual Frame, Afterimage & Hurt Flash)
 var _draw_facing = -facing; // Sprite gốc quay trái -> facing = 1 thì scale = -1
+var _draw_x = round(x);
+var _draw_y = round(y);
 
 // 1. Vẽ các tàn ảnh phía sau lúc Lướt & Teleport
 for (var _i = 0; _i < array_length(afterimages); _i++) {
     var _ai = afterimages[_i];
     if (_ai.alpha > 0) {
         var _blend = (hp <= max_hp * 0.5) ? make_color_rgb(180, 80, 220) : make_color_rgb(80, 160, 255);
-        draw_sprite_ext(_ai.sprite, _ai.frame, _ai.x, _ai.y, _ai.facing, 1, 0, _blend, _ai.alpha);
+        draw_sprite_ext(_ai.sprite, _ai.frame, round(_ai.x), round(_ai.y), _ai.facing, 1, 0, _blend, _ai.alpha);
     }
 }
 
@@ -24,8 +26,8 @@ var _is_flashing = (flash_timer > 0) ||
 
 if (_is_flashing) {
     gpu_set_fog(true, c_white, 0, 0);
-    draw_sprite_ext(anim_sprite, anim_frame, x, y, _draw_facing, 1, 0, c_white, 1);
+    draw_sprite_ext(anim_sprite, anim_frame, _draw_x, _draw_y, _draw_facing, 1, 0, c_white, 1);
     gpu_set_fog(false, c_white, 0, 0);
 } else {
-    draw_sprite_ext(anim_sprite, anim_frame, x, y, _draw_facing, 1, 0, _blend_col, image_alpha);
+    draw_sprite_ext(anim_sprite, anim_frame, _draw_x, _draw_y, _draw_facing, 1, 0, _blend_col, image_alpha);
 }

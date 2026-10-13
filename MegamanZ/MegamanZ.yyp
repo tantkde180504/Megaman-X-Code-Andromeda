@@ -31,6 +31,9 @@
   },
   "name":"MegamanZ",
   "resources":[
+    {"id":{"name":"spr_nz_mask_slash","path":"sprites/spr_nz_mask_slash/spr_nz_mask_slash.yy",},},
+    {"id":{"name":"spr_nz_mask_dash","path":"sprites/spr_nz_mask_dash/spr_nz_mask_dash.yy",},},
+    {"id":{"name":"spr_nz_mask_stand","path":"sprites/spr_nz_mask_stand/spr_nz_mask_stand.yy",},},
     {"id":{"name":"obj_boss_parent","path":"objects/obj_boss_parent/obj_boss_parent.yy",},},
     {"id":{"name":"obj_nightmare_zero","path":"objects/obj_nightmare_zero/obj_nightmare_zero.yy",},},
     {"id":{"name":"obj_nz_crescent","path":"objects/obj_nz_crescent/obj_nz_crescent.yy",},},

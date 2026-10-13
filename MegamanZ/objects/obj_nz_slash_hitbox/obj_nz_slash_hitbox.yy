@@ -51,12 +51,12 @@
   "resourceVersion": "2.0",
   "solid": false,
   "spriteId": {
-    "name": "sEnemyMask",
-    "path": "sprites/sEnemyMask/sEnemyMask.yy"
+    "name": "spr_nz_mask_slash",
+    "path": "sprites/spr_nz_mask_slash/spr_nz_mask_slash.yy"
   },
   "spriteMaskId": {
-    "name": "sEnemyMask",
-    "path": "sprites/sEnemyMask/sEnemyMask.yy"
+    "name": "spr_nz_mask_slash",
+    "path": "sprites/spr_nz_mask_slash/spr_nz_mask_slash.yy"
   },
-  "visible": true
+  "visible": false
 }

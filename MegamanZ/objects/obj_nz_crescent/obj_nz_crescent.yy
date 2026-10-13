@@ -51,12 +51,12 @@
   "resourceVersion": "2.0",
   "solid": false,
   "spriteId": {
-    "name": "spr_nz_crescent_proj",
-    "path": "sprites/spr_nz_crescent_proj/spr_nz_crescent_proj.yy"
+    "name": "spr_nz_crescent_small",
+    "path": "sprites/spr_nz_crescent_small/spr_nz_crescent_small.yy"
   },
   "spriteMaskId": {
-    "name": "spr_nz_crescent_proj",
-    "path": "sprites/spr_nz_crescent_proj/spr_nz_crescent_proj.yy"
+    "name": "spr_nz_crescent_small",
+    "path": "sprites/spr_nz_crescent_small/spr_nz_crescent_small.yy"
   },
   "visible": true
 }

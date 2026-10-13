@@ -6,6 +6,7 @@ if (instance_number(oGame) > 1) {
 window_set_size(VIEW_WIDTH * 2, VIEW_HEIGHT * 2);
 surface_resize(application_surface, VIEW_WIDTH, VIEW_HEIGHT);
 display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);
+gpu_set_texfilter(false);
 
 global.current_char = CHAR_TYPE.X;
 global.debug_overlay = false;

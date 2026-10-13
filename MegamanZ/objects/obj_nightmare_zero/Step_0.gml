@@ -47,6 +47,13 @@ if (state != NZ_STATE.ACT2_TELEPORT && state != NZ_STATE.DEFEAT) {
     if (invulnerability_timer > 0) invulnerability_timer--;
 }
 
+// Hitbox mask switching: đứng/bình thường (spr_nz_mask_stand) vs lướt thấp (spr_nz_mask_dash)
+if (state == NZ_STATE.ACT1_DASH) {
+    mask_index = spr_nz_mask_dash;
+} else {
+    mask_index = spr_nz_mask_stand;
+}
+
 state_timer++;
 
 // -------------------------------------------------------------------------
@@ -155,7 +162,8 @@ switch (state) {
         if (anim_frame == 3 && !action_triggered) {
             action_triggered = true;
             camera_shake(4, 8);
-            var _hb = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_slash_hitbox);
+            var _hb = instance_create_layer(x, y, "Instances", obj_nz_slash_hitbox);
+            _hb.image_xscale = facing;
             _hb.damage = 4;
             _hb.source_boss = self;
         }
@@ -352,7 +360,8 @@ switch (state) {
         if (anim_frame == 3 && !action_triggered) {
             action_triggered = true;
             camera_shake(4, 8);
-            var _hb = instance_create_layer(x + facing * 24, y - 24, "Instances", obj_nz_slash_hitbox);
+            var _hb = instance_create_layer(x, y, "Instances", obj_nz_slash_hitbox);
+            _hb.image_xscale = facing;
             _hb.damage = 4;
             _hb.source_boss = self;
         }

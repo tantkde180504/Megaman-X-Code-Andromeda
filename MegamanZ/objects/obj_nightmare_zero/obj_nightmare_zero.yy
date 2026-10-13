@@ -41,8 +41,8 @@
     "path":"sprites/spr_nz_idle/spr_nz_idle.yy",
   },
   "spriteMaskId":{
-    "name":"sEnemyMask",
-    "path":"sprites/sEnemyMask/sEnemyMask.yy",
+    "name":"spr_nz_mask_stand",
+    "path":"sprites/spr_nz_mask_stand/spr_nz_mask_stand.yy",
   },
   "visible":true,
 }

@@ -33,6 +33,7 @@ max_hp = 64;
 hp = max_hp;
 prev_hp = max_hp;
 contact_damage = 4;
+mask_index = spr_nz_mask_stand;
 
 // -------------------------------------------------------------------------
 // 3. ĐIỀU KHIỂN ANIMATION THỦ CÔNG (image_speed = 0)
