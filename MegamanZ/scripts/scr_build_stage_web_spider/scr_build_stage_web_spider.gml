@@ -1,141 +1,280 @@
-/// @desc Stage Builder: Stage 1 (Web Spider — Deep Jungle)
+/// @desc Stage Builder: Stage 1 (Web Spider — Authentic Mega Man X4 Jungle Map)
 
 function scr_build_stage_web_spider() {
     if (instance_exists(oSolid)) return;
     
-    var _bs = 16;
+    // Helpers to create merged collision boxes
+    var _make_solid = function(_x, _y, _w, _h) {
+        var _s = instance_create_layer(_x, _y, "Instances", oSolid);
+        _s.image_xscale = _w / 16;
+        _s.image_yscale = _h / 16;
+        _s.visible = false;
+        return _s;
+    };
     
-    // Spawn Parallax Background
+    var _make_oneway = function(_x, _y, _w) {
+        var _p = instance_create_layer(_x, _y, "Instances", oOneWayPlatform);
+        _p.image_xscale = _w / 16;
+        _p.visible = false;
+        return _p;
+    };
+    
+    var _make_ladder = function(_x, _y, _h) {
+        var _l = instance_create_layer(_x, _y, "Instances", oLadder);
+        _l.image_yscale = _h / 16;
+        _l.visible = false;
+        return _l;
+    };
+    
+    // Parallax background controller
     if (!instance_exists(oParallaxBackground)) {
         instance_create_layer(0, 0, "Instances", oParallaxBackground);
     }
     
-    // -----------------------------------------------------------------
-    // Boundaries (Floor & Walls)
-    // -----------------------------------------------------------------
-    // Ground floor across entire stage
-    for (var _x = 0; _x < room_width; _x += _bs) {
-        for (var _y = room_height - 32; _y < room_height; _y += _bs) {
-            instance_create_layer(_x, _y, "Instances", oSolid);
-        }
-    }
-    // Left boundary
-    for (var _y = 0; _y < room_height; _y += _bs) {
-        instance_create_layer(0, _y, "Instances", oSolid);
-    }
-    // Right boundary
-    for (var _y = 0; _y < room_height; _y += _bs) {
-        instance_create_layer(room_width - _bs, _y, "Instances", oSolid);
-    }
+    // =========================================================================
+    // SECTION 1: SURFACE JUNGLE TRAIL (x: 0 .. 1440, y: 80 .. 560)
+    // Rừng nhiệt đới ngoài trời ban đêm, địa hình đồi rêu và tán cây cổ thụ
+    // =========================================================================
+    // Tường biên trái sân khấu
+    _make_solid(0, 0, 16, 600);
     
-    // -----------------------------------------------------------------
-    // Section 1: Jungle Entry & Sticky Web Traps (x: 0 .. 600)
-    // -----------------------------------------------------------------
-    // Web Traps hanging from trees
-    instance_create_layer(220, room_height - 48, "Instances", oWebTrap);
-    instance_create_layer(360, room_height - 48, "Instances", oWebTrap);
-    instance_create_layer(480, room_height - 64, "Instances", oWebTrap);
+    // Mặt sàn địa hình tự nhiên theo độ dốc của artwork JungleMap
+    _make_solid(0, 368, 160, 48);      // Khởi đầu bằng phẳng
+    _make_solid(160, 400, 96, 48);     // Vùng trũng rễ cây mục
+    _make_solid(256, 352, 128, 48);    // Đồi đá phủ rêu
+    _make_solid(384, 368, 196, 48);    // Lối mòn giữa rừng
+    _make_solid(580, 400, 140, 48);    // Dốc thoải xuống
+    _make_solid(720, 384, 160, 48);    // Mặt đất trước di tích cổ
+    _make_solid(880, 448, 100, 48);    // Hẻm trũng
+    _make_solid(980, 432, 180, 48);    // Bậc thềm cổ
+    _make_solid(1160, 384, 120, 48);   // Bậc thang đá dẫn lên đền
+    _make_solid(1280, 304, 64, 48);    // Bậc cao
+    _make_solid(1344, 268, 96, 48);    // Đỉnh đền trước cửa giếng cổ
     
-    // Mettaur D2 on the jungle ground
-    instance_create_layer(280, room_height - 32, "Instances", oEnemy_MettaurD2);
+    // Các cành cây cao (One-Way Platforms)
+    _make_oneway(180, 280, 144);
+    _make_oneway(420, 260, 144);
+    _make_oneway(760, 300, 144);
     
-    // Low tree branches (One-Way)
-    for (var _x = 180; _x < 320; _x += _bs) {
-        instance_create_layer(_x, room_height - 96, "Instances", oOneWayPlatform);
-    }
-    for (var _x = 380; _x < 520; _x += _bs) {
-        instance_create_layer(_x, room_height - 144, "Instances", oOneWayPlatform);
-    }
+    // Dây leo trèo lên cành cây cao
+    _make_ladder(280, 280, 88);
+    _make_ladder(500, 260, 108);
+    _make_ladder(840, 300, 84);
     
-    // Mettaur D2 guarding branch platform
-    instance_create_layer(440, room_height - 144, "Instances", oEnemy_MettaurD2);
+    // Bẫy tơ nhện dính (Web Traps)
+    instance_create_layer(240, 384, "Instances", oWebTrap);
+    instance_create_layer(480, 352, "Instances", oWebTrap);
+    instance_create_layer(820, 368, "Instances", oWebTrap);
     
-    // Batton hanging from high branch
-    instance_create_layer(310, room_height - 160, "Instances", oEnemy_Batton);
+    // Quái vật Section 1:
+    instance_create_layer(220, 400, "Instances", oEnemy_MettaurD2);
+    instance_create_layer(320, 352, "Instances", oEnemy_MettaurD2);
+    instance_create_layer(660, 400, "Instances", oEnemy_MettaurD2);
+    instance_create_layer(1060, 432, "Instances", oEnemy_MettaurD2);
     
-    // Vine ladders climbing up into canopy
-    for (var _y = room_height - 240; _y < room_height - 32; _y += _bs) {
-        instance_create_layer(560, _y, "Instances", oLadder);
-    }
+    instance_create_layer(350, 240, "Instances", oEnemy_Batton);
+    instance_create_layer(850, 260, "Instances", oEnemy_Batton);
     
-    // -----------------------------------------------------------------
-    // Section 2: Upper Canopy & Secret Dr. Light Capsule (x: 600 .. 1200)
-    // -----------------------------------------------------------------
-    // High canopy branch platform
-    for (var _x = 600; _x < 1000; _x += _bs) {
-        instance_create_layer(_x, room_height - 240, "Instances", oSolid);
-    }
+    instance_create_layer(520, 260, "Instances", oEnemy_FlyGunner);
+    instance_create_layer(1180, 340, "Instances", oEnemy_FlyGunner);
     
-    // Tentoroid RS hovering above canopy branch
-    instance_create_layer(680, room_height - 275, "Instances", oEnemy_TentoroidRS);
+    // Bí mật: Buồng Dr. Light (Air Dash Capsule) giấu trên ngọn cây cao
+    instance_create_layer(960, 220, "Instances", oCapsule_Light);
+    _make_oneway(920, 220, 96);
     
-    // Batton hanging under canopy
-    instance_create_layer(740, room_height - 210, "Instances", oEnemy_Batton);
+    // Các bậc đá giật cấp đi xuống miệng hầm cổ tại x: 1320 .. 1440
+    _make_solid(1360, 400, 80, 24);
+    _make_solid(1320, 520, 80, 24);
+    _make_solid(1340, 656, 100, 24);
     
-    // Hidden chamber with Dr. Light's Capsule (Leg Parts / Air Dash!)
-    instance_create_layer(800, room_height - 240, "Instances", oCapsule_Light);
+    // =========================================================================
+    // SECTION 2: UNDER-SURFACE RUINS CORRIDOR (x: 1440 .. 64, y: 560 .. 720)
+    // Hành lang đá hầm ngầm cổ kính (chạy ngược từ phải sang trái)
+    // =========================================================================
+    // Trần đá kiên cố ngăn với mặt đất phía trên
+    _make_solid(64, 544, 1376, 24);
     
-    // Tonboroid S flying above upper canopy
-    instance_create_layer(880, room_height - 280, "Instances", oEnemy_TonboroidS);
+    // Tường chặn bên phải
+    _make_solid(1440, 268, 32, 452);
     
-    // Falling leaf platforms in the upper trees
-    instance_create_layer(1040, room_height - 240, "Instances", oPlatform_Falling);
-    instance_create_layer(1120, room_height - 260, "Instances", oPlatform_Falling);
+    // Sàn đá hành lang hầm ngầm
+    _make_solid(1000, 656, 440, 32);
+    _make_solid(750, 720, 250, 32);   // Đoạn hạ thấp có bẫy
+    _make_solid(144, 672, 606, 32);   // Đoạn thẳng dẫn tới họng giếng đứng
     
-    // Ground level checkpoint
-    instance_create_layer(1200, room_height - 48, "Instances", oTrigger_Checkpoint);
+    // Checkpoint 1: Đầu hành lang hầm ngầm
+    instance_create_layer(1200, 656 - 16, "Instances", oTrigger_Checkpoint);
     
-    // Mettaur D2 near checkpoint
-    instance_create_layer(1100, room_height - 32, "Instances", oEnemy_MettaurD2);
+    // Quái vật Section 2: Bánh gai lăn và Vệ binh khiên chắn
+    instance_create_layer(1080, 656, "Instances", oEnemy_SpikyMKII);
+    instance_create_layer(880, 720, "Instances", oEnemy_Guardian);
+    instance_create_layer(460, 672, "Instances", oEnemy_SpikyMKII);
+    instance_create_layer(620, 672, "Instances", oEnemy_MettaurD2);
     
-    // -----------------------------------------------------------------
-    // Section 3: Waterfall Cave & Heart Tank (x: 1200 .. 1800)
-    // -----------------------------------------------------------------
-    // Water basin at cave bottom
-    for (var _x = 1300; _x < 1550; _x += 32) {
-        instance_create_layer(_x, room_height - 64, "Instances", oWater);
-        instance_create_layer(_x, room_height - 32, "Instances", oWater);
-    }
+    // =========================================================================
+    // SECTION 3: VERTICAL DESCENT SHAFT (x: 48 .. 208, y: 672 .. 1568)
+    // Giếng sâu thẳng đứng trượt tường (Wall Slide / Wall Jump)
+    // =========================================================================
+    // Tường trái giếng sâu
+    _make_solid(32, 672, 32, 928);
     
-    // Tonboroid S hovering above waterfall
-    instance_create_layer(1420, room_height - 140, "Instances", oEnemy_TonboroidS);
+    // Tường phải giếng sâu
+    _make_solid(192, 672, 32, 832);
     
-    // Batton hanging in waterfall cave
-    instance_create_layer(1500, room_height - 180, "Instances", oEnemy_Batton);
+    // Các gờ đá nghỉ chân xen kẽ hai bên tường giếng
+    _make_solid(64, 880, 64, 16);
+    _make_solid(128, 1050, 64, 16);
+    _make_solid(64, 1220, 64, 16);
+    _make_solid(128, 1380, 64, 16);
     
-    // Slippery ice cave floor
-    for (var _x = 1550; _x < 1750; _x += _bs) {
-        instance_create_layer(_x, room_height - 32, "Instances", oIceSurface);
-    }
+    // Dây leo bám tường phụ trợ
+    _make_ladder(156, 920, 260);
     
-    // Tentoroid RS hovering above ice floor
-    instance_create_layer(1600, room_height - 70, "Instances", oEnemy_TentoroidRS);
+    // Dơi Batton treo ngược phục kích dọc giếng
+    instance_create_layer(112, 840, "Instances", oEnemy_Batton);
+    instance_create_layer(96, 1180, "Instances", oEnemy_Batton);
+    instance_create_layer(144, 1340, "Instances", oEnemy_Batton);
     
-    // High pillar holding the Heart Tank (+2 Max HP)
-    for (var _y = room_height - 280; _y < room_height - 32; _y += _bs) {
-        instance_create_layer(1680, _y, "Instances", oSolid);
-    }
-    instance_create_layer(1680, room_height - 296, "Instances", oPickup_HeartTank);
+    // Đáy giếng mở thông sang Hang Thác Nước bên phải
+    _make_solid(64, 1568, 236, 48);
     
-    // Vines to climb the pillar
-    for (var _y = room_height - 280; _y < room_height - 32; _y += _bs) {
-        instance_create_layer(1664, _y, "Instances", oLadder);
-    }
+    // =========================================================================
+    // SECTION 4: WATERFALL CAVERN (x: 240 .. 3350, y: 1200 .. 1760)
+    // Hang ngầm thác nước phát sáng lục lam, hồ nước sâu và các cột thạch nhũ
+    // =========================================================================
+    // Trần hang vòm đá vôi
+    _make_solid(240, 1200, 3110, 32);
     
-    // -----------------------------------------------------------------
-    // Section 4: Web Spider Boss Gate & Arena (x: 1800 .. 2400)
-    // -----------------------------------------------------------------
-    // Knot Beret Green guarding entrance to Boss Gate
-    instance_create_layer(1960, room_height - 32, "Instances", oEnemy_KnotBeretG);
+    // Các khối thạch nhũ rủ gai góc từ trần hang
+    _make_solid(700, 1232, 48, 48);
+    _make_solid(1250, 1232, 64, 64);
+    _make_solid(1850, 1232, 48, 48);
+    _make_solid(2400, 1232, 64, 64);
+    _make_solid(2950, 1232, 48, 48);
     
-    // Boss Gate Door!
-    instance_create_layer(2060, room_height - 80, "Instances", oTrigger_BossGate);
+    // Vực hồ nước ngầm rộng lớn dưới đáy hang (Water physics)
+    var _make_water = function(_wx, _wy, _ww, _wh) {
+        var _wat = instance_create_layer(_wx, _wy, "Instances", oWater);
+        _wat.image_xscale = _ww / 32;
+        _wat.image_yscale = _wh / 32;
+        return _wat;
+    };
+    _make_water(350, 1568, 2750, 112);
     
-    // Web Arena: spider webs scattered in boss room
-    instance_create_layer(2160, room_height - 120, "Instances", oWebTrap);
-    instance_create_layer(2280, room_height - 160, "Instances", oWebTrap);
-    instance_create_layer(2220, room_height - 48, "Instances", oWebTrap);
+    // Đáy hồ nước
+    _make_solid(300, 1680, 2850, 32);
     
-    // Target practice dummies inside the web arena
-    instance_create_layer(2240, room_height - 32, "Instances", oTargetDummy);
+    // Các cột đá nhô cao vượt mặt nước (Stepping Pillars)
+    _make_solid(520, 1480, 80, 120);     // Cột 1
+    _make_solid(800, 1440, 80, 160);     // Cột 2
+    _make_solid(1100, 1380, 96, 220);    // Cột 3
+    _make_solid(1400, 1440, 96, 160);    // Cột 4
+    
+    // Cột thạch nhũ khổng lồ chứa Heart Tank bí mật (+2 Max HP)
+    _make_solid(1750, 1320, 80, 280);
+    _make_ladder(1736, 1330, 200);
+    instance_create_layer(1790, 1320 - 16, "Instances", oPickup_HeartTank);
+    
+    // Sàn đá phủ băng trơn trượt (Ice Surface)
+    var _make_ice = function(_ix, _iy, _iw) {
+        var _ice = instance_create_layer(_ix, _iy, "Instances", oIceSurface);
+        _ice.image_xscale = _iw / 16;
+        _ice.visible = false;
+        return _ice;
+    };
+    _make_solid(1950, 1568, 150, 32);
+    _make_ice(1950, 1568, 150);
+    
+    _make_solid(2100, 1400, 96, 200);    // Cột 5
+    _make_solid(2450, 1440, 96, 160);    // Cột 6
+    _make_solid(2800, 1480, 96, 120);    // Cột 7
+    
+    // Checkpoint 2: Giữa Hang Thác Nước
+    instance_create_layer(1450, 1440 - 16, "Instances", oTrigger_Checkpoint);
+    
+    // Quái vật Section 4: Chuồn chuồn bay lượn và Quái gai lơ lửng
+    instance_create_layer(950, 1350, "Instances", oEnemy_TonboroidS);
+    instance_create_layer(2300, 1360, "Instances", oEnemy_TonboroidS);
+    instance_create_layer(1300, 1420, "Instances", oEnemy_TentoroidRS);
+    instance_create_layer(2650, 1420, "Instances", oEnemy_TentoroidRS);
+    instance_create_layer(1140, 1260, "Instances", oEnemy_Batton);
+    instance_create_layer(2430, 1260, "Instances", oEnemy_Batton);
+    
+    // Đoạn dốc đá dẫn ra khỏi hang ngầm
+    _make_solid(3000, 1568, 150, 48);
+    _make_solid(3150, 1680, 130, 48);
+    _make_solid(3280, 1760, 100, 48);
+    
+    // =========================================================================
+    // SECTION 5: FLOATING PLATFORMS CHASM (x: 3350 .. 4780, y: 1600 .. 2100)
+    // Vực thẳm không đáy với các phiến đá và lá cây lơ lửng giữa trời đêm
+    // =========================================================================
+    // Giàn xà kim loại phía trên (Overhead Girders)
+    _make_solid(3340, 1616, 1440, 16);
+    
+    // 10 Bậc đá lơ lửng chính (khớp vị trí cụm đá trong JungleMap)
+    _make_solid(3420, 1752, 72, 32);
+    _make_solid(3596, 1752, 72, 32);
+    _make_solid(3692, 1928, 72, 32);
+    _make_solid(3804, 1736, 72, 32);
+    
+    // Bậc lá cây rụng (Falling Leaf Platforms) tạo cảm giác hồi hộp
+    instance_create_layer(3980, 1928, "Instances", oPlatform_Falling);
+    instance_create_layer(4020, 1928, "Instances", oPlatform_Falling);
+    
+    _make_solid(4140, 1848, 72, 32);
+    _make_solid(4268, 1880, 72, 32);
+    _make_solid(4396, 1800, 72, 32);
+    _make_solid(4524, 1912, 72, 32);
+    _make_solid(4652, 1800, 72, 32);
+    
+    // Các bậc cứu hộ tầng dưới (Lower safety ledges)
+    _make_solid(3548, 2056, 88, 32);
+    _make_solid(3836, 2008, 88, 32);
+    _make_solid(4124, 2008, 88, 32);
+    _make_solid(4268, 2056, 72, 32);
+    _make_solid(4524, 2088, 72, 32);
+    
+    // Bậc cao giấu bình Sub-Tank bí mật
+    _make_solid(4036, 1720, 48, 16);
+    instance_create_layer(4050, 1720 - 16, "Instances", oPickup_SubTank);
+    
+    // Checkpoint 3: Giữa vực thẳm
+    instance_create_layer(4160, 1848 - 16, "Instances", oTrigger_Checkpoint);
+    
+    // Quái vật bắn tỉa trên không quấy nhiễu lúc nhảy vực
+    instance_create_layer(3500, 1680, "Instances", oEnemy_FlyGunner);
+    instance_create_layer(3900, 1780, "Instances", oEnemy_FlyGunner);
+    instance_create_layer(4300, 1760, "Instances", oEnemy_FlyGunner);
+    instance_create_layer(4600, 1780, "Instances", oEnemy_TentoroidRS);
+    
+    // =========================================================================
+    // SECTION 6: BOSS GATE & BOSS ARENA (x: 4780 .. 5472, y: 1800 .. 2144)
+    // Cổng trùm Mega Man X cổ điển và Đấu trường Trùm Nightmare Zero
+    // =========================================================================
+    // Dốc thoải tiếp cận cổng thành
+    _make_solid(4760, 2000, 120, 48);
+    
+    // Checkpoint 4 (Pre-Boss Checkpoint ngay trước cửa trùm)
+    instance_create_layer(4820, 2000 - 16, "Instances", oTrigger_Checkpoint);
+    
+    // CỔNG TRÙM MEGA MAN X (Boss Gate Doorway)
+    instance_create_layer(4880, 1992, "Instances", oTrigger_BossGate);
+    
+    // ĐẤU TRƯỜNG TRÙM (Boss Arena Chamber):
+    // 1. Sàn đấu trường vững chắc (Floor: y = 2080)
+    _make_solid(4880, 2080, 592, 64);
+    
+    // 2. Trần đấu trường (Ceiling: y = 1856)
+    _make_solid(4880, 1856, 592, 32);
+    
+    // 3. Tường trái (phía trên cửa trùm)
+    _make_solid(4880, 1888, 16, 104);
+    
+    // 4. Tường phải sân đấu (Right boundary wall)
+    _make_solid(5440, 1888, 32, 192);
+    
+    // Bẫy tơ nhện trang trí/cản trở trong đấu trường trùm
+    instance_create_layer(5020, 2080 - 16, "Instances", oWebTrap);
+    instance_create_layer(5320, 2080 - 16, "Instances", oWebTrap);
 }

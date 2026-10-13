@@ -25,5 +25,10 @@
     if (door_y >= 0) {
         gate_state = GATE_STATE.LOCKED;
         camera_shake(3, 8);
+        // Spawn boss in Jungle Stage arena if not exists
+        if (room_get_name(room) == "rStage_WebSpider" && !instance_exists(obj_nightmare_zero)) {
+            var _boss = instance_create_layer(5250, 2080, "Instances", obj_nightmare_zero);
+            _boss.facing = -1;
+        }
     }
 }

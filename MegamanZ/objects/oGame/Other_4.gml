@@ -21,6 +21,13 @@ if (room_get_name(room) != "rTitle" && !instance_exists(oPlayer)) {
     if (room_get_name(room) == "rBoss_NightmareZero") {
         _spawn_x = 80;
         _spawn_y = 240;
+    } else if (room_get_name(room) == "rStage_WebSpider") {
+        if (_spawn_y == 440 || _spawn_y == 750 || _spawn_y == 480) {
+            _spawn_x = 64;
+            _spawn_y = 352;
+            global.checkpoint_x = _spawn_x;
+            global.checkpoint_y = _spawn_y;
+        }
     }
     var _obj = (global.current_char == CHAR_TYPE.X) ? oPlayerX : oPlayerZero;
     var _p = instance_create_layer(_spawn_x, _spawn_y, "Instances", _obj);

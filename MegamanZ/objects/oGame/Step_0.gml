@@ -22,7 +22,7 @@ if (keyboard_check_pressed(ord("2"))) {
 }
 if (keyboard_check_pressed(ord("3"))) {
     global.checkpoint_x = 64;
-    global.checkpoint_y = 750;
+    global.checkpoint_y = 352;
     room_goto(rStage_WebSpider);
 }
 if (keyboard_check_pressed(ord("4"))) {

@@ -273,6 +273,13 @@ function player_state_jump() {
 // FALL STATE
 // -------------------------------------------------------------------------
 function player_state_fall() {
+    // Bottomless pit death
+    if (y > room_height + 16 && state != PLAYER_STATE.DEATH) {
+        state = PLAYER_STATE.DEATH;
+        death_timer = 40;
+        camera_shake(4, 12);
+        return;
+    }
     // Air Dash capability!
     var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
     if (global.input.dash_pressed && _can_air_dash && !air_dash_used && !in_web) {
