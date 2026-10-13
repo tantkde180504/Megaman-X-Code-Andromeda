@@ -132,9 +132,14 @@ switch (state) {
         if (instance_exists(target)) facing = (target.x >= x) ? 1 : -1;
         hsp = facing * 6.5;
         
-        // Điều kiện dừng lướt khi áp sát nhân vật hoặc gặp vật cản hoặc hết animation
+        // Lặp tư thế lướt (frames 1..3) trong lúc di chuyển tới gần mục tiêu
+        if (anim_frame >= 4) {
+            anim_frame = 1;
+        }
+        
+        // Dừng lướt khi áp sát mục tiêu (<= 56px), gặp tường oSolid hoặc sau tối đa 90 step
         var _dist = (instance_exists(target)) ? abs(target.x - x) : 999;
-        if (_dist <= 56 || place_meeting(x + hsp, y, oSolid) || anim_done) {
+        if (_dist <= 56 || place_meeting(x + hsp, y, oSolid) || state_timer >= 90) {
             hsp = 0;
             nz_change_state(NZ_STATE.ACT1_SLASH);
         }
@@ -142,7 +147,9 @@ switch (state) {
 
     case NZ_STATE.ACT1_SLASH:
         hsp = 0;
-        if (instance_exists(target)) facing = (target.x >= x) ? 1 : -1;
+        if (state_timer == 1 && instance_exists(target)) {
+            facing = (target.x >= x) ? 1 : -1;
+        }
         
         // Frame 3 chém vòng cung lớn: kích hoạt hitbox cận chiến
         if (anim_frame == 3 && !action_triggered) {
@@ -161,7 +168,9 @@ switch (state) {
 
     case NZ_STATE.ACT1_SHOOT:
         hsp = 0;
-        if (instance_exists(target)) facing = (target.x >= x) ? 1 : -1;
+        if (state_timer == 1 && instance_exists(target)) {
+            facing = (target.x >= x) ? 1 : -1;
+        }
         shoot_burst_timer++;
         
         if (hp > max_hp * 0.5) {
@@ -215,7 +224,9 @@ switch (state) {
 
     case NZ_STATE.ACT1_WAVE:
         hsp = 0;
-        if (instance_exists(target)) facing = (target.x >= x) ? 1 : -1;
+        if (state_timer == 1 && instance_exists(target)) {
+            facing = (target.x >= x) ? 1 : -1;
+        }
         
         // Frame 3: chém sóng kiếm nhỏ bay theo hướng nhân vật
         if (anim_frame == 3 && !action_triggered) {
@@ -333,7 +344,9 @@ switch (state) {
 
     case NZ_STATE.ACT2_SLASH:
         hsp = 0;
-        if (instance_exists(target)) facing = (target.x >= x) ? 1 : -1;
+        if (state_timer == 1 && instance_exists(target)) {
+            facing = (target.x >= x) ? 1 : -1;
+        }
         
         // Frame 3: chém hitbox cận chiến
         if (anim_frame == 3 && !action_triggered) {
@@ -364,7 +377,9 @@ switch (state) {
     // =====================================================================
     case NZ_STATE.ACT3_MESSENKOU:
         hsp = 0;
-        if (instance_exists(target)) facing = (target.x >= x) ? 1 : -1;
+        if (state_timer == 1 && instance_exists(target)) {
+            facing = (target.x >= x) ? 1 : -1;
+        }
         is_invulnerable = true;
         
         // Frame 7 (Zero đấm chạm sàn): Sinh các hiệu ứng dưới đất nổ bùng rồi bắn cột sáng lên

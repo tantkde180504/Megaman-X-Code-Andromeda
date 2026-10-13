@@ -23,29 +23,27 @@ draw_rectangle(_bx - 2, _by - 2, _bx + _bar_w + 1, _by + _bar_h + 1, false);
 draw_set_color(make_color_rgb(160, 170, 200));
 draw_rectangle(_bx - 2, _by - 2, _bx + _bar_w + 1, _by + _bar_h + 1, true);
 
-// Vẽ từng vạch năng lượng (64 vạch tương ứng max_hp)
-var _ticks = max_hp;
-var _tick_h = (_bar_h - 2) / max(1, _ticks);
+// Vẽ thanh năng lượng (Mega Man X style)
+var _inner_h = _bar_h - 2;
+var _fill_h = round((clamp(hp_display, 0, max_hp) / max(1, max_hp)) * _inner_h);
 
-for (var _i = 0; _i < _ticks; _i++) {
-    var _ty = _by + _bar_h - 2 - ((_i + 1) * _tick_h);
-    
-    if (_i < hp_display) {
+// Nền vạch đã mất
+draw_set_color(make_color_rgb(35, 30, 45));
+draw_rectangle(_bx, _by, _bx + _bar_w - 1, _by + _inner_h - 1, false);
+
+// Phần máu còn lại với các đường sọc năng lượng
+if (_fill_h > 0) {
+    var _fill_top = _by + _inner_h - _fill_h;
+    for (var _py = _by + _inner_h - 1; _py >= _fill_top; _py--) {
         if (flash_timer > 0) {
-            draw_set_color(c_white); // Nháy trắng khi trúng đòn
+            draw_set_color(c_white);
         } else if (phase == 2) {
-            // Phase 2: Thanh máu màu đỏ thẫm / tím ác mộng
-            draw_set_color((_i % 2 == 0) ? make_color_rgb(255, 40, 100) : make_color_rgb(180, 20, 160));
+            draw_set_color((_py % 2 == 0) ? make_color_rgb(255, 40, 100) : make_color_rgb(180, 20, 160));
         } else {
-            // Phase 1: Màu tím Nightmare đặc trưng
-            draw_set_color((_i % 2 == 0) ? make_color_rgb(170, 70, 230) : make_color_rgb(120, 40, 190));
+            draw_set_color((_py % 2 == 0) ? make_color_rgb(170, 70, 230) : make_color_rgb(120, 40, 190));
         }
-    } else {
-        // Phần vạch đã mất
-        draw_set_color(make_color_rgb(35, 30, 45));
+        draw_line(_bx, _py, _bx + _bar_w - 1, _py);
     }
-    
-    draw_rectangle(_bx, _ty, _bx + _bar_w - 1, _ty + _tick_h - 1, false);
 }
 
 // Biểu tượng Boss trên đầu thanh máu

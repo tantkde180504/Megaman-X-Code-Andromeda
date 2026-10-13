@@ -14,15 +14,15 @@
   "frames": [
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "758605c6-6f39-4b06-9660-eb6d18c5ed49",
-      "name": "758605c6-6f39-4b06-9660-eb6d18c5ed49",
+      "%Name": "de31b7e2-520b-4530-b7d2-c34bf6d6731e",
+      "name": "de31b7e2-520b-4530-b7d2-c34bf6d6731e",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "f7acb84b-d60e-438f-b9e8-8d60f1ea6873",
-      "name": "f7acb84b-d60e-438f-b9e8-8d60f1ea6873",
+      "%Name": "97a73bab-3745-4f3b-8d01-a790870ad385",
+      "name": "97a73bab-3745-4f3b-8d01-a790870ad385",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     }
@@ -34,11 +34,11 @@
   "layers": [
     {
       "$GMImageLayer": "",
-      "%Name": "576a9be3-a19b-4050-a68d-fa335c40b29e",
+      "%Name": "efba83fb-c3e1-4484-9211-4b94851a4b0b",
       "blendMode": 0,
       "displayName": "default",
       "isLocked": false,
-      "name": "576a9be3-a19b-4050-a68d-fa335c40b29e",
+      "name": "efba83fb-c3e1-4484-9211-4b94851a4b0b",
       "opacity": 100.0,
       "resourceType": "GMImageLayer",
       "resourceVersion": "2.0",
@@ -107,7 +107,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "758605c6-6f39-4b06-9660-eb6d18c5ed49",
+                    "name": "de31b7e2-520b-4530-b7d2-c34bf6d6731e",
                     "path": "sprites/spr_nz_defeat_burst/spr_nz_defeat_burst.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -115,7 +115,7 @@
                 }
               },
               "Disabled": false,
-              "id": "80db9885-dd44-436d-9ebe-995dac6e970e",
+              "id": "91ce5410-42ba-4533-8042-869757e50115",
               "IsCreationKey": false,
               "Key": 0.0,
               "Length": 1.0,
@@ -129,7 +129,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "f7acb84b-d60e-438f-b9e8-8d60f1ea6873",
+                    "name": "97a73bab-3745-4f3b-8d01-a790870ad385",
                     "path": "sprites/spr_nz_defeat_burst/spr_nz_defeat_burst.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -137,7 +137,7 @@
                 }
               },
               "Disabled": false,
-              "id": "8ea4cc3f-ddb0-476a-85ae-74289bf640af",
+              "id": "dabbba8a-c342-4ec5-a2c5-ff5c77e251bc",
               "IsCreationKey": false,
               "Key": 1.0,
               "Length": 1.0,

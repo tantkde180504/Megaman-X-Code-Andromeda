@@ -14,8 +14,8 @@
   "frames": [
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "2d4e9887-6e29-457d-8230-9de763e0e02c",
-      "name": "2d4e9887-6e29-457d-8230-9de763e0e02c",
+      "%Name": "e21748dc-404c-462f-80f9-56e992f34f75",
+      "name": "e21748dc-404c-462f-80f9-56e992f34f75",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     }
@@ -27,11 +27,11 @@
   "layers": [
     {
       "$GMImageLayer": "",
-      "%Name": "67065351-c4f3-47db-83fe-48bad41bfeda",
+      "%Name": "ff2fddec-f599-4acc-a803-fe87ea3f5514",
       "blendMode": 0,
       "displayName": "default",
       "isLocked": false,
-      "name": "67065351-c4f3-47db-83fe-48bad41bfeda",
+      "name": "ff2fddec-f599-4acc-a803-fe87ea3f5514",
       "opacity": 100.0,
       "resourceType": "GMImageLayer",
       "resourceVersion": "2.0",
@@ -100,7 +100,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "2d4e9887-6e29-457d-8230-9de763e0e02c",
+                    "name": "e21748dc-404c-462f-80f9-56e992f34f75",
                     "path": "sprites/spr_nz_hurt/spr_nz_hurt.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -108,7 +108,7 @@
                 }
               },
               "Disabled": false,
-              "id": "65778b80-87f2-46ba-baba-fbd438758652",
+              "id": "b13ae555-30d5-4282-a40e-cfea961542f4",
               "IsCreationKey": false,
               "Key": 0.0,
               "Length": 1.0,
