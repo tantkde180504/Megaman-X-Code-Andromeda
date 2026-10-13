@@ -1,7 +1,26 @@
 /// @desc Stage Builder: Stage 1 (Web Spider — Authentic Mega Man X4 Jungle Map)
 
 function scr_build_stage_web_spider() {
-    if (instance_exists(oSolid)) return;
+    // Configure room Background layer to display JungleMap
+    var _bg_layer = layer_get_id("Background");
+    if (_bg_layer != -1) {
+        var _bg_id = layer_background_get_id(_bg_layer);
+        if (_bg_id != -1) {
+            layer_background_sprite(_bg_id, JungleMap);
+            layer_background_blend(_bg_id, c_white);
+            layer_background_visible(_bg_id, true);
+            layer_background_htiled(_bg_id, false);
+            layer_background_vtiled(_bg_id, false);
+        }
+    }
+    
+    // Parallax background controller (depth 50)
+    if (!instance_exists(oParallaxBackground)) {
+        instance_create_layer(0, 0, "Instances", oParallaxBackground);
+    }
+    
+    // Nếu trong Room Editor đã đặt sẵn toàn bộ layout (> 20 khối), không sinh đè
+    if (instance_number(oSolid) > 20) return;
     
     // Helpers to create merged collision boxes
     var _make_solid = function(_x, _y, _w, _h) {
@@ -25,24 +44,6 @@ function scr_build_stage_web_spider() {
         _l.visible = false;
         return _l;
     };
-    
-    // Configure room Background layer to display JungleMap
-    var _bg_layer = layer_get_id("Background");
-    if (_bg_layer != -1) {
-        var _bg_id = layer_background_get_id(_bg_layer);
-        if (_bg_id != -1) {
-            layer_background_sprite(_bg_id, JungleMap);
-            layer_background_blend(_bg_id, c_white);
-            layer_background_visible(_bg_id, true);
-            layer_background_htiled(_bg_id, false);
-            layer_background_vtiled(_bg_id, false);
-        }
-    }
-    
-    // Parallax background controller (depth 50)
-    if (!instance_exists(oParallaxBackground)) {
-        instance_create_layer(0, 0, "Instances", oParallaxBackground);
-    }
     
     // =========================================================================
     // SECTION 1: SURFACE JUNGLE TRAIL (x: 0 .. 1440, y: 80 .. 560)
