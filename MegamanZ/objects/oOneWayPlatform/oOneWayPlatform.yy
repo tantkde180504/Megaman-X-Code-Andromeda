@@ -1,9 +1,7 @@
 {
   "$GMObject":"",
   "%Name":"oOneWayPlatform",
-  "eventList":[
-
-  ],
+  "eventList":[],
   "managed":true,
   "name":"oOneWayPlatform",
   "overriddenProperties":[],
@@ -30,12 +28,12 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name": "sOneWayPlatform",
-    "path": "sprites/sOneWayPlatform/sOneWayPlatform.yy",
+    "name":"sOneWayPlatform",
+    "path":"sprites/sOneWayPlatform/sOneWayPlatform.yy",
   },
   "spriteMaskId":{
-    "name": "sOneWayPlatform",
-    "path": "sprites/sOneWayPlatform/sOneWayPlatform.yy",
+    "name":"sOneWayPlatform",
+    "path":"sprites/sOneWayPlatform/sOneWayPlatform.yy",
   },
   "visible":false,
 }

@@ -1,4 +1,18 @@
 /// @desc Zero Nightmare (Nightmare Zero) - Exact User Sequence Step Logic
+// 0. TRẠNG THÁI SLEEP: Chờ người chơi tới gần đấu trường trùm
+if (state == NZ_STATE.SLEEP) {
+    if (instance_exists(oPlayer)) {
+        var _p = instance_find(oPlayer, 0);
+        if (_p.x >= 4850) {
+            visible = true;
+            state = NZ_STATE.INTRO;
+            state_timer = 0;
+            warning_timer = 90;
+        }
+    }
+    return;
+}
+
 // -------------------------------------------------------------------------
 // 1. KIỂM TRA TỬ TRẬN & GIỚI HẠN TỌA ĐỘ
 // -------------------------------------------------------------------------
@@ -7,7 +21,7 @@ if (hp <= 0 && state != NZ_STATE.DEFEAT) {
 }
 
 // Giữ boss luôn ở trong giới hạn sàn đấu
-x = clamp(x, 32, room_width - 32);
+x = clamp(x, arena_left, arena_right);
 
 // Kiểm tra mục tiêu người chơi
 if (instance_exists(oPlayer)) {
@@ -309,13 +323,13 @@ switch (state) {
                 } else {
                     // Teleport lần 3 (sau khi chém 2 lần): teleport ra xa tạo khoảng cách
                     if (instance_exists(target)) {
-                        teleport_dest_x = (target.x > room_width * 0.5) ? 96 : room_width - 96;
+                        teleport_dest_x = (target.x > arena_center) ? (arena_left + 48) : (arena_right - 48);
                         teleport_dest_y = target.y;
                     }
                 }
                 
                 // Giới hạn trong sàn đấu và bám sát mặt sàn
-                teleport_dest_x = clamp(teleport_dest_x, 64, room_width - 64);
+                teleport_dest_x = clamp(teleport_dest_x, arena_left + 32, arena_right - 32);
                 while (!place_meeting(teleport_dest_x, teleport_dest_y + 1, oSolid) && teleport_dest_y < room_height - 16) teleport_dest_y++;
                 while (place_meeting(teleport_dest_x, teleport_dest_y, oSolid) && teleport_dest_y > 16) teleport_dest_y--;
                 
@@ -396,9 +410,7 @@ switch (state) {
             action_triggered = true;
             camera_shake(6, 20);
             
-            var _spike_xs = [48, 96, 144, 192, 240, 288, 336, 384, 432];
-            for (var _i = 0; _i < array_length(_spike_xs); _i++) {
-                var _sx = _spike_xs[_i];
+            for (var _sx = arena_left + 32; _sx <= arena_right - 32; _sx += 56) {
                 var _sy = y;
                 while (!place_meeting(_sx, _sy + 1, oSolid) && _sy < room_height - 16) _sy++;
                 while (place_meeting(_sx, _sy, oSolid) && _sy > 16) _sy--;

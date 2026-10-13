@@ -1,4 +1,6 @@
 /// @desc Zero Nightmare - Draw Event (Manual Frame, Afterimage & Hurt Flash)
+if (state == NZ_STATE.SLEEP) return;
+
 var _draw_facing = -facing; // Sprite gốc quay trái -> facing = 1 thì scale = -1
 var _draw_x = round(x);
 var _draw_y = round(y);

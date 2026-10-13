@@ -26,6 +26,12 @@ if (keyboard_check_pressed(ord("3"))) {
     room_goto(rStage_WebSpider);
 }
 if (keyboard_check_pressed(ord("4"))) {
+    // Jump directly to Jungle Stage Boss Arena
+    global.checkpoint_x = 4820;
+    global.checkpoint_y = 1984;
+    room_goto(rStage_WebSpider);
+}
+if (keyboard_check_pressed(ord("5"))) {
     global.checkpoint_x = 80;
     global.checkpoint_y = 240;
     room_goto(rBoss_NightmareZero);

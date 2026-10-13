@@ -291,4 +291,10 @@ function scr_build_stage_web_spider() {
     // Bẫy tơ nhện trang trí/cản trở trong đấu trường trùm
     instance_create_layer(5020, 2080 - 16, "Instances", oWebTrap);
     instance_create_layer(5320, 2080 - 16, "Instances", oWebTrap);
+    
+    // Khởi tạo Boss Nightmare Zero trong đấu trường trùm (x: 5250, y: 2080)
+    if (!instance_exists(obj_nightmare_zero)) {
+        var _boss = instance_create_layer(5250, 2080, "Instances", obj_nightmare_zero);
+        _boss.facing = -1;
+    }
 }

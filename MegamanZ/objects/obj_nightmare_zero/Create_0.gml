@@ -5,6 +5,7 @@ event_inherited();
 // 1. FINITE STATE MACHINE ENUM (Theo Đúng Đặc Tả Tuần Tự Của Người Dùng)
 // -------------------------------------------------------------------------
 enum NZ_STATE {
+    SLEEP,              // -1: Chờ người chơi tới gần phòng đấu trùm trong map lớn
     INTRO,              // 0: Màn hình WARNING & Spawn Ooze -> Zero (hàng 1, 2: 15 frames)
     IDLE,               // 1: Đứng chờ giữa các cử động / nhịp nghỉ
     
@@ -47,9 +48,28 @@ anim_done = false;
 action_triggered = false;
 
 // -------------------------------------------------------------------------
-// 4. BIẾN ĐIỀU KHIỂN CHU KỲ TUẦN TỰ (Sequential Action Controllers)
+// 4. BIẾN ĐIỀU KHIỂN CHU KỲ TUẦN TỰ & ARENA BOUNDARIES
 // -------------------------------------------------------------------------
-state = NZ_STATE.INTRO;
+if (room_get_name(room) == "rStage_WebSpider") {
+    arena_left = 4912;
+    arena_right = 5424;
+    arena_center = (arena_left + arena_right) * 0.5;
+    
+    // Nếu người chơi chưa tới gần phòng trùm, boss chờ (SLEEP)
+    if (instance_exists(oPlayer) && instance_find(oPlayer, 0).x < 4850) {
+        state = NZ_STATE.SLEEP;
+        visible = false;
+    } else {
+        state = NZ_STATE.INTRO;
+        visible = true;
+    }
+} else {
+    arena_left = 32;
+    arena_right = room_width - 32;
+    arena_center = room_width * 0.5;
+    state = NZ_STATE.INTRO;
+    visible = true;
+}
 state_timer = 0;
 warning_timer = 90;
 

@@ -1,5 +1,5 @@
 /// @desc Boss Health Bar HUD (Mega Man X Vertical Energy Bar)
-if (is_dead) return;
+if (is_dead || (variable_instance_exists(id, "state") && state == NZ_STATE.SLEEP)) return;
 
 var _bx = VIEW_WIDTH - 24;
 var _by = 28;

@@ -1,9 +1,7 @@
 {
   "$GMObject":"",
   "%Name":"oIceSurface",
-  "eventList":[
-
-  ],
+  "eventList":[],
   "managed":true,
   "name":"oIceSurface",
   "overriddenProperties":[],
@@ -30,12 +28,12 @@
   "resourceVersion":"2.0",
   "solid":true,
   "spriteId":{
-    "name": "sIce",
-    "path": "sprites/sIce/sIce.yy",
+    "name":"sIce",
+    "path":"sprites/sIce/sIce.yy",
   },
   "spriteMaskId":{
-    "name": "sIce",
-    "path": "sprites/sIce/sIce.yy",
+    "name":"sIce",
+    "path":"sprites/sIce/sIce.yy",
   },
   "visible":false,
 }

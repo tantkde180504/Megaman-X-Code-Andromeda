@@ -1,9 +1,7 @@
 {
   "$GMObject":"",
   "%Name":"oLadder",
-  "eventList":[
-
-  ],
+  "eventList":[],
   "managed":true,
   "name":"oLadder",
   "overriddenProperties":[],
@@ -30,12 +28,12 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name": "sLadder",
-    "path": "sprites/sLadder/sLadder.yy",
+    "name":"sLadder",
+    "path":"sprites/sLadder/sLadder.yy",
   },
   "spriteMaskId":{
-    "name": "sLadder",
-    "path": "sprites/sLadder/sLadder.yy",
+    "name":"sLadder",
+    "path":"sprites/sLadder/sLadder.yy",
   },
   "visible":false,
 }
