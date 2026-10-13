@@ -1,9 +1,8 @@
-/// @desc Zero Nightmare (Nightmare Zero) - Exact User Sequence Step Logic
-// 0. TRẠNG THÁI SLEEP: Chờ người chơi tới gần đấu trường trùm
+// 0. TRẠNG THÁI SLEEP: Chờ người chơi tới gần đấu trường trùm hoặc tiếp cận boss
 if (state == NZ_STATE.SLEEP) {
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
-        if (_p.x >= 4850) {
+        if (_p.x >= 4850 || abs(_p.x - x) < 320) {
             visible = true;
             state = NZ_STATE.INTRO;
             state_timer = 0;

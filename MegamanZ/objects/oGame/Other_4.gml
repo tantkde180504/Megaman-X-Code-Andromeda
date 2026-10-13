@@ -14,6 +14,17 @@ if (room == Room1) {
     scr_build_boss_room_nightmare_zero();
 }
 
+// Ensure boss and boss gate exist in Web Spider stage
+if (room_get_name(room) == "rStage_WebSpider") {
+    if (!instance_exists(obj_nightmare_zero)) {
+        var _boss = instance_create_layer(5250, 2096, "Instances", obj_nightmare_zero);
+        _boss.facing = -1;
+    }
+    if (!instance_exists(oTrigger_BossGate)) {
+        instance_create_layer(4880, 2000, "Instances", oTrigger_BossGate);
+    }
+}
+
 // Ensure all collision markers (placed manually or generated) are completely invisible in game
 with (oSolid) visible = false;
 with (oOneWayPlatform) visible = false;

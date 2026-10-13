@@ -71,5 +71,5 @@ draw_set_alpha(0.65);
 draw_rectangle(0, VIEW_HEIGHT - 14, VIEW_WIDTH, VIEW_HEIGHT, false);
 draw_set_alpha(1.0);
 draw_set_color(make_color_rgb(200, 220, 240));
-draw_text(4, VIEW_HEIGHT - 13, "Move: Arrows | Z: Jump | X: Atk | C: Dash | 1/2/3/4: Stages & Boss | TAB: Char | F1: Debug");
+draw_text(4, VIEW_HEIGHT - 13, "Arrows: Move | Z: Jump | X: Atk | C: Dash | 4: Boss Arena | B: Triệu hồi Boss | TAB: Char");
 

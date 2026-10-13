@@ -51,15 +51,24 @@ action_triggered = false;
 // 4. BIẾN ĐIỀU KHIỂN CHU KỲ TUẦN TỰ & ARENA BOUNDARIES
 // -------------------------------------------------------------------------
 if (room_get_name(room) == "rStage_WebSpider") {
-    arena_left = 4912;
-    arena_right = 5424;
-    arena_center = (arena_left + arena_right) * 0.5;
-    
-    // Nếu người chơi chưa tới gần phòng trùm, boss chờ (SLEEP)
-    if (instance_exists(oPlayer) && instance_find(oPlayer, 0).x < 4850) {
-        state = NZ_STATE.SLEEP;
-        visible = false;
+    if (x >= 4800) {
+        arena_left = 4912;
+        arena_right = 5424;
+        arena_center = (arena_left + arena_right) * 0.5;
+        
+        // Nếu người chơi chưa tới gần phòng trùm, boss chờ (SLEEP)
+        if (instance_exists(oPlayer) && instance_find(oPlayer, 0).x < 4850) {
+            state = NZ_STATE.SLEEP;
+            visible = false;
+        } else {
+            state = NZ_STATE.INTRO;
+            visible = true;
+        }
     } else {
+        // Boss đặt tại khu vực khác để thử nghiệm trực tiếp
+        arena_left = max(32, x - 250);
+        arena_right = min(room_width - 32, x + 250);
+        arena_center = (arena_left + arena_right) * 0.5;
         state = NZ_STATE.INTRO;
         visible = true;
     }

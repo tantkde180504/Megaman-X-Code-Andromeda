@@ -19,6 +19,15 @@ function scr_build_stage_web_spider() {
         instance_create_layer(0, 0, "Instances", oParallaxBackground);
     }
     
+    // Khởi tạo Boss Nightmare Zero và Cổng Trùm nếu chưa có
+    if (!instance_exists(obj_nightmare_zero)) {
+        var _boss = instance_create_layer(5250, 2096, "Instances", obj_nightmare_zero);
+        _boss.facing = -1;
+    }
+    if (!instance_exists(oTrigger_BossGate)) {
+        instance_create_layer(4880, 2000, "Instances", oTrigger_BossGate);
+    }
+    
     // Nếu trong Room Editor đã đặt sẵn toàn bộ layout (> 20 khối), không sinh đè
     if (instance_number(oSolid) > 20) return;
     

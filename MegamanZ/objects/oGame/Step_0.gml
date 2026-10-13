@@ -29,12 +29,56 @@ if (keyboard_check_pressed(ord("4"))) {
     // Jump directly to Jungle Stage Boss Arena
     global.checkpoint_x = 4820;
     global.checkpoint_y = 1984;
-    room_goto(rStage_WebSpider);
+    if (room_get_name(room) == "rStage_WebSpider") {
+        if (instance_exists(oPlayer)) {
+            var _p = instance_find(oPlayer, 0);
+            _p.x = 4820;
+            _p.y = 1984;
+            _p.hsp = 0;
+            _p.vsp = 0;
+            _p.state = PLAYER_STATE.IDLE;
+        }
+    } else {
+        room_goto(rStage_WebSpider);
+    }
 }
 if (keyboard_check_pressed(ord("5"))) {
     global.checkpoint_x = 80;
     global.checkpoint_y = 240;
     room_goto(rBoss_NightmareZero);
+}
+
+// Phím B: Triệu hồi Boss Nightmare Zero ngay tại vị trí người chơi
+if (keyboard_check_pressed(ord("B"))) {
+    if (instance_exists(oPlayer)) {
+        var _p = instance_find(oPlayer, 0);
+        if (instance_exists(obj_nightmare_zero)) {
+            var _b = instance_find(obj_nightmare_zero, 0);
+            _b.x = clamp(_p.x + _p.facing * 160, 64, room_width - 64);
+            _b.y = _p.y;
+            while (!place_meeting(_b.x, _b.y + 1, oSolid) && _b.y < room_height - 16) _b.y++;
+            while (place_meeting(_b.x, _b.y, oSolid) && _b.y > 16) _b.y--;
+            _b.facing = -_p.facing;
+            _b.visible = true;
+            _b.arena_left = max(32, _p.x - 240);
+            _b.arena_right = min(room_width - 32, _p.x + 240);
+            _b.arena_center = (_b.arena_left + _b.arena_right) * 0.5;
+            with (_b) {
+                nz_change_state(NZ_STATE.INTRO);
+                warning_timer = 60;
+            }
+        } else {
+            var _bx = clamp(_p.x + _p.facing * 160, 64, room_width - 64);
+            var _by = _p.y;
+            while (!place_meeting(_bx, _by + 1, oSolid) && _by < room_height - 16) _by++;
+            while (place_meeting(_bx, _by, oSolid) && _by > 16) _by--;
+            var _new_b = instance_create_layer(_bx, _by, "Instances", obj_nightmare_zero);
+            _new_b.facing = -_p.facing;
+            _new_b.arena_left = max(32, _p.x - 240);
+            _new_b.arena_right = min(room_width - 32, _p.x + 240);
+            _new_b.arena_center = (_new_b.arena_left + _new_b.arena_right) * 0.5;
+        }
+    }
 }
 
 
