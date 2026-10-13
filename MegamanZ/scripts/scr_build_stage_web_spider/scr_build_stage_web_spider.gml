@@ -28,6 +28,48 @@ function scr_build_stage_web_spider() {
         instance_create_layer(4880, 2000, "Instances", oTrigger_BossGate);
     }
     
+    // Khởi tạo kẻ địch trong map Jungle nếu chưa có
+    if (!instance_exists(oEnemyParent)) {
+        // Section 1: Surface Jungle Trail
+        instance_create_layer(370, 352, "Instances", oEnemy_MettaurD2);
+        instance_create_layer(460, 240, "Instances", oEnemy_TonboroidS);
+        instance_create_layer(560, 400, "Instances", oEnemy_SpikyMKII);
+        instance_create_layer(780, 464, "Instances", oEnemy_MettaurD2);
+        instance_create_layer(860, 280, "Instances", oEnemy_TonboroidS);
+        instance_create_layer(990, 496, "Instances", oEnemy_SpikyMKII);
+        instance_create_layer(1200, 448, "Instances", oEnemy_KnotBeret);
+        instance_create_layer(1280, 240, "Instances", oEnemy_TonboroidS);
+        
+        // Section 2: Giant Hollow Tree Descent
+        instance_create_layer(1200, 700, "Instances", oEnemy_Batton);
+        instance_create_layer(1180, 912, "Instances", oEnemy_SpikyMKII);
+        instance_create_layer(1260, 1000, "Instances", oEnemy_Batton);
+        instance_create_layer(1250, 1160, "Instances", oEnemy_TentoroidRS);
+        instance_create_layer(1160, 1360, "Instances", oEnemy_Batton);
+        instance_create_layer(1160, 1520, "Instances", oEnemy_TentoroidRS);
+        
+        // Section 3 & 4: Waterfall Caverns
+        instance_create_layer(1700, 1330, "Instances", oEnemy_TentoroidRS);
+        instance_create_layer(1880, 1376, "Instances", oEnemy_MettaurD2);
+        instance_create_layer(2200, 1240, "Instances", oEnemy_TonboroidS);
+        instance_create_layer(2400, 1376, "Instances", oEnemy_MettaurD2);
+        instance_create_layer(1950, 1550, "Instances", oEnemy_Batton);
+        instance_create_layer(2150, 1680, "Instances", oEnemy_FlyGunner);
+        instance_create_layer(2400, 1780, "Instances", oEnemy_TentoroidRS);
+        instance_create_layer(2540, 1620, "Instances", oEnemy_Batton);
+        instance_create_layer(2850, 2096, "Instances", oEnemy_SpikyMKII);
+        instance_create_layer(3040, 2064, "Instances", oEnemy_MettaurD2);
+        
+        // Section 5: Night Jungle Chasm
+        instance_create_layer(3520, 1660, "Instances", oEnemy_FlyGunner);
+        instance_create_layer(3720, 1680, "Instances", oEnemy_TonboroidS);
+        instance_create_layer(3900, 1840, "Instances", oEnemy_TentoroidRS);
+        instance_create_layer(4060, 1660, "Instances", oEnemy_FlyGunner);
+        instance_create_layer(4260, 1700, "Instances", oEnemy_TonboroidS);
+        instance_create_layer(4460, 1720, "Instances", oEnemy_FlyGunner);
+        instance_create_layer(4600, 1780, "Instances", oEnemy_TentoroidRS);
+    }
+    
     // Nếu trong Room Editor đã đặt sẵn toàn bộ layout (> 20 khối), không sinh đè
     if (instance_number(oSolid) > 20) return;
     
