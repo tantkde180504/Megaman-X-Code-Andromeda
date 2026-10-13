@@ -26,7 +26,20 @@ function scr_build_stage_web_spider() {
         return _l;
     };
     
-    // Parallax background controller
+    // Configure room Background layer to display JungleMap
+    var _bg_layer = layer_get_id("Background");
+    if (_bg_layer != -1) {
+        var _bg_id = layer_background_get_id(_bg_layer);
+        if (_bg_id != -1) {
+            layer_background_sprite(_bg_id, JungleMap);
+            layer_background_blend(_bg_id, c_white);
+            layer_background_visible(_bg_id, true);
+            layer_background_htiled(_bg_id, false);
+            layer_background_vtiled(_bg_id, false);
+        }
+    }
+    
+    // Parallax background controller (depth 50)
     if (!instance_exists(oParallaxBackground)) {
         instance_create_layer(0, 0, "Instances", oParallaxBackground);
     }
