@@ -63,7 +63,8 @@ if (!instance_exists(oPlayer)) {
     }
     var _obj = (global.current_char == CHAR_TYPE.X) ? oPlayerX : oPlayerZero;
     var _p = instance_create_layer(_spawn_x, _spawn_y, "Instances", _obj);
-    _p.has_air_dash = global.has_air_dash;
+    _p.has_air_dash = (global.current_char == CHAR_TYPE.ZERO) ? true : global.has_air_dash;
+    _p.has_double_jump = (global.current_char == CHAR_TYPE.ZERO) ? true : false;
     _p.state = PLAYER_STATE.INTRO;
     _p.intro_phase = 0;
     _p.teleport_beam_y = _p.y - 240;

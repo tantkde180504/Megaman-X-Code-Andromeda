@@ -116,7 +116,8 @@ if (global.input.tab_pressed) {
         _new_p.state = _pstate;
         _new_p.hsp = _phsp;
         _new_p.vsp = _pvsp;
-        _new_p.has_air_dash = global.has_air_dash;
+        _new_p.has_air_dash = (global.current_char == CHAR_TYPE.ZERO) ? true : global.has_air_dash;
+        _new_p.has_double_jump = (global.current_char == CHAR_TYPE.ZERO) ? true : false;
         
         camera_shake(2, 6);
     }

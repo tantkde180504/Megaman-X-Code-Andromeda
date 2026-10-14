@@ -225,6 +225,20 @@ function player_state_jump() {
         return;
     }
     
+    // Double Jump capability!
+    var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
+    if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
+        double_jump_used = true;
+        vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
+        var _move = global.input.right - global.input.left;
+        if (_move != 0) facing = _move;
+        if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
+        if (object_exists(oFX_DashDust)) {
+            instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+        }
+        return;
+    }
+    
     // Variable jump height
     if (global.input.jump_released && vsp < -1.5) {
         vsp = -1.5;
@@ -309,6 +323,21 @@ function player_state_fall() {
         }
     }
     
+    // Double Jump capability!
+    var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
+    if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
+        double_jump_used = true;
+        vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
+        var _move = global.input.right - global.input.left;
+        if (_move != 0) facing = _move;
+        if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
+        if (object_exists(oFX_DashDust)) {
+            instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+        }
+        state = PLAYER_STATE.JUMP;
+        return;
+    }
+    
     // Apply gravity
     var _grav = in_water ? WATER_GRAVITY : GRAVITY;
     var _max_fall = in_water ? MAX_WATER_FALL_SPEED : MAX_FALL_SPEED;
@@ -385,6 +414,25 @@ function player_state_dash() {
         return;
     }
     
+    // Air Dash into Double Jump!
+    if (!grounded) {
+        var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
+        if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
+            double_jump_used = true;
+            dash_timer = 0;
+            vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
+            is_dash_jumping = true;
+            var _move = global.input.right - global.input.left;
+            if (_move != 0) facing = _move;
+            if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
+            if (object_exists(oFX_DashDust)) {
+                instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+            }
+            state = PLAYER_STATE.JUMP;
+            return;
+        }
+    }
+    
     // Turn around cancels dash
     var _move = global.input.right - global.input.left;
     if (_move != 0 && _move != dash_dir) {
@@ -432,6 +480,8 @@ function player_state_wall_slide() {
         vsp = WALL_JUMP_Y_SPEED;
         wall_jump_timer = WALL_JUMP_LOCK_FRAMES;
         is_dash_jumping = false;
+        air_dash_used = false;
+        double_jump_used = false;
         state = PLAYER_STATE.WALL_JUMP;
         
         if (object_exists(oFX_DashDust)) {
@@ -462,6 +512,39 @@ function player_state_wall_jump() {
     if (wall_jump_timer > 0) {
         wall_jump_timer--;
     } else {
+        // Air Dash capability!
+        var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
+        if (global.input.dash_pressed && _can_air_dash && !air_dash_used && !in_web) {
+            air_dash_used = true;
+            var _move = global.input.right - global.input.left;
+            if (_move != 0) facing = _move;
+            dash_timer = AIR_DASH_DURATION;
+            dash_dir = facing;
+            hsp = dash_dir * DASH_SPEED;
+            vsp = 0;
+            is_dash_jumping = true;
+            state = PLAYER_STATE.DASH;
+            if (object_exists(oFX_DashDust)) {
+                instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
+            }
+            return;
+        }
+        
+        // Double Jump capability!
+        var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
+        if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
+            double_jump_used = true;
+            vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
+            var _move = global.input.right - global.input.left;
+            if (_move != 0) facing = _move;
+            if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
+            if (object_exists(oFX_DashDust)) {
+                instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+            }
+            state = PLAYER_STATE.JUMP;
+            return;
+        }
+        
         var _move = global.input.right - global.input.left;
         if (_move != 0) {
             facing = _move;

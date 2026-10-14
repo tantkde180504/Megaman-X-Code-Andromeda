@@ -20,6 +20,8 @@ function player_physics_init() {
     // Phase 2: Abilities & Gimmicks
     has_air_dash = false;
     air_dash_used = false;
+    has_double_jump = false;
+    double_jump_used = false;
     in_water = false;
     on_ice = false;
     in_web = false;
@@ -160,9 +162,10 @@ function player_handle_movement_and_collision() {
     }
     grounded = _standing_on_solid || _standing_on_plat;
     
-    // Reset air dash when landing
+    // Reset air dash and double jump when landing
     if (grounded) {
         air_dash_used = false;
+        double_jump_used = false;
     }
     
     // Check Touching Wall

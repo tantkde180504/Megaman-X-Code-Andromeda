@@ -59,10 +59,22 @@ draw_set_halign(fa_center);
 draw_text(VIEW_WIDTH * 0.5, 5, _st_name);
 draw_set_halign(fa_left);
 
-// Air Dash indicator
-if (_p.has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash)) {
+// Movement abilities indicator
+var _ind_text = "";
+var _has_ad = (_p.has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
+var _has_dj = (variable_instance_exists(_p, "has_double_jump") && _p.has_double_jump);
+
+if (_has_ad && _has_dj) {
+    _ind_text = "AIR DASH + D-JUMP [ON]";
+} else if (_has_ad) {
+    _ind_text = "AIR DASH [ON]";
+} else if (_has_dj) {
+    _ind_text = "DOUBLE JUMP [ON]";
+}
+
+if (_ind_text != "") {
     draw_set_color(make_color_rgb(80, 220, 255));
-    draw_text(_hx + 14, _hy + 4, "AIR DASH [ON]");
+    draw_text(_hx + 14, _hy + 4, _ind_text);
 }
 
 // Help banner (bottom)

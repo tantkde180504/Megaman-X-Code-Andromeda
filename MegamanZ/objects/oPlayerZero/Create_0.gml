@@ -35,3 +35,8 @@ is_shocked = false;
 
 // Active saber hitbox instance reference
 current_saber_hitbox = noone;
+
+// Default Zero Movement Upgrades: Air Dash & Double Jump
+has_air_dash = true;
+has_double_jump = true;
+
