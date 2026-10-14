@@ -1,4 +1,13 @@
-if (room_get_name(room) == "rTitle") return;
+if (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect") return;
+
+// Return to Stage Select (Hunter Base)
+if (keyboard_check_pressed(ord("9"))) {
+    if (instance_exists(oPlayer)) {
+        with (oPlayer) instance_destroy();
+    }
+    room_goto(rStageSelect);
+    return;
+}
 
 // Return to Title Screen
 if (keyboard_check_pressed(ord("0"))) {

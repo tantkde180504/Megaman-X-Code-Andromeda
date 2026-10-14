@@ -1,3 +1,18 @@
+var _is_menu_room = (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect");
+
+if (_is_menu_room) {
+    if (instance_exists(oPlayer)) {
+        with (oPlayer) instance_destroy();
+    }
+    if (instance_exists(oUI_HUD)) {
+        with (oUI_HUD) instance_destroy();
+    }
+    if (instance_exists(oParallaxBackground)) {
+        with (oParallaxBackground) instance_destroy();
+    }
+    return;
+}
+
 if (!instance_exists(oInput)) instance_create_layer(0, 0, "Instances", oInput);
 if (!instance_exists(oCamera)) instance_create_layer(0, 0, "Instances", oCamera);
 if (!instance_exists(oUI_HUD)) instance_create_layer(0, 0, "Instances", oUI_HUD);
@@ -32,7 +47,7 @@ with (oLadder) visible = false;
 with (oIceSurface) visible = false;
 
 // Spawn player at checkpoint (playable stages only)
-if (room_get_name(room) != "rTitle" && !instance_exists(oPlayer)) {
+if (!instance_exists(oPlayer)) {
     var _spawn_x = global.checkpoint_x;
     var _spawn_y = global.checkpoint_y;
     if (room_get_name(room) == "rBoss_NightmareZero") {
