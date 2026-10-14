@@ -386,7 +386,8 @@ if (technique_state != TECHNIQUE.NONE) {
         case TECHNIQUE.KUUENZAN:
             technique_frame += 0.35;
             // Air dash cancel allowed
-            if (!grounded && has_air_dash && can_air_dash && global.input.dash_pressed) {
+            var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
+            if (!grounded && _can_air_dash && !air_dash_used && !in_web && global.input.dash_pressed) {
                 technique_state = TECHNIQUE.NONE;
                 technique_frame = 0.0;
                 if (instance_exists(current_saber_hitbox)) {
@@ -395,7 +396,7 @@ if (technique_state != TECHNIQUE.NONE) {
                 }
                 state = PLAYER_STATE.DASH;
                 dash_timer = AIR_DASH_DURATION;
-                can_air_dash = false;
+                air_dash_used = true;
                 var _move = global.input.right - global.input.left;
                 dash_dir = (_move != 0) ? _move : facing;
                 facing = dash_dir;
