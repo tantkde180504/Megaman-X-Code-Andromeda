@@ -6,6 +6,8 @@ slash_anim_frame = 0.0;
 slash_total_frames = 10;
 technique_state = TECHNIQUE.NONE;
 technique_timer = 0;
+technique_frame = 0.0;
+technique_phase = 0;
 
 // Movement animation variables
 jump_frame = 0.0;

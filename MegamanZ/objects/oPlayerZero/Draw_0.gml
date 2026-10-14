@@ -39,7 +39,24 @@ else if (state == PLAYER_STATE.HURT) {
         draw_sprite_ext(sZero_Hurt, _hurt_f, x, y, facing, 1, 0, c_white, 1);
     }
 }
-// 1. Z-SABER COMBAT ATTACKS (Highest priority when slashing!)
+// 1. SPECIAL TECHNIQUES (Authentic custom sprites: Ryuenjin, Hyouretsuzan, Kuuenbu, Raijingeki)
+else if (technique_state == TECHNIQUE.RYUENJIN && sprite_exists(Ryuenjin)) {
+    var _f_ryu = clamp(floor(technique_frame), 0, 15);
+    draw_sprite_ext(Ryuenjin, _f_ryu, x, y, facing, 1, 0, c_white, 1);
+}
+else if (technique_state == TECHNIQUE.HYOURETSUZAN && sprite_exists(Hyouretsuzan)) {
+    var _f_hyou = clamp(floor(technique_frame), 0, 8);
+    draw_sprite_ext(Hyouretsuzan, _f_hyou, x, y, facing, 1, 0, c_white, 1);
+}
+else if (technique_state == TECHNIQUE.KUUENZAN && sprite_exists(Kuuenbu)) {
+    var _f_kuu = clamp(floor(technique_frame), 0, 7);
+    draw_sprite_ext(Kuuenbu, _f_kuu, x, y, facing, 1, 0, c_white, 1);
+}
+else if (technique_state == TECHNIQUE.RAIJINGEKI && sprite_exists(Raijingeki)) {
+    var _f_rai = clamp(floor(technique_frame), 0, 23);
+    draw_sprite_ext(Raijingeki, _f_rai, x, y, facing, 1, 0, c_white, 1);
+}
+// 2. Z-SABER COMBAT ATTACKS (Highest priority when slashing!)
 else if (slash_anim_timer > 0) {
     var _f_slash = clamp(floor(slash_anim_frame), 0, 8);
     if (is_wall_slashing && sprite_exists(sZero_WallSlash)) {
@@ -128,26 +145,3 @@ else if (is_landing && sprite_exists(sZero_Jump)) {
     }
 }
 
-// Technique VFX Overlays
-if (technique_state == TECHNIQUE.RYUENJIN) {
-    draw_set_color(make_color_rgb(255, 120, 20)); // Flame
-    draw_set_alpha(0.8);
-    draw_ellipse(x - 8, y - 40, x + 8, y, false);
-    draw_set_alpha(1.0);
-} else if (technique_state == TECHNIQUE.HYOURETSUZAN) {
-    draw_set_color(make_color_rgb(100, 220, 255)); // Ice
-    draw_set_alpha(0.8);
-    draw_triangle(x - 6, y - 10, x + 6, y - 10, x, y + 16, false);
-    draw_set_alpha(1.0);
-} else if (technique_state == TECHNIQUE.KUUENZAN) {
-    var _c_saber = make_color_rgb(40, 255, 120);     // Green Saber
-    draw_set_color(_c_saber);
-    draw_set_alpha(0.7);
-    draw_circle(x, y - 16, 22, true);
-    draw_set_alpha(1.0);
-} else if (technique_state == TECHNIQUE.RAIJINGEKI) {
-    draw_set_color(make_color_rgb(255, 255, 80)); // Lightning
-    draw_set_alpha(0.8);
-    draw_line_width(x, y - 16, x + (facing * 36), y - 16, 4);
-    draw_set_alpha(1.0);
-}

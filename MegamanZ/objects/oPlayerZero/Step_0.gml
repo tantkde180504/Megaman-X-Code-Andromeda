@@ -1,4 +1,49 @@
+// Input suppression / movement lock during techniques
+var _orig_left = global.input.left;
+var _orig_right = global.input.right;
+var _orig_up = global.input.up;
+var _orig_down = global.input.down;
+var _orig_jump = global.input.jump_pressed;
+var _orig_dash = global.input.dash_pressed;
+var _orig_shoot = global.input.shoot_pressed;
+var _orig_special = global.input.special_pressed;
+
+if (technique_state == TECHNIQUE.RAIJINGEKI) {
+    global.input.left = 0;
+    global.input.right = 0;
+    global.input.jump_pressed = 0;
+    global.input.dash_pressed = 0;
+    global.input.shoot_pressed = 0;
+    global.input.special_pressed = 0;
+    hsp = 0;
+} else if (technique_state == TECHNIQUE.RYUENJIN) {
+    global.input.left = 0;
+    global.input.right = 0;
+    global.input.jump_pressed = 0;
+    global.input.dash_pressed = 0;
+    global.input.shoot_pressed = 0;
+    global.input.special_pressed = 0;
+} else if (technique_state == TECHNIQUE.HYOURETSUZAN) {
+    global.input.left = 0;
+    global.input.right = 0;
+    global.input.jump_pressed = 0;
+    global.input.dash_pressed = 0;
+    global.input.shoot_pressed = 0;
+    global.input.special_pressed = 0;
+    hsp = 0;
+}
+
 event_inherited();
+
+// Restore inputs
+global.input.left = _orig_left;
+global.input.right = _orig_right;
+global.input.up = _orig_up;
+global.input.down = _orig_down;
+global.input.jump_pressed = _orig_jump;
+global.input.dash_pressed = _orig_dash;
+global.input.shoot_pressed = _orig_shoot;
+global.input.special_pressed = _orig_special;
 
 // Damage interrupts attacks
 if (state == PLAYER_STATE.HURT) {
@@ -11,6 +56,8 @@ if (state == PLAYER_STATE.HURT) {
     combo_timer = 0;
     technique_state = TECHNIQUE.NONE;
     technique_timer = 0;
+    technique_frame = 0.0;
+    technique_phase = 0;
     if (instance_exists(current_saber_hitbox)) {
         instance_destroy(current_saber_hitbox);
         current_saber_hitbox = noone;
@@ -18,59 +65,68 @@ if (state == PLAYER_STATE.HURT) {
 }
 
 // Techniques input (Special button)
-if (global.input.special_pressed) {
+if (global.input.special_pressed && technique_state == TECHNIQUE.NONE && slash_anim_timer <= 0 && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DEATH && state != PLAYER_STATE.INTRO && state != PLAYER_STATE.TELEPORT_OUT) {
     if (instance_exists(current_saber_hitbox)) {
         instance_destroy(current_saber_hitbox);
         current_saber_hitbox = noone;
     }
     if (grounded && global.input.up) {
+        // Ryuenjin: Flaming dragon uppercut
         technique_state = TECHNIQUE.RYUENJIN;
-        technique_timer = 24;
-        vsp = -6.5;
-        hsp = facing * 1.0;
+        technique_frame = 0.0;
+        technique_timer = 36;
+        hsp = 0;
+        vsp = 0;
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "ryuenjin";
-        _h.damage = 4;
+        _h.damage = 6.0;
         _h.element = "fire";
         current_saber_hitbox = _h;
         camera_shake(3, 8);
     } else if (!grounded && global.input.down) {
+        // Hyouretsuzan: Giant ice plunge dive
         technique_state = TECHNIQUE.HYOURETSUZAN;
-        technique_timer = 30;
-        vsp = 8.0;
+        technique_phase = 0;
+        technique_frame = 0.0;
+        technique_timer = 120;
         hsp = 0;
+        vsp = 8.5;
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "hyouretsuzan";
-        _h.damage = 4;
+        _h.damage = 5.0;
         _h.element = "ice";
         current_saber_hitbox = _h;
     } else if (!grounded) {
+        // Kuuenbu: 360-degree somersault spin slash
         technique_state = TECHNIQUE.KUUENZAN;
-        technique_timer = 20;
+        technique_frame = 0.0;
+        technique_timer = 24;
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "kuuenzan";
-        _h.damage = 3;
+        _h.damage = 3.5;
         _h.element = "slash";
         current_saber_hitbox = _h;
     } else {
+        // Raijingeki: Lightning thrust
         technique_state = TECHNIQUE.RAIJINGEKI;
-        technique_timer = 22;
+        technique_frame = 0.0;
+        technique_timer = 50;
         hsp = 0;
+        vsp = 0;
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "raijingeki";
-        _h.damage = 5;
+        _h.damage = 2.0;
         _h.element = "electric";
         current_saber_hitbox = _h;
-        camera_shake(2, 8);
     }
 }
 
-// Saber Combos (Attack button)
-if (global.input.shoot_pressed) {
+// Saber Combos & Techniques (Attack button)
+if (global.input.shoot_pressed && technique_state == TECHNIQUE.NONE && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DEATH && state != PLAYER_STATE.INTRO && state != PLAYER_STATE.TELEPORT_OUT) {
     if (instance_exists(current_saber_hitbox)) {
         instance_destroy(current_saber_hitbox);
         current_saber_hitbox = noone;
@@ -102,18 +158,32 @@ if (global.input.shoot_pressed) {
         _h.damage = 3.0;
         current_saber_hitbox = _h;
     } else if (!grounded) {
-        slash_anim_timer = 14;
-        slash_anim_frame = 0.0;
-        slash_total_frames = 9;
-        is_air_slashing = true;
-        is_dash_slashing = false;
-        is_wall_slashing = false;
-        is_ladder_slashing = false;
-        var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
-        _h.owner = id;
-        _h.slash_type = "air_slash";
-        _h.damage = 2.5;
-        current_saber_hitbox = _h;
+        if (global.input.down) {
+            // Down + Attack in air -> Hyouretsuzan: Giant ice plunge dive
+            technique_state = TECHNIQUE.HYOURETSUZAN;
+            technique_phase = 0;
+            technique_frame = 0.0;
+            technique_timer = 120;
+            hsp = 0;
+            vsp = 8.5;
+            var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+            _h.owner = id;
+            _h.slash_type = "hyouretsuzan";
+            _h.damage = 5.0;
+            _h.element = "ice";
+            current_saber_hitbox = _h;
+        } else {
+            // Neutral / Direction + Attack in air -> Kuuenbu: 360-degree somersault spin slash
+            technique_state = TECHNIQUE.KUUENZAN;
+            technique_frame = 0.0;
+            technique_timer = 24;
+            var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+            _h.owner = id;
+            _h.slash_type = "kuuenzan";
+            _h.damage = 3.5;
+            _h.element = "slash";
+            current_saber_hitbox = _h;
+        }
     } else if (state == PLAYER_STATE.DASH) {
         slash_anim_timer = 14;
         slash_anim_frame = 0.0;
@@ -128,47 +198,63 @@ if (global.input.shoot_pressed) {
         _h.damage = 3.0;
         current_saber_hitbox = _h;
     } else {
-        is_air_slashing = false;
-        is_dash_slashing = false;
-        is_wall_slashing = false;
-        is_ladder_slashing = false;
-        if (combo_step == 0) {
-            combo_step = 1;
-            combo_timer = COMBO_RESET_FRAMES;
-            slash_anim_timer = 12;
-            slash_anim_frame = 0.0;
-            slash_total_frames = 10;
+        if (global.input.up) {
+            // Up + Attack on ground -> Ryuenjin: Flaming dragon uppercut
+            technique_state = TECHNIQUE.RYUENJIN;
+            technique_frame = 0.0;
+            technique_timer = 36;
             hsp = 0;
+            vsp = 0;
             var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
             _h.owner = id;
-            _h.slash_type = "slash1";
-            _h.damage = 2.0;
-            current_saber_hitbox = _h;
-        } else if (combo_step == 1) {
-            combo_step = 2;
-            combo_timer = COMBO_RESET_FRAMES;
-            slash_anim_timer = 12;
-            slash_anim_frame = 0.0;
-            slash_total_frames = 10;
-            hsp = 0;
-            var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
-            _h.owner = id;
-            _h.slash_type = "slash2";
-            _h.damage = 2.0;
-            current_saber_hitbox = _h;
-        } else if (combo_step == 2) {
-            combo_step = 3;
-            combo_timer = 28;
-            slash_anim_timer = 18;
-            slash_anim_frame = 0.0;
-            slash_total_frames = 14;
-            hsp = 0;
-            var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
-            _h.owner = id;
-            _h.slash_type = "slash3";
-            _h.damage = 4.0;
+            _h.slash_type = "ryuenjin";
+            _h.damage = 6.0;
+            _h.element = "fire";
             current_saber_hitbox = _h;
             camera_shake(3, 8);
+        } else {
+            is_air_slashing = false;
+            is_dash_slashing = false;
+            is_wall_slashing = false;
+            is_ladder_slashing = false;
+            if (combo_step == 0) {
+                combo_step = 1;
+                combo_timer = COMBO_RESET_FRAMES;
+                slash_anim_timer = 12;
+                slash_anim_frame = 0.0;
+                slash_total_frames = 10;
+                hsp = 0;
+                var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+                _h.owner = id;
+                _h.slash_type = "slash1";
+                _h.damage = 2.0;
+                current_saber_hitbox = _h;
+            } else if (combo_step == 1) {
+                combo_step = 2;
+                combo_timer = COMBO_RESET_FRAMES;
+                slash_anim_timer = 12;
+                slash_anim_frame = 0.0;
+                slash_total_frames = 10;
+                hsp = 0;
+                var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+                _h.owner = id;
+                _h.slash_type = "slash2";
+                _h.damage = 2.0;
+                current_saber_hitbox = _h;
+            } else if (combo_step == 2) {
+                combo_step = 3;
+                combo_timer = 28;
+                slash_anim_timer = 18;
+                slash_anim_frame = 0.0;
+                slash_total_frames = 14;
+                hsp = 0;
+                var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
+                _h.owner = id;
+                _h.slash_type = "slash3";
+                _h.damage = 4.0;
+                current_saber_hitbox = _h;
+                camera_shake(3, 8);
+            }
         }
     }
 }
@@ -194,13 +280,140 @@ if (combo_timer > 0) {
     if (combo_timer <= 0) combo_step = 0;
 }
 
-if (technique_timer > 0) {
-    technique_timer--;
-    if (technique_timer <= 0) technique_state = TECHNIQUE.NONE;
-}
-if (technique_state == TECHNIQUE.HYOURETSUZAN && grounded) {
-    technique_state = TECHNIQUE.NONE;
-    camera_shake(4, 10);
+// -------------------------------------------------------------
+// Technique Updates
+// -------------------------------------------------------------
+if (technique_state != TECHNIQUE.NONE) {
+    if (technique_timer > 0) technique_timer--;
+    
+    switch (technique_state) {
+        case TECHNIQUE.RAIJINGEKI:
+            hsp = 0;
+            state = PLAYER_STATE.IDLE;
+            if (technique_frame < 12.0) {
+                technique_frame += 0.55;
+            } else if (technique_frame < 20.0) {
+                technique_frame += 0.40;
+                if (floor(technique_frame) % 2 == 0) camera_shake(1, 2);
+            } else {
+                technique_frame += 0.40;
+            }
+            if (technique_frame >= 24.0 || technique_timer <= 0) {
+                technique_state = TECHNIQUE.NONE;
+                technique_frame = 0.0;
+                if (instance_exists(current_saber_hitbox)) {
+                    instance_destroy(current_saber_hitbox);
+                    current_saber_hitbox = noone;
+                }
+            }
+            break;
+
+        case TECHNIQUE.RYUENJIN:
+            if (technique_frame < 2.0) {
+                hsp = 0;
+                vsp = 0;
+                technique_frame += 0.40;
+                if (technique_frame >= 2.0) {
+                    vsp = -7.5;
+                    hsp = facing * 1.5;
+                    state = PLAYER_STATE.JUMP;
+                    camera_shake(3, 8);
+                }
+            } else if (technique_frame < 8.0) {
+                technique_frame += 0.35;
+                state = PLAYER_STATE.JUMP;
+            } else if (technique_frame < 14.0) {
+                technique_frame += 0.35;
+                if (vsp < 0) vsp += 0.15;
+            } else {
+                technique_frame += 0.35;
+            }
+            if (technique_frame >= 16.0 || technique_timer <= 0) {
+                technique_state = TECHNIQUE.NONE;
+                technique_frame = 0.0;
+                state = PLAYER_STATE.FALL;
+                if (instance_exists(current_saber_hitbox)) {
+                    instance_destroy(current_saber_hitbox);
+                    current_saber_hitbox = noone;
+                }
+            }
+            break;
+
+        case TECHNIQUE.HYOURETSUZAN:
+            if (technique_phase == 0) {
+                // In air: plunge dive
+                if (technique_frame < 2.0) {
+                    technique_frame += 0.35;
+                    hsp = 0;
+                    vsp = min(vsp, 1.0);
+                } else {
+                    hsp = 0;
+                    vsp = 8.5;
+                    technique_frame = 2.0 + ((anim_timer div 4) % 2);
+                }
+                
+                // Ground collision triggers impact
+                if (grounded) {
+                    technique_phase = 1;
+                    technique_frame = 4.0;
+                    technique_timer = 25;
+                    vsp = 0;
+                    hsp = 0;
+                    state = PLAYER_STATE.IDLE;
+                    camera_shake(4, 10);
+                    if (instance_exists(current_saber_hitbox)) {
+                        ds_list_clear(current_saber_hitbox.hit_list);
+                    }
+                }
+            } else {
+                // On ground: impact shockwave and recovery (frames 4..8)
+                hsp = 0;
+                vsp = 0;
+                state = PLAYER_STATE.IDLE;
+                technique_frame += 0.30;
+                if (technique_frame >= 9.0 || technique_timer <= 0) {
+                    technique_state = TECHNIQUE.NONE;
+                    technique_phase = 0;
+                    technique_frame = 0.0;
+                    if (instance_exists(current_saber_hitbox)) {
+                        instance_destroy(current_saber_hitbox);
+                        current_saber_hitbox = noone;
+                    }
+                }
+            }
+            break;
+
+        case TECHNIQUE.KUUENZAN:
+            technique_frame += 0.35;
+            // Air dash cancel allowed
+            if (!grounded && has_air_dash && can_air_dash && global.input.dash_pressed) {
+                technique_state = TECHNIQUE.NONE;
+                technique_frame = 0.0;
+                if (instance_exists(current_saber_hitbox)) {
+                    instance_destroy(current_saber_hitbox);
+                    current_saber_hitbox = noone;
+                }
+                state = PLAYER_STATE.DASH;
+                dash_timer = AIR_DASH_DURATION;
+                can_air_dash = false;
+                var _move = global.input.right - global.input.left;
+                dash_dir = (_move != 0) ? _move : facing;
+                facing = dash_dir;
+                hsp = dash_dir * DASH_SPEED;
+                vsp = 0;
+            } else if (grounded) {
+                if (abs(hsp) > 0.5) hsp = lerp(hsp, 0, 0.2);
+            }
+            if (technique_frame >= 8.0 || technique_timer <= 0) {
+                technique_state = TECHNIQUE.NONE;
+                technique_frame = 0.0;
+                if (instance_exists(current_saber_hitbox)) {
+                    instance_destroy(current_saber_hitbox);
+                    current_saber_hitbox = noone;
+                }
+            }
+            break;
+    }
 }
 
 // Saber animation progression & motion freeze
@@ -224,7 +437,7 @@ if (slash_anim_timer > 0) {
     is_dash_slashing = false;
     is_wall_slashing = false;
     is_ladder_slashing = false;
-    if (technique_timer <= 0 && instance_exists(current_saber_hitbox)) {
+    if (technique_state == TECHNIQUE.NONE && instance_exists(current_saber_hitbox)) {
         instance_destroy(current_saber_hitbox);
         current_saber_hitbox = noone;
     }

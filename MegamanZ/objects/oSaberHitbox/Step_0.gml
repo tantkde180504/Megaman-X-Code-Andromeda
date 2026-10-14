@@ -4,7 +4,7 @@ if (!instance_exists(owner)) {
 }
 
 // Destroy when attack ends
-if (owner.slash_anim_timer <= 0 && owner.technique_timer <= 0) {
+if (owner.slash_anim_timer <= 0 && owner.technique_state == TECHNIQUE.NONE) {
     instance_destroy();
     return;
 }
@@ -12,7 +12,7 @@ if (owner.slash_anim_timer <= 0 && owner.technique_timer <= 0) {
 var _px = owner.x;
 var _py = owner.y;
 var _facing = owner.facing;
-var _frame = floor(owner.slash_anim_frame);
+var _frame = (owner.technique_state != TECHNIQUE.NONE) ? floor(owner.technique_frame) : floor(owner.slash_anim_frame);
 var _active = false;
 var _min_x = 0;
 var _max_x = 0;
@@ -140,19 +140,50 @@ switch (slash_type) {
         break;
 
     case "ryuenjin":
-        _active = true; _min_x = -12; _max_x = 24; _min_y = -54; _max_y = 2;
+        // Ryuenjin (16 frames): 0 crouch, 1 ignition, 2..7 rising uppercut, 8..13 apex spiral, 14..15 fall
+        if (_frame == 1) {
+            _active = true; _min_x = -10; _max_x = 50; _min_y = -56; _max_y = 0;
+        } else if (_frame >= 2 && _frame <= 7) {
+            _active = true; _min_x = -14; _max_x = 44; _min_y = -96; _max_y = 0;
+        } else if (_frame >= 8 && _frame <= 13) {
+            _active = true; _min_x = -20; _max_x = 36; _min_y = -98; _max_y = 0;
+        }
         break;
 
     case "hyouretsuzan":
-        _active = true; _min_x = -14; _max_x = 14; _min_y = -12; _max_y = 24;
+        // Hyouretsuzan (9 frames): 0..1 ready, 2..3 dive plunge, 4..5 impact, 6..8 recover
+        if (_frame == 2 || _frame == 3) {
+            _active = true; _min_x = -18; _max_x = 18; _min_y = -60; _max_y = 10;
+        } else if (_frame == 4 || _frame == 5) {
+            _active = true; _min_x = -32; _max_x = 32; _min_y = -50; _max_y = 2;
+        }
         break;
 
     case "kuuenzan":
-        _active = true; _min_x = -28; _max_x = 28; _min_y = -44; _max_y = 8;
+    case "kuuenbu":
+        // Kuuenbu (8 frames): full 360 degree spin slash
+        if (_frame >= 0 && _frame <= 7) {
+            _active = true; _min_x = -38; _max_x = 38; _min_y = -55; _max_y = 20;
+        }
         break;
 
     case "raijingeki":
-        _active = true; _min_x = 4; _max_x = 58; _min_y = -26; _max_y = -6;
+        // Raijingeki (24 frames): 0..11 charge sparks, 12..14 thrust, 15..19 blast, 20..22 dissipate, 23 recover
+        if (_frame >= 12 && _frame <= 14) {
+            _active = true; _min_x = 0; _max_x = 85; _min_y = -46; _max_y = 2;
+        } else if (_frame >= 15 && _frame <= 19) {
+            _active = true; _min_x = 0; _max_x = 135; _min_y = -46; _max_y = 2;
+        } else if (_frame >= 20 && _frame <= 22) {
+            _active = true; _min_x = 0; _max_x = 90; _min_y = -44; _max_y = 2;
+        }
+        // Multi-hit: allow hitting enemies every 6 frames during active blast
+        if (_active) {
+            multi_hit_timer++;
+            if (multi_hit_timer >= multi_hit_interval) {
+                multi_hit_timer = 0;
+                ds_list_clear(hit_list);
+            }
+        }
         break;
 }
 
@@ -200,7 +231,11 @@ if (_active) {
         var _w = _webs[| i];
         if (ds_list_find_index(hit_list, _w) == -1) {
             ds_list_add(hit_list, _w);
-            _w.hp -= damage;
+            if (element == "fire") {
+                _w.hp = 0;
+            } else {
+                _w.hp -= damage;
+            }
             _w.flash_timer = 6;
             if (_w.hp <= 0 && object_exists(oFX_HitSpark)) {
                 instance_create_layer(_w.x, _w.y, "Instances", oFX_HitSpark);
