@@ -292,6 +292,7 @@ function player_state_fall() {
         state = PLAYER_STATE.DEATH;
         death_timer = 40;
         camera_shake(4, 12);
+        music_stop_boss_nightmare_zero(1000);
         return;
     }
     // Air Dash capability!

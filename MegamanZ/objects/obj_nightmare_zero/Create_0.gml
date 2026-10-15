@@ -79,6 +79,9 @@ if (room_get_name(room) == "rStage_WebSpider") {
     state = NZ_STATE.INTRO;
     visible = true;
 }
+if (state == NZ_STATE.INTRO) {
+    music_play_boss_nightmare_zero();
+}
 state_timer = 0;
 warning_timer = 90;
 
@@ -124,6 +127,7 @@ nz_change_state = function(_new_state) {
             anim_sprite = spr_nz_spawn; // Hàng 1, 2 (15 frames)
             anim_delay = 6;
             is_invulnerable = true;
+            music_play_boss_nightmare_zero();
             break;
             
         case NZ_STATE.IDLE:

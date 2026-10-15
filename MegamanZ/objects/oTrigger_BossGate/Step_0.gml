@@ -25,6 +25,7 @@ if (gate_state == GATE_STATE.CLOSED && instance_exists(oPlayer)) {
     if (door_y >= 0) {
         gate_state = GATE_STATE.LOCKED;
         camera_shake(3, 8);
+        music_play_boss_nightmare_zero();
         // Trigger or spawn boss in Jungle Stage arena
         if (room_get_name(room) == "rStage_WebSpider") {
             if (instance_exists(obj_nightmare_zero)) {

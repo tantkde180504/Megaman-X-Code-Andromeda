@@ -1,6 +1,7 @@
 var _is_menu_room = (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect");
 
 if (_is_menu_room) {
+    music_stop_all();
     if (instance_exists(oPlayer)) {
         with (oPlayer) instance_destroy();
     }
@@ -27,6 +28,7 @@ if (room == Room1) {
     scr_build_stage_web_spider();
 } else if (room_get_name(room) == "rBoss_NightmareZero") {
     scr_build_boss_room_nightmare_zero();
+    music_play_boss_nightmare_zero();
 }
 
 // Ensure boss and boss gate exist in Web Spider stage

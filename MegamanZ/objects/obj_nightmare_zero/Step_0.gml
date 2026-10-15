@@ -7,6 +7,7 @@ if (state == NZ_STATE.SLEEP) {
             state = NZ_STATE.INTRO;
             state_timer = 0;
             warning_timer = 90;
+            music_play_boss_nightmare_zero();
         }
     }
     return;
@@ -464,6 +465,7 @@ switch (state) {
         if (death_timer == 90) {
             instance_create_layer(x, y - 16, "Instances", oFX_EnemyExplosion);
             camera_shake(6, 16);
+            music_stop_boss_nightmare_zero(1500);
             
             // Mở cổng phòng trùm
             if (instance_exists(oTrigger_BossGate)) {

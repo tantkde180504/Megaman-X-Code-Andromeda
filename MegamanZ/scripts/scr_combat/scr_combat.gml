@@ -18,6 +18,7 @@ function player_take_damage(_amount, _knockback_dir) {
         _p.hsp = 0;
         _p.vsp = 0;
         _p.death_timer = 60;
+        music_stop_boss_nightmare_zero(1000);
     } else {
         _p.state = PLAYER_STATE.HURT;
         _p.hurt_timer = 18;
