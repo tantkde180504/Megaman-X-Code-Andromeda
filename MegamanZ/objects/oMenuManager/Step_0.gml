@@ -226,7 +226,7 @@ switch (state) {
             global.current_char = (selected_char == 0) ? CHAR_TYPE.X : CHAR_TYPE.ZERO;
             global.checkpoint_x = 64;
             global.checkpoint_y = 352;
-            room_goto(rStageSelect);
+            room_goto(rStage_WebSpider);
         }
         break;
 }
