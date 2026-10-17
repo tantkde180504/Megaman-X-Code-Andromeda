@@ -467,10 +467,12 @@ switch (state) {
             camera_shake(6, 16);
             music_stop_boss_nightmare_zero(1500);
             
-            // Mở cổng phòng trùm
+            // Cổng đã khoá không tự động mở lại theo yêu cầu của người chơi ("không thể mở cửa đó nữa")
             if (instance_exists(oTrigger_BossGate)) {
                 with (oTrigger_BossGate) {
-                    gate_state = GATE_STATE.OPENING;
+                    if (gate_state != GATE_STATE.LOCKED) {
+                        gate_state = GATE_STATE.OPENING;
+                    }
                 }
             }
         }

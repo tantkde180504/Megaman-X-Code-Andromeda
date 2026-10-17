@@ -52,12 +52,12 @@ action_triggered = false;
 // -------------------------------------------------------------------------
 if (room_get_name(room) == "rStage_WebSpider") {
     if (x >= 4800) {
-        arena_left = 4912;
+        arena_left = 5096;
         arena_right = 5424;
         arena_center = (arena_left + arena_right) * 0.5;
         
         // Nếu người chơi chưa tới gần phòng trùm (hoặc vừa load map), boss chờ (SLEEP)
-        if (!instance_exists(oPlayer) || instance_find(oPlayer, 0).x < 4850) {
+        if (!instance_exists(oPlayer) || instance_find(oPlayer, 0).x < 5080) {
             state = NZ_STATE.SLEEP;
             visible = false;
         } else {

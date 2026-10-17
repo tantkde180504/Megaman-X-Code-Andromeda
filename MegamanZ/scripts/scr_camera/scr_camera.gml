@@ -18,9 +18,9 @@ function camera_update_follow(_cam, _target_x, _target_y) {
     var _dest_x = _target_x - (_cam_w * 0.5);
     var _dest_y = _target_y - (_cam_h * 0.5) - 16; // Slight offset upwards for better view
     
-    // Lock to Boss Arena in Jungle Stage when player enters boss room
-    if (room_get_name(room) == "rStage_WebSpider" && _target_x >= 4896) {
-        _dest_x = clamp(_dest_x, 4896, max(4896, 5456 - _cam_w));
+    // Lock to Boss Arena in Jungle Stage when player enters boss room past Door 2
+    if (room_get_name(room) == "rStage_WebSpider" && _target_x >= 5080) {
+        _dest_x = clamp(_dest_x, 4976, max(4976, 5456 - _cam_w));
         _dest_y = clamp(_dest_y, 1856, max(1856, 2144 - _cam_h));
         return [_dest_x, _dest_y];
     }

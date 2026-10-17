@@ -34,11 +34,16 @@ if (room == Room1) {
 // Ensure boss and boss gate exist in Web Spider stage
 if (room_get_name(room) == "rStage_WebSpider") {
     if (!instance_exists(obj_nightmare_zero)) {
-        var _boss = instance_create_layer(5250, 2096, "Instances", obj_nightmare_zero);
+        var _boss = instance_create_layer(5280, 2080, "Instances", obj_nightmare_zero);
         _boss.facing = -1;
     }
     if (!instance_exists(oTrigger_BossGate)) {
-        instance_create_layer(4880, 2000, "Instances", oTrigger_BossGate);
+        var _d1 = instance_create_layer(4800, 1936, "Instances", oTrigger_BossGate);
+        _d1.door_index = 1;
+        _d1.is_arena_door = false;
+        var _d2 = instance_create_layer(5064, 1984, "Instances", oTrigger_BossGate);
+        _d2.door_index = 2;
+        _d2.is_arena_door = true;
     }
 }
 
