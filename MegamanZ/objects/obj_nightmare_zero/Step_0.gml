@@ -2,8 +2,8 @@
 if (state == NZ_STATE.SLEEP) {
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
-        // Chỉ thức dậy khi người chơi đã bước qua Cửa 2 vào bên trong đấu trường (x >= 4840)
-        if (_p.x >= 4840) {
+        // Chỉ thức dậy khi người chơi đã bước qua Cửa 2 vào bên trong đấu trường (x >= 5100)
+        if (_p.x >= 5100) {
             visible = true;
             nz_change_state(NZ_STATE.INTRO);
         }

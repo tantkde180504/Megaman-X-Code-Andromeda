@@ -38,9 +38,9 @@ if (room_get_name(room) == "rStage_WebSpider") {
         _boss.facing = -1;
     }
     
-    // Cấu hình chuẩn xác 2 cửa trùm: Cửa 1 (4656, 1920) và Cửa 2 (4800, 1936)
+    // Cấu hình chuẩn xác 2 cửa trùm: Cửa 1 (4800, 1936 - Note 1) và Cửa 2 (5088, 1984 - Note 2)
     with (oTrigger_BossGate) {
-        if (x < 4750) {
+        if (x < 4950) {
             door_index = 1;
             is_arena_door = false;
         } else {
@@ -52,12 +52,12 @@ if (room_get_name(room) == "rStage_WebSpider") {
     // Nếu thiếu cửa nào thì tự động tạo đầy đủ cả 2 cửa
     if (instance_number(oTrigger_BossGate) < 2) {
         with (oTrigger_BossGate) instance_destroy();
-        var _d1 = instance_create_layer(4656, 1920, "Instances", oTrigger_BossGate);
+        var _d1 = instance_create_layer(4800, 1936, "Instances", oTrigger_BossGate);
         _d1.door_index = 1;
         _d1.is_arena_door = false;
         _d1.gate_state = GATE_STATE.CLOSED;
         
-        var _d2 = instance_create_layer(4800, 1936, "Instances", oTrigger_BossGate);
+        var _d2 = instance_create_layer(5088, 1984, "Instances", oTrigger_BossGate);
         _d2.door_index = 2;
         _d2.is_arena_door = true;
         _d2.gate_state = GATE_STATE.CLOSED;
