@@ -342,14 +342,13 @@ switch (state) {
         if (target != noone) facing = (target.x >= x) ? 1 : -1;
         state_timer++;
         
-        if (state_timer == 20) {
-            // Thả 4 nhện con theo quỹ đạo vòng cung parabol xuống mặt phẳng sàn:
-            // 2 con sang trái và 2 con sang phải với gia tốc trọng lực tự nhiên
+        if (state_timer == 24) {
+            // Thả 4 nhện con bung từ nắp lưng (Hàng 4) rơi theo vòng cung tự nhiên xuống sàn đấu
             var _configs = [
-                [-3.5, -2.2, -1], // Nhện 1: bay vòng cung rộng sang trái -> bò sang tường trái
-                [-1.8, -3.2, -1], // Nhện 2: bay vòng cung cao sang trái -> bò sang tường trái
-                [ 1.8, -3.2,  1], // Nhện 3: bay vòng cung cao sang phải -> bò sang tường phải
-                [ 3.5, -2.2,  1]  // Nhện 4: bay vòng cung rộng sang phải -> bò sang tường phải
+                [-1.4, -2.0, -1], // Nhện 1: vòng cung nhẹ sang trái -> bò sàn sang trái
+                [-0.6, -2.5, -1], // Nhện 2: rơi thẳng hơn sang trái -> bò sàn sang trái
+                [ 0.6, -2.5,  1], // Nhện 3: rơi thẳng hơn sang phải -> bò sàn sang phải
+                [ 1.4, -2.0,  1]  // Nhện 4: vòng cung nhẹ sang phải -> bò sàn sang phải
             ];
             
             for (var i = 0; i < 4; i++) {

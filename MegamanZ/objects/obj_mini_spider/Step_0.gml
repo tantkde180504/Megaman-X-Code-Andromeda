@@ -22,7 +22,7 @@ switch (spider_state) {
             vsp = 0;
             if (y >= y_floor) y = y_floor;
             spider_state = SPIDER_MINION_STATE.FLOOR;
-            // Maintain trajectory direction towards designated wall
+            floor_crawl_timer = 0;
             facing = crawl_dir;
             if (object_exists(oFX_DashDust)) {
                 instance_create_layer(x, y, "Instances", oFX_DashDust);
@@ -31,28 +31,34 @@ switch (spider_state) {
         break;
         
     case SPIDER_MINION_STATE.FLOOR:
-        hsp = facing * 2.8;
+        floor_crawl_timer++;
+        hsp = facing * crawl_speed;
         x += hsp;
         
         // Floor snap on slopes/steps
         if (!place_meeting(x, y + 1, oSolid) && place_meeting(x, y + 6, oSolid)) y += 2;
         
-        // Wall collision check: solid tile or arena wall boundary
-        var _hit_wall = place_meeting(x + sign(hsp) * 4, y, oSolid) || 
-                        (facing == -1 && x <= left_wall_x + 8) || 
-                        (facing == 1 && x >= right_wall_x - 8);
-                        
-        if (_hit_wall) {
-            spider_state = SPIDER_MINION_STATE.WALL;
-            vsp = -2.8;
-            hsp = 0;
-            // Snap to wall face and turn belly toward room center
-            if (facing == -1) {
-                x = left_wall_x + 8;
-                facing = 1; // Wall on left -> belly faces right
+        // Bò dưới đất trước, khi tới sát tường và đủ thời gian bò thì từ từ bám tường đi lên
+        var _at_left_wall = (facing == -1 && (place_meeting(x - 4, y, oSolid) || x <= left_wall_x + 8));
+        var _at_right_wall = (facing == 1 && (place_meeting(x + 4, y, oSolid) || x >= right_wall_x - 8));
+        
+        if (_at_left_wall || _at_right_wall) {
+            if (floor_crawl_timer >= floor_crawl_min_time) {
+                // Đã bò dưới đất đủ lâu -> bắt đầu bám tường từ từ đi lên
+                spider_state = SPIDER_MINION_STATE.WALL;
+                vsp = wall_climb_speed;
+                hsp = 0;
+                if (facing == -1) {
+                    x = left_wall_x + 8;
+                    facing = 1; // Bám tường trái -> bụng hướng sang phải
+                } else {
+                    x = right_wall_x - 8;
+                    facing = -1; // Bám tường phải -> bụng hướng sang trái
+                }
             } else {
-                x = right_wall_x - 8;
-                facing = -1; // Wall on right -> belly faces left
+                // Nếu chạm góc tường quá sớm -> quay đầu bò tiếp tục dưới mặt đất
+                facing = -facing;
+                crawl_dir = facing;
             }
         }
         break;

@@ -60,10 +60,17 @@ switch (state) {
         break;
         
     case WS_STATE.PHASE2_WEB_MOVE:
-        // Bò trên các điểm nút của mạng nhện (Row 3, luân phiên Frame 3 và 4)
-        _row = 3;
-        _frame = 3 + (floor(anim_timer * 0.25) % 2);
-        break;
+        // Cử động bò đa bộ phận (Multi-part) trên mạng nhện theo đúng yêu cầu:
+        // - Thân: Hàng 4 Frame 1 (index 0)
+        // - Đầu: Hàng 5 với 4 frame kết hợp với phần thân
+        // - Chân lớn: Hàng 6 (11 frame) kết hợp với thân
+        // - Chân nhỏ: Hàng 7 (11 frame)
+        // - Tay: Hàng 8 (7 frame)
+        var _head_f = (anim_timer * 0.15) % 4;
+        var _leg_f = (anim_timer * 0.35) % 11;
+        var _arm_f = (anim_timer * 0.25) % 7;
+        draw_web_spider_multipart(0, _head_f, _leg_f, _leg_f, _arm_f, x, y, facing, _flash, 1.0);
+        return;
         
     case WS_STATE.PHASE2_ATTACK_WEB:
         // Tích điện và phóng Lightning Web từ trên mạng nhện (Row 3, Frame 4 -> Frame 5)
@@ -72,10 +79,13 @@ switch (state) {
         break;
         
     case WS_STATE.PHASE2_SPAWN_SPIDERS:
-        // Chổng bụng phóng nhện con (Row 3, luân phiên Frame 1 và 2)
-        _row = 3;
-        _frame = (state_timer < 20) ? 1 : 2;
-        break;
+        // Animation bung nhện con: Hàng 4 với 7 frame mở nắp kết hợp với phần thân và các chi
+        var _body_f = clamp(floor((state_timer / 55.0) * 7), 0, 6);
+        var _head_f = (anim_timer * 0.15) % 4;
+        var _leg_f = (anim_timer * 0.20) % 11;
+        var _arm_f = (anim_timer * 0.20) % 7;
+        draw_web_spider_multipart(_body_f, _head_f, _leg_f, _leg_f, _arm_f, x, y, facing, _flash, 1.0);
+        return;
         
     case WS_STATE.DEATH:
         // Hiệu ứng kết liễu: Dùng Frame giật điện/chao đảo (Row 2, Frame 2)
