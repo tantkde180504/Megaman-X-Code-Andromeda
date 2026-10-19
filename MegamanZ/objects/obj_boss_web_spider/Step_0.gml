@@ -35,7 +35,7 @@ if (wire_active) {
     // Check if player's Saber hitbox cuts the wire
     if (instance_exists(oSaberHitbox)) {
         with (oSaberHitbox) {
-            if (_active && bbox_right >= _wire_x - 14 && bbox_left <= _wire_x + 14 &&
+            if (is_active && bbox_right >= _wire_x - 14 && bbox_left <= _wire_x + 14 &&
                 bbox_bottom >= _wire_top && bbox_top <= _wire_bottom) {
                 var _is_fire = (element == "fire" || slash_type == "ryuenjin");
                 other.take_damage(6, _is_fire, true, element);
