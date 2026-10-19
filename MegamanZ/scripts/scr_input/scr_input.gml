@@ -194,4 +194,27 @@ function input_update() {
         global.input.special = false;
         global.input.special_pressed = false;
     }
+    
+    // Web Bound Debuff (Section 4): Movement locked, button mashing breaks free faster
+    if (instance_exists(oPlayer)) {
+        var _p = instance_find(oPlayer, 0);
+        if (_p != noone && variable_instance_exists(_p, "is_web_bound") && _p.is_web_bound) {
+            // Button mashing to break free
+            if (global.input.left_pressed || global.input.right_pressed || global.input.jump_pressed || global.input.dash_pressed) {
+                _p.web_bound_timer -= 5;
+                if (object_exists(oFX_HitSpark)) {
+                    instance_create_layer(_p.x, _p.y - 12, "Instances", oFX_HitSpark);
+                }
+            }
+            
+            // Suppress movement while bound in web
+            global.input.left = false;
+            global.input.right = false;
+            global.input.dash = false;
+            global.input.dash_pressed = false;
+            global.input.jump = false;
+            global.input.jump_pressed = false;
+        }
+    }
 }
+

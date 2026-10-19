@@ -51,14 +51,18 @@ function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y) {
             }
         }
         
-        if (variable_instance_exists(_target, "hp")) {
-            _target.hp = max(0, _target.hp - _damage);
-        }
-        if (variable_instance_exists(_target, "flash_timer")) {
-            _target.flash_timer = 8;
-        }
-        if (variable_instance_exists(_target, "invulnerability_timer")) {
-            _target.invulnerability_timer = 8;
+        if (variable_instance_exists(_target, "take_damage") && is_method(_target.take_damage)) {
+            _target.take_damage(_damage, false, false);
+        } else {
+            if (variable_instance_exists(_target, "hp")) {
+                _target.hp = max(0, _target.hp - _damage);
+            }
+            if (variable_instance_exists(_target, "flash_timer")) {
+                _target.flash_timer = 8;
+            }
+            if (variable_instance_exists(_target, "invulnerability_timer")) {
+                _target.invulnerability_timer = 8;
+            }
         }
         
         // Spawn hit spark FX
@@ -121,8 +125,45 @@ function scr_reset_boss_room() {
     if (instance_exists(obj_nz_spike)) with (obj_nz_spike) instance_destroy();
     if (instance_exists(oBoss_WebSpider_Projectile)) with (oBoss_WebSpider_Projectile) instance_destroy();
     if (instance_exists(oBoss_WebSpider_WebNet)) with (oBoss_WebSpider_WebNet) instance_destroy();
+    if (instance_exists(obj_web_leaf_telegraph)) with (obj_web_leaf_telegraph) instance_destroy();
+    if (instance_exists(obj_lightning_web_proj)) with (obj_lightning_web_proj) instance_destroy();
+    if (instance_exists(obj_mini_spider)) with (obj_mini_spider) instance_destroy();
+    if (instance_exists(obj_giant_web_network)) with (obj_giant_web_network) instance_destroy();
     
-    // Reset Web Spider if active
+    // Clear player web debuff if dead
+    if (instance_exists(oPlayer)) {
+        with (oPlayer) {
+            is_web_bound = false;
+            web_bound_timer = 0;
+            web_bound_damage_timer = 0;
+        }
+    }
+    
+    // Reset Web Spider if active (supports both oBoss_WebSpider and obj_boss_web_spider)
+    if (instance_exists(obj_boss_web_spider)) {
+        with (obj_boss_web_spider) {
+            hp = hp_max;
+            prev_hp = hp_max;
+            hp_display = 0;
+            state = WS_STATE.INTRO;
+            state_timer = 0;
+            warning_timer = 90;
+            intro_done = false;
+            phase = 1;
+            flash_timer = 0;
+            invincible_timer = 0;
+            is_invulnerable = false;
+            wire_active = false;
+            vsp = 0;
+            hsp = 0;
+            y = y_ceiling - 40;
+            x = arena_center_x;
+            if (instance_exists(web_network_inst)) {
+                with (web_network_inst) instance_destroy();
+                web_network_inst = noone;
+            }
+        }
+    }
     if (instance_exists(oBoss_WebSpider)) {
         with (oBoss_WebSpider) {
             hp = max_hp;

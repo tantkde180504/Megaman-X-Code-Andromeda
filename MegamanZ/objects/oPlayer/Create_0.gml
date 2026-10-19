@@ -18,3 +18,9 @@ teleport_sphere_frame = 1.0;
 intro_anim_frame = 0.0;
 intro_hold_timer = 0;
 teleport_out_frame = 0.0;
+
+// Web binding debuff (from Lightning Web)
+is_web_bound = false;
+web_bound_timer = 0;
+web_bound_damage_timer = 0;
+

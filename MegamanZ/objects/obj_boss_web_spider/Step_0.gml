@@ -1,0 +1,378 @@
+/// @desc Web Spider Boss Step Event (Master Finite State Machine)
+
+// 1. Target Tracking
+if (instance_exists(oPlayer)) {
+    target = instance_nearest(x, y, oPlayer);
+} else {
+    target = noone;
+}
+
+// 2. Invulnerability & Flash Countdown
+if (flash_timer > 0) flash_timer--;
+if (invincible_timer > 0) {
+    invincible_timer--;
+    is_invulnerable = (invincible_timer > 0);
+} else {
+    is_invulnerable = false;
+}
+
+// Sync damage from external combat systems
+if (hp < prev_hp) {
+    var _diff = prev_hp - hp;
+    prev_hp = hp;
+    take_damage(_diff, false, false);
+}
+
+// 3. Web Thread Damage Hitbox (dmg_thread = 3)
+if (wire_active && target != noone) {
+    var _wire_x = anchor_x;
+    var _wire_top = y_ceiling;
+    var _wire_bottom = y - 16;
+    
+    // Check if player touches the vertical electric thread
+    if (abs(target.x - _wire_x) <= 10 && target.y >= _wire_top && target.y <= _wire_bottom) {
+        if (target.iframes <= 0 && target.state != PLAYER_STATE.HURT && target.state != PLAYER_STATE.DEATH) {
+            var _kdir = (target.x >= _wire_x) ? 1 : -1;
+            player_take_damage(dmg_thread, _kdir);
+        }
+    }
+}
+
+// 4. Contact Damage with Player (dmg_contact = 6)
+if (state != WS_STATE.INTRO && state != WS_STATE.DEATH && !is_invulnerable && target != noone) {
+    if (place_meeting(x, y, target)) {
+        if (target.iframes <= 0 && target.state != PLAYER_STATE.HURT && target.state != PLAYER_STATE.DEATH) {
+            var _kdir = (target.x >= x) ? 1 : -1;
+            player_take_damage(dmg_contact, _kdir);
+        }
+    }
+}
+
+// 5. Finite State Machine
+switch (state) {
+    // =========================================================================
+    // A. STATE_INTRO: Repliforce salute & health bar fill
+    // =========================================================================
+    case WS_STATE.INTRO:
+        hsp = 0;
+        vsp = 0;
+        is_invulnerable = true;
+        wire_active = true;
+        anchor_x = x;
+        
+        // Slide down to mid-air
+        var _intro_stop_y = y_ceiling + 70;
+        if (y < _intro_stop_y) {
+            y = min(_intro_stop_y, y + 2.5);
+        }
+        
+        anim_timer += 0.12;
+        anim_frame = floor(anim_timer) % 4; // Row 1 intro salute
+        
+        if (warning_timer > 0) {
+            warning_timer--;
+        } else {
+            // Fill health bar
+            if (hp_display < hp) {
+                hp_display = min(hp, hp_display + 1);
+                if (hp_display % 4 == 0) camera_shake(1, 2);
+            } else {
+                // Zip back up into canopy
+                y -= 4.0;
+                if (y <= y_ceiling - 48) {
+                    y = y_ceiling - 48;
+                    wire_active = false;
+                    intro_done = true;
+                    state = WS_STATE.PHASE1_CANOPY_HIDE;
+                    state_timer = 0;
+                }
+            }
+        }
+        break;
+        
+    // =========================================================================
+    // B.1. STATE_PHASE1_CANOPY_HIDE: Hide in canopy & spawn leaves
+    // =========================================================================
+    case WS_STATE.PHASE1_CANOPY_HIDE:
+        hsp = 0;
+        vsp = 0;
+        y = y_ceiling - 48;
+        wire_active = false;
+        
+        // Select target X near player or key columns
+        if (state_timer == 0) {
+            if (target != noone) {
+                target_x = clamp(target.x + choose(-48, 0, 48), arena_left + 32, arena_right - 32);
+            } else {
+                target_x = choose(arena_left + 40, arena_center_x, arena_right - 40);
+            }
+        }
+        
+        state_timer++;
+        
+        // Spawn leaves falling down to telegraph drop position
+        if (state_timer % 6 == 0 && state_timer <= 42) {
+            var _lx = target_x + irandom_range(-16, 16);
+            instance_create_layer(_lx, y_ceiling, "Instances", obj_web_leaf_telegraph);
+        }
+        
+        if (state_timer >= 45) {
+            x = target_x;
+            anchor_x = target_x;
+            wire_active = true;
+            state = WS_STATE.PHASE1_DESCEND;
+            state_timer = 0;
+            
+            // Choose random drop height (low, mid, high)
+            target_y = choose(y_floor - 24, y_ceiling + 80, y_ceiling + 50);
+        }
+        break;
+        
+    // =========================================================================
+    // B.2. STATE_PHASE1_DESCEND: Lao nhanh xuống theo phương thẳng đứng
+    // =========================================================================
+    case WS_STATE.PHASE1_DESCEND:
+        hsp = 0;
+        wire_active = true;
+        anchor_x = x;
+        y = min(target_y, y + 5.5);
+        if (target != noone) facing = (target.x >= x) ? 1 : -1;
+        
+        if (y >= target_y) {
+            y = target_y;
+            camera_shake(1, 4);
+            state = WS_STATE.PHASE1_FIRE_WEB;
+            state_timer = 0;
+        }
+        break;
+        
+    // =========================================================================
+    // B.3. STATE_PHASE1_FIRE_WEB: Tích điện vàng và bắn Lightning Web
+    // =========================================================================
+    case WS_STATE.PHASE1_FIRE_WEB:
+        hsp = 0;
+        vsp = 0;
+        wire_active = true;
+        anchor_x = x;
+        if (target != noone) facing = (target.x >= x) ? 1 : -1;
+        state_timer++;
+        
+        // Shoot at frame 25
+        if (state_timer == 25) {
+            var _base_dir = (target != noone) ? point_direction(x, y - 10, target.x, target.y - 12) : ((facing == 1) ? 0 : 180);
+            var _proj = instance_create_layer(x + (facing * 16), y - 10, "Instances", obj_lightning_web_proj);
+            _proj.direction = _base_dir;
+            _proj.speed = 4.5;
+            camera_shake(1, 4);
+        }
+        
+        if (state_timer >= 35) {
+            state = WS_STATE.PHASE1_ASCEND;
+            state_timer = 0;
+        }
+        break;
+        
+    // =========================================================================
+    // B.4. STATE_PHASE1_ASCEND: Kéo ngược thân lên trần
+    // =========================================================================
+    case WS_STATE.PHASE1_ASCEND:
+        hsp = 0;
+        wire_active = true;
+        y = max(y_ceiling - 48, y - 4.5);
+        if (target != noone) facing = (target.x >= x) ? 1 : -1;
+        
+        if (y <= y_ceiling - 48) {
+            y = y_ceiling - 48;
+            wire_active = false;
+            state_timer = 0;
+            
+            // Phase transition check: HP <= 24
+            if (hp <= 24) {
+                state = WS_STATE.PHASE2_TRANSITION;
+                phase = 2;
+            } else {
+                state = WS_STATE.PHASE1_CANOPY_HIDE;
+            }
+        }
+        break;
+        
+    // =========================================================================
+    // C.1. STATE_PHASE2_TRANSITION: Lao xuống tâm & dựng mạng nhện khổng lồ
+    // =========================================================================
+    case WS_STATE.PHASE2_TRANSITION:
+        is_invulnerable = true;
+        wire_active = false;
+        
+        // Move to center node
+        var _cdir = point_direction(x, y, center_node_x, center_node_y);
+        var _cdist = point_distance(x, y, center_node_x, center_node_y);
+        if (_cdist > 4.0) {
+            x += lengthdir_x(5.0, _cdir);
+            y += lengthdir_y(5.0, _cdir);
+        } else {
+            x = center_node_x;
+            y = center_node_y;
+        }
+        
+        state_timer++;
+        
+        // Spawn Giant Web Network
+        if (state_timer == 10 && !instance_exists(obj_giant_web_network)) {
+            web_network_inst = instance_create_layer(center_node_x, center_node_y, "Instances", obj_giant_web_network);
+            camera_shake(2, 8);
+        }
+        
+        if (state_timer >= 60) {
+            state = WS_STATE.PHASE2_WEB_MOVE;
+            state_timer = 0;
+            current_node = 0;
+            is_invulnerable = false;
+        }
+        break;
+        
+    // =========================================================================
+    // C.2. STATE_PHASE2_WEB_MOVE: Bò trên các điểm nút của mạng nhện
+    // =========================================================================
+    case WS_STATE.PHASE2_WEB_MOVE:
+        wire_active = false;
+        anim_timer += 0.2;
+        
+        if (state_timer == 0) {
+            // Pick a new node from 8 outer vertices
+            var _avail = [];
+            for (var i = 1; i <= 8; i++) {
+                if (i != current_node) array_push(_avail, i);
+            }
+            target_node = _avail[irandom(array_length(_avail) - 1)];
+        }
+        state_timer++;
+        
+        var _dest_x = web_nodes[target_node][0];
+        var _dest_y = web_nodes[target_node][1];
+        var _dist = point_distance(x, y, _dest_x, _dest_y);
+        var _dir = point_direction(x, y, _dest_x, _dest_y);
+        facing = (x >= _dest_x) ? -1 : 1;
+        
+        if (_dist <= 4.0) {
+            x = _dest_x;
+            y = _dest_y;
+            current_node = target_node;
+            state_timer = 0;
+            
+            // Alternate between Attack Web and Spawn Spiders
+            p2_attack_cycle = (p2_attack_cycle + 1) % 2;
+            if (p2_attack_cycle == 0) {
+                state = WS_STATE.PHASE2_ATTACK_WEB;
+            } else {
+                state = WS_STATE.PHASE2_SPAWN_SPIDERS;
+            }
+        } else {
+            x += lengthdir_x(3.5, _dir);
+            y += lengthdir_y(3.5, _dir);
+        }
+        break;
+        
+    // =========================================================================
+    // C.3. STATE_PHASE2_ATTACK_WEB: Tích điện & bắn Lightning Web đuổi theo
+    // =========================================================================
+    case WS_STATE.PHASE2_ATTACK_WEB:
+        wire_active = false;
+        if (target != noone) facing = (target.x >= x) ? 1 : -1;
+        state_timer++;
+        
+        if (state_timer == 20) {
+            var _base_dir = (target != noone) ? point_direction(x, y - 10, target.x, target.y - 12) : ((facing == 1) ? 0 : 180);
+            var _proj = instance_create_layer(x + (facing * 16), y - 10, "Instances", obj_lightning_web_proj);
+            _proj.direction = _base_dir;
+            _proj.speed = 4.5;
+            camera_shake(1, 4);
+        }
+        
+        if (state_timer >= 45) {
+            state = WS_STATE.PHASE2_WEB_MOVE;
+            state_timer = 0;
+        }
+        break;
+        
+    // =========================================================================
+    // C.4. STATE_PHASE2_SPAWN_SPIDERS: Chổng bụng phóng 4 nhện con
+    // =========================================================================
+    case WS_STATE.PHASE2_SPAWN_SPIDERS:
+        wire_active = false;
+        if (target != noone) facing = (target.x >= x) ? 1 : -1;
+        state_timer++;
+        
+        if (state_timer == 20) {
+            var _angles = [60, 80, 100, 120];
+            for (var i = 0; i < 4; i++) {
+                var _sp = instance_create_layer(x, y - 10, "Instances", obj_mini_spider);
+                var _spd = 4.0;
+                _sp.hsp = lengthdir_x(_spd, _angles[i]);
+                _sp.vsp = -lengthdir_y(_spd, _angles[i]);
+                _sp.spider_state = SPIDER_MINION_STATE.AIR;
+            }
+            camera_shake(2, 6);
+        }
+        
+        if (state_timer >= 55) {
+            state = WS_STATE.PHASE2_WEB_MOVE;
+            state_timer = 0;
+        }
+        break;
+        
+    // =========================================================================
+    // D. STATE_WIRE_CUT_FALL: Rơi tự do đập lưng xuống sàn khi đứt tơ
+    // =========================================================================
+    case WS_STATE.WIRE_CUT_FALL:
+        wire_active = false;
+        state_timer++;
+        vsp = min(vsp + 0.35, 9.0);
+        y += vsp;
+        
+        if (y >= y_floor) {
+            y = y_floor;
+            vsp = 0;
+            camera_shake(3, 8);
+        }
+        
+        // Stunned on ground for 30 frames, then shoot new thread and ascend
+        if (y >= y_floor && state_timer >= 40) {
+            y -= 4.5;
+            if (y <= y_ceiling - 48) {
+                y = y_ceiling - 48;
+                state_timer = 0;
+                if (hp <= 24) {
+                    state = WS_STATE.PHASE2_TRANSITION;
+                    phase = 2;
+                } else {
+                    state = WS_STATE.PHASE1_CANOPY_HIDE;
+                }
+            }
+        }
+        break;
+        
+    // =========================================================================
+    // E. STATE_DEATH: Trùm nổ liên hoàn và kích hoạt thắng màn
+    // =========================================================================
+    case WS_STATE.DEATH:
+        hsp = 0;
+        vsp = 0;
+        is_invulnerable = true;
+        wire_active = false;
+        death_timer--;
+        
+        if (death_timer % 6 == 0) {
+            var _ex = x + irandom_range(-28, 28);
+            var _ey = y + irandom_range(-28, 28);
+            if (object_exists(oFX_EnemyExplosion)) {
+                instance_create_layer(_ex, _ey, "Instances", oFX_EnemyExplosion);
+            }
+            camera_shake(2, 4);
+        }
+        
+        if (death_timer <= 0) {
+            global.boss_defeated = true;
+            instance_destroy();
+        }
+        break;
+}

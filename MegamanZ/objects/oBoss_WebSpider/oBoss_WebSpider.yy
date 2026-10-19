@@ -15,8 +15,8 @@
     "path":"folders/Objects/Enemies.yy",
   },
   "parentObjectId":{
-    "name":"obj_boss_parent",
-    "path":"objects/obj_boss_parent/obj_boss_parent.yy",
+    "name":"obj_boss_web_spider",
+    "path":"objects/obj_boss_web_spider/obj_boss_web_spider.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

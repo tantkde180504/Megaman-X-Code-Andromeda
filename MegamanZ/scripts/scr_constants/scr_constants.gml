@@ -41,7 +41,29 @@ enum GATE_STATE {
     LOCKED
 }
 
-// Web Spider Boss States
+// Web Spider Boss States (Mega Man X4 Authentic Specification)
+enum WS_STATE {
+    INTRO,
+    PHASE1_CANOPY_HIDE,
+    PHASE1_DESCEND,
+    PHASE1_FIRE_WEB,
+    PHASE1_ASCEND,
+    PHASE2_TRANSITION,
+    PHASE2_WEB_MOVE,
+    PHASE2_ATTACK_WEB,
+    PHASE2_SPAWN_SPIDERS,
+    WIRE_CUT_FALL,
+    DEATH
+}
+
+// Mini Spider Minion States
+enum SPIDER_MINION_STATE {
+    AIR,
+    FLOOR,
+    WALL
+}
+
+// Legacy alias for compatibility
 enum SPIDER_STATE {
     INTRO,
     CEILING_IDLE,
