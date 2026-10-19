@@ -176,7 +176,7 @@ switch (state) {
             var _base_dir = (target != noone) ? point_direction(x, y - 10, target.x, target.y - 12) : ((facing == 1) ? 0 : 180);
             var _proj = instance_create_layer(x + (facing * 16), y - 10, "Instances", obj_lightning_web_proj);
             _proj.direction = _base_dir;
-            _proj.speed = 4.5;
+            _proj.speed = 2.6;
             camera_shake(1, 4);
         }
         
@@ -298,7 +298,7 @@ switch (state) {
             var _base_dir = (target != noone) ? point_direction(x, y - 10, target.x, target.y - 12) : ((facing == 1) ? 0 : 180);
             var _proj = instance_create_layer(x + (facing * 16), y - 10, "Instances", obj_lightning_web_proj);
             _proj.direction = _base_dir;
-            _proj.speed = 4.5;
+            _proj.speed = 2.6;
             camera_shake(1, 4);
         }
         

@@ -1,7 +1,7 @@
 /// @desc Web Spider Authentic Drawing System (Mega Man X4 PS1 Architecture)
 
-/// @func draw_web_spider_part(row, frame, x, y, facing, flash)
-function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false) {
+/// @func draw_web_spider_part(row, frame, x, y, facing, flash, alpha)
+function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false, _alpha = 1.0) {
     if (!sprite_exists(WebSpider)) return;
     
     var _sx = 0, _sy = 0, _w = 64, _h = 64, _ox = 32, _oy = 32;
@@ -100,21 +100,20 @@ function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false)
             break;
             
         // =====================================================================
-        // Row 12: Lightning Web Projectile (y = 714..756, h = 43)
+        // Row 12: Lightning Web Projectile (Flying Seed: 0..3, Deployed Web: 4..9)
         // =====================================================================
         case 12:
-            _sy = 714; _h = 43;
             var _f12 = clamp(floor(_frame), 0, 9);
-            if (_f12 == 0)      { _sx = 191; _w = 6;  _h = 38; } // Seed 1
-            else if (_f12 == 1) { _sx = 218; _w = 6;  _h = 38; } // Seed 2
-            else if (_f12 == 2) { _sx = 240; _w = 10; _h = 40; } // Seed 3
-            else if (_f12 == 3) { _sx = 267; _w = 10; _h = 40; } // Seed 4
-            else if (_f12 == 4) { _sx = 290; _w = 43; _h = 42; } // Electric web spin 1
-            else if (_f12 == 5) { _sx = 344; _w = 47; _h = 43; } // Electric web spin 2
-            else if (_f12 == 6) { _sx = 405; _w = 46; _h = 42; } // Electric web spin 3
-            else if (_f12 == 7) { _sx = 464; _w = 47; _h = 43; } // Electric web spin 4
-            else if (_f12 == 8) { _sx = 523; _w = 42; _h = 41; } // Electric web spin 5
-            else                { _sx = 579; _w = 49; _h = 42; } // Electric web spin 6
+            if (_f12 == 0)      { _sx = 191; _sy = 719; _w = 6;  _h = 6; }  // Flying seed (small)
+            else if (_f12 == 1) { _sx = 218; _sy = 719; _w = 6;  _h = 6; }  // Flying seed (small pulse)
+            else if (_f12 == 2) { _sx = 240; _sy = 717; _w = 10; _h = 10; } // Flying seed (glow spark)
+            else if (_f12 == 3) { _sx = 267; _sy = 717; _w = 10; _h = 10; } // Flying seed (glow pulse)
+            else if (_f12 == 4) { _sx = 290; _sy = 715; _w = 43; _h = 41; } // Deployed web opening
+            else if (_f12 == 5) { _sx = 344; _sy = 714; _w = 47; _h = 43; } // Deployed electric web 1
+            else if (_f12 == 6) { _sx = 405; _sy = 715; _w = 46; _h = 41; } // Deployed electric web 2
+            else if (_f12 == 7) { _sx = 464; _sy = 714; _w = 47; _h = 43; } // Deployed electric web 3
+            else if (_f12 == 8) { _sx = 523; _sy = 716; _w = 42; _h = 39; } // Deployed electric web 4
+            else                { _sx = 579; _sy = 715; _w = 49; _h = 41; } // Deployed electric web 5
             _ox = floor(_w / 2); _oy = floor(_h / 2);
             break;
             
@@ -138,16 +137,16 @@ function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false)
             break;
     }
     
-    // Draw part with facing & hurt flash
+    // Draw part with facing, hurt flash & alpha
     var _draw_x = (_facing == 1) ? floor(_x - _ox) : floor(_x + _ox);
     var _draw_y = floor(_y - _oy);
     
     if (_flash) {
         gpu_set_fog(true, c_white, 0, 0);
-        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, 1.0);
+        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, _alpha);
         gpu_set_fog(false, c_white, 0, 0);
     } else {
-        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, 1.0);
+        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, _alpha);
     }
 }
 
