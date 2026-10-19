@@ -151,6 +151,51 @@ function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false)
     }
 }
 
+/// @func draw_web_spider_weakness_hurt(frame_idx, x, y, facing, flash, alpha)
+/// @desc 14-frame weakness hurt reaction animation across Row 2 & Row 3 when hit by Zero's fire slash (Ryuenjin)
+function draw_web_spider_weakness_hurt(_frame_idx, _x, _y, _facing = 1, _flash = false, _alpha = 1.0) {
+    if (!sprite_exists(WebSpider)) return;
+    
+    var _f = clamp(floor(_frame_idx), 0, 13);
+    var _sx = 0, _sy = 0, _w = 64, _h = 64;
+    
+    // Pixel-mapped coordinates across Row 2 (Frames 0..6) & Row 3 (Frames 7..13):
+    switch (_f) {
+        // --- Row 2 (Frames 0..6): Falling down, ground impact spark, initial crash ---
+        case 0:  _sx = 56;  _sy = 88;  _w = 80;  _h = 64; break; // Frame 0: Upside-down tumble
+        case 1:  _sx = 140; _sy = 89;  _w = 80;  _h = 63; break; // Frame 1: Air fall flailing
+        case 2:  _sx = 231; _sy = 85;  _w = 134; _h = 72; break; // Frame 2: Ground slam spark & impact
+        case 3:  _sx = 372; _sy = 98;  _w = 90;  _h = 56; break; // Frame 3: Stunned / on knees
+        case 4:  _sx = 473; _sy = 99;  _w = 92;  _h = 48; break; // Frame 4: Slipping
+        case 5:  _sx = 575; _sy = 96;  _w = 84;  _h = 51; break; // Frame 5: Collapsing
+        case 6:  _sx = 665; _sy = 108; _w = 87;  _h = 40; break; // Frame 6: Flat on belly
+        
+        // --- Row 3 (Frames 7..13): Rolling over, push-up struggle, crouching, springing upward ---
+        case 7:  _sx = 98;  _sy = 168; _w = 77; _h = 54; break; // Frame 7: Legs in air / rolling
+        case 8:  _sx = 181; _sy = 174; _w = 78; _h = 50; break; // Frame 8: Rolling sideways
+        case 9:  _sx = 266; _sy = 176; _w = 74; _h = 49; break; // Frame 9: Rolling forward onto belly
+        case 10: _sx = 346; _sy = 181; _w = 79; _h = 51; break; // Frame 10: Pushing up on feet
+        case 11: _sx = 431; _sy = 181; _w = 79; _h = 51; break; // Frame 11: Crouched on all 8 legs
+        case 12: _sx = 518; _sy = 181; _w = 75; _h = 47; break; // Frame 12: Squatting / coiling down
+        case 13: _sx = 602; _sy = 167; _w = 97; _h = 56; break; // Frame 13: Springing / launching upward
+    }
+    
+    var _ox = floor(_w / 2);
+    // Align with solid floor ground
+    var _oy = _h - 20;
+    
+    var _draw_x = (_facing == 1) ? floor(_x - _ox) : floor(_x + _ox);
+    var _draw_y = floor(_y - _oy);
+    
+    if (_flash) {
+        gpu_set_fog(true, c_white, 0, 0);
+        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, _alpha);
+        gpu_set_fog(false, c_white, 0, 0);
+    } else {
+        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, _alpha);
+    }
+}
+
 /// @func draw_web_spider_multipart(torso_f, leg_f, cannon_ang, x, y, facing, flash)
 /// @desc Procedural Multi-part animation renderer (Section 5 Deliverables)
 function draw_web_spider_multipart(_torso_f, _leg_f, _cannon_ang, _x, _y, _facing = 1, _flash = false) {

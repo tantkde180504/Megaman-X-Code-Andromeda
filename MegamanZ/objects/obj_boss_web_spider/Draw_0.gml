@@ -12,9 +12,17 @@ if (wire_active && y > y_ceiling) {
 // Don't draw if fully hidden in canopy
 if (state == WS_STATE.PHASE1_CANOPY_HIDE && y <= y_ceiling - 40) return;
 
-// 2. Select Sprite Row and Frame
-var _row = 3;
-var _frame = 3;
+// 2. Weakness Hurt Reaction State (Zero's fire slash: 14 frames across Row 2 & Row 3)
+if (state == WS_STATE.WIRE_CUT_FALL) {
+    var _blink_alpha = (state_timer % 4 < 2) ? 0.35 : 1.0;
+    var _flash = (flash_timer > 0 && flash_timer % 4 < 2);
+    draw_web_spider_weakness_hurt(weakness_frame, x, y, facing, _flash, _blink_alpha);
+    return;
+}
+
+// 3. Select Sprite Row and Frame for Normal States
+var _row = 1;
+var _frame = 0;
 var _flash = (flash_timer > 0 && flash_timer % 4 < 2);
 
 switch (state) {
@@ -25,46 +33,36 @@ switch (state) {
         
     case WS_STATE.PHASE1_DESCEND:
     case WS_STATE.PHASE1_ASCEND:
-        _row = 2;
-        _frame = 4;
+        _row = 1;
+        _frame = (floor(anim_timer * 0.15) % 2); // Hanging head-down on thread
         break;
         
     case WS_STATE.PHASE1_FIRE_WEB:
     case WS_STATE.PHASE2_ATTACK_WEB:
-        if (state_timer < 20) {
-            _row = 2; // spr_ws_body_charge (electric charge)
-            _frame = 2;
-        } else {
-            _row = 3; // spr_ws_attack_body (firing web)
-            _frame = 5;
-        }
+        _row = 1;
+        _frame = 0;
         break;
         
     case WS_STATE.PHASE2_TRANSITION:
-        _row = 2;
-        _frame = 2; // spr_ws_body_charge (electric charge aura)
+        _row = 1;
+        _frame = 0;
         break;
         
     case WS_STATE.PHASE2_WEB_MOVE:
-        _row = 3;
-        _frame = 3 + (floor(anim_timer) % 2); // crawl on web
+        _row = 1;
+        _frame = (floor(anim_timer * 0.20) % 2); // crawl on web
         break;
         
     case WS_STATE.PHASE2_SPAWN_SPIDERS:
-        _row = 3;
-        _frame = (state_timer < 25) ? 1 : 2; // spr_ws_body_spawn_spiders (abdomen up)
-        break;
-        
-    case WS_STATE.WIRE_CUT_FALL:
-        _row = 2;
-        _frame = (y < y_floor) ? 0 : 1; // spr_ws_body_fall (falling on back)
+        _row = 1;
+        _frame = 1;
         break;
         
     case WS_STATE.DEATH:
-        _row = 2;
-        _frame = 2;
+        _row = 1;
+        _frame = 0;
         break;
 }
 
-// 3. Render Sprite Part using authentic MMX4 atlas coordinates
+// 4. Render Sprite Part using authentic MMX4 atlas coordinates
 draw_web_spider_part(_row, _frame, x, y, facing, _flash);

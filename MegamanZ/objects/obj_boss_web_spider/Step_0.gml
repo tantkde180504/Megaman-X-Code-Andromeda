@@ -9,7 +9,10 @@ if (instance_exists(oPlayer)) {
 
 // 2. Invulnerability & Flash Countdown
 if (flash_timer > 0) flash_timer--;
-if (invincible_timer > 0) {
+if (state == WS_STATE.WIRE_CUT_FALL) {
+    is_invulnerable = true;
+    invincible_timer = max(invincible_timer, 2);
+} else if (invincible_timer > 0) {
     invincible_timer--;
     is_invulnerable = (invincible_timer > 0);
 } else {
@@ -23,14 +26,25 @@ if (hp < prev_hp) {
     take_damage(_diff, false, false);
 }
 
-// 3. Web Thread Damage Hitbox (dmg_thread = 3)
-if (wire_active && target != noone) {
+// 3. Web Thread Damage & Wire Cut Detection
+if (wire_active) {
     var _wire_x = anchor_x;
     var _wire_top = y_ceiling;
     var _wire_bottom = y - 16;
     
-    // Check if player touches the vertical electric thread
-    if (abs(target.x - _wire_x) <= 10 && target.y >= _wire_top && target.y <= _wire_bottom) {
+    // Check if player's Saber hitbox cuts the wire
+    if (instance_exists(oSaberHitbox)) {
+        with (oSaberHitbox) {
+            if (_active && bbox_right >= _wire_x - 14 && bbox_left <= _wire_x + 14 &&
+                bbox_bottom >= _wire_top && bbox_top <= _wire_bottom) {
+                var _is_fire = (element == "fire" || slash_type == "ryuenjin");
+                other.take_damage(6, _is_fire, true, element);
+            }
+        }
+    }
+    
+    // Check if player touches the vertical electric thread (dmg_thread = 3)
+    if (target != noone && abs(target.x - _wire_x) <= 10 && target.y >= _wire_top && target.y <= _wire_bottom) {
         if (target.iframes <= 0 && target.state != PLAYER_STATE.HURT && target.state != PLAYER_STATE.DEATH) {
             var _kdir = (target.x >= _wire_x) ? 1 : -1;
             player_take_damage(dmg_thread, _kdir);
@@ -321,31 +335,76 @@ switch (state) {
         break;
         
     // =========================================================================
-    // D. STATE_WIRE_CUT_FALL: Rơi tự do đập lưng xuống sàn khi đứt tơ
+    // D. STATE_WIRE_CUT_FALL: Rơi tự do & chuỗi 14 frames khi trúng chém lửa Zero
     // =========================================================================
     case WS_STATE.WIRE_CUT_FALL:
         wire_active = false;
+        is_invulnerable = true;
+        invincible_timer = max(invincible_timer, 2);
         state_timer++;
-        vsp = min(vsp + 0.35, 9.0);
-        y += vsp;
         
-        if (y >= y_floor) {
+        // Giai đoạn 1: Rơi tự do từ trên cao xuống sàn (Frames 0..1: Row 2, f0..f1)
+        if (y < y_floor) {
+            vsp = min(vsp + 0.45, 9.5);
+            y += vsp;
+            
+            // Frame 0..1: Rơi lộn nhào trong không trung
+            if (vsp < 4.0) {
+                weakness_frame = 0;
+            } else {
+                weakness_frame = 1;
+            }
+            
+            // Chạm đất
+            if (y >= y_floor) {
+                y = y_floor;
+                vsp = 0;
+                ground_timer = 0;
+                weakness_frame = 2; // Frame 2: Va đập đất tóe tia lửa
+                camera_shake(3, 8);
+                if (object_exists(oFX_HitSpark)) {
+                    instance_create_layer(x, y_floor, "Instances", oFX_HitSpark);
+                }
+            }
+        } else {
+            // Giai đoạn 2: Nằm trên sàn, co giật, lăn lộn, gượng dậy (Frames 2..12)
             y = y_floor;
             vsp = 0;
-            camera_shake(3, 8);
-        }
-        
-        // Stunned on ground for 30 frames, then shoot new thread and ascend
-        if (y >= y_floor && state_timer >= 40) {
-            y -= 4.5;
-            if (y <= y_ceiling - 48) {
-                y = y_ceiling - 48;
-                state_timer = 0;
-                if (hp <= 24) {
-                    state = WS_STATE.PHASE2_TRANSITION;
-                    phase = 2;
-                } else {
-                    state = WS_STATE.PHASE1_CANOPY_HIDE;
+            ground_timer++;
+            
+            // Frame 2: Va đập đất (giữ 8 frames)
+            if (ground_timer < 8) {
+                weakness_frame = 2;
+            } 
+            // Frames 3..12: Chuỗi 10 frames giãy giụa và đứng dậy (mỗi frame 4 ticks)
+            else if (ground_timer < 8 + (10 * 4)) {
+                var _step = floor((ground_timer - 8) / 4);
+                weakness_frame = 3 + _step; // 3..12
+            } 
+            // Giai đoạn 3: Frame 13 (Row 3, Frame 6) - Bật lò xo nhảy vút lên trần
+            else {
+                weakness_frame = 13;
+                
+                // Nhảy phóng vút lên lại trần nhà
+                y -= 6.5;
+                if (y <= y_ceiling - 40) {
+                    y = y_ceiling - 40;
+                    state_timer = 0;
+                    ground_timer = 0;
+                    is_invulnerable = false;
+                    invincible_timer = 0;
+                    
+                    // Tiếp tục trận đấu!
+                    if (hp <= 24) {
+                        if (instance_exists(web_network_inst)) {
+                            state = WS_STATE.PHASE2_WEB_MOVE;
+                        } else {
+                            state = WS_STATE.PHASE2_TRANSITION;
+                        }
+                        phase = 2;
+                    } else {
+                        state = WS_STATE.PHASE1_CANOPY_HIDE;
+                    }
                 }
             }
         }

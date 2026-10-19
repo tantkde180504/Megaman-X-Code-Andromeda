@@ -32,7 +32,7 @@ function player_take_damage(_amount, _knockback_dir) {
     }
 }
 
-function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y) {
+function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y, _is_weakness = false, _hit_wire = false, _element = "normal") {
     if (instance_exists(_target)) {
         // Check invulnerability and directional shield (e.g. Guardian, Mettaur, Batton)
         if (variable_instance_exists(_target, "is_invulnerable") && _target.is_invulnerable) {
@@ -52,7 +52,7 @@ function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y) {
         }
         
         if (variable_instance_exists(_target, "take_damage") && is_method(_target.take_damage)) {
-            _target.take_damage(_damage, false, false);
+            _target.take_damage(_damage, _is_weakness, _hit_wire, _element);
         } else {
             if (variable_instance_exists(_target, "hp")) {
                 _target.hp = max(0, _target.hp - _damage);

@@ -77,27 +77,31 @@ target_x = x;
 target_y = y;
 p2_attack_cycle = 0; // alternates web attack vs mini spiders
 death_timer = 0;
+weakness_frame = 0;
+ground_timer = 0;
 
 // Start positioned at ceiling
 y = y_ceiling - 40;
 
-// 5. take_damage method (Section 5 Deliverables)
-take_damage = function(_amount, _is_weakness = false, _hit_wire = false) {
+// 5. take_damage method (Weakness Reaction: Zero's fire slash / Ryuenjin)
+take_damage = function(_amount, _is_weakness = false, _hit_wire = false, _element = "normal") {
     if (state == WS_STATE.INTRO || state == WS_STATE.DEATH || is_invulnerable) return;
     
-    // Check Weakness / Wire Cut Mechanic
-    if ((_is_weakness || _hit_wire) && wire_active && 
-        (state == WS_STATE.PHASE1_DESCEND || state == WS_STATE.PHASE1_FIRE_WEB || state == WS_STATE.PHASE1_ASCEND)) {
-        
-        // Wire cut crash!
+    // Check Weakness: Zero's fire slash (Ryuenjin / element == "fire") or wire cut
+    var _fire_weakness = (_is_weakness || _element == "fire");
+    
+    if (_fire_weakness || _hit_wire) {
+        // Trigger 14-frame weakness hurt reaction (Row 2 & Row 3)
         wire_active = false;
         state = WS_STATE.WIRE_CUT_FALL;
         state_timer = 0;
+        ground_timer = 0;
+        weakness_frame = 0;
         vsp = 0;
-        flash_timer = 12;
-        invincible_timer = 40;
+        flash_timer = 16;
+        invincible_timer = 999; // Remains invulnerable throughout falling and recovery!
         is_invulnerable = true;
-        hp = max(0, hp - max(_amount, 6)); // bonus damage on cut
+        hp = max(0, hp - max(_amount, 6)); // bonus damage on weakness
         camera_shake(3, 8);
         return;
     }

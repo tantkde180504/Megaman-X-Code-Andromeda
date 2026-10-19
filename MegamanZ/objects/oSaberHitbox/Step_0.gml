@@ -217,7 +217,8 @@ if (_active) {
                 instance_create_layer(_tgt.x, _tgt.y - 12, "Instances", oFX_HitSpark);
                 camera_shake(1, 4);
             } else {
-                deal_damage_to_target(_tgt, damage, _tgt.x, _tgt.y - 12);
+                var _is_fire = (element == "fire" || slash_type == "ryuenjin");
+                deal_damage_to_target(_tgt, damage, _tgt.x, _tgt.y - 12, _is_fire, false, element);
                 camera_shake(2, 6);
             }
         }
