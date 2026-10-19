@@ -41,6 +41,18 @@ enum GATE_STATE {
     LOCKED
 }
 
+// Web Spider Boss States
+enum SPIDER_STATE {
+    INTRO,
+    CEILING_IDLE,
+    CEILING_MOVE,
+    DESCEND,
+    ASCEND,
+    ATTACK_WEB,
+    HURT,
+    DEATH
+}
+
 // Target Resolution
 #macro VIEW_WIDTH 480
 #macro VIEW_HEIGHT 270

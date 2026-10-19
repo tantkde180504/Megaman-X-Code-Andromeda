@@ -119,6 +119,25 @@ function scr_reset_boss_room() {
     if (instance_exists(obj_nz_floor_burst)) with (obj_nz_floor_burst) instance_destroy();
     if (instance_exists(obj_nz_skull_wave)) with (obj_nz_skull_wave) instance_destroy();
     if (instance_exists(obj_nz_spike)) with (obj_nz_spike) instance_destroy();
+    if (instance_exists(oBoss_WebSpider_Projectile)) with (oBoss_WebSpider_Projectile) instance_destroy();
+    if (instance_exists(oBoss_WebSpider_WebNet)) with (oBoss_WebSpider_WebNet) instance_destroy();
+    
+    // Reset Web Spider if active
+    if (instance_exists(oBoss_WebSpider)) {
+        with (oBoss_WebSpider) {
+            hp = max_hp;
+            prev_hp = max_hp;
+            hp_display = 0;
+            state = SPIDER_STATE.INTRO;
+            state_timer = 0;
+            warning_timer = 90;
+            intro_done = false;
+            phase = 1;
+            flash_timer = 0;
+            invulnerability_timer = 0;
+            y = ceiling_y + 36;
+        }
+    }
     
     // 4. Mark dialogue as already seen so it doesn't replay when re-entering!
     global.nz_dialogue_seen = true;
