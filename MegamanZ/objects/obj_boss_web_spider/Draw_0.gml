@@ -1,7 +1,7 @@
 /// @desc Web Spider Boss Draw Event
 
 // 1. Draw Electric Silk Thread from Ceiling (spr_ws_web_thread)
-if (wire_active && y > y_ceiling) {
+if ((wire_active || (state == WS_STATE.WIRE_CUT_FALL && weakness_phase == 2)) && y > y_ceiling) {
     var _pulse = ((anim_timer * 10) % 2 == 0);
     draw_set_color(_pulse ? c_white : make_color_rgb(140, 220, 255));
     draw_line_width(anchor_x, y_ceiling, x, y - 24, 2);

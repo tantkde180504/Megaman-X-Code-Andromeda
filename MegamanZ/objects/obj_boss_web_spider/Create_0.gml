@@ -79,13 +79,14 @@ p2_attack_cycle = 0; // alternates web attack vs mini spiders
 death_timer = 0;
 weakness_frame = 0;
 ground_timer = 0;
+weakness_phase = 0; // 0: falling, 1: ground struggle, 2: ascending
 
 // Start positioned at ceiling
 y = y_ceiling - 40;
 
 // 5. take_damage method (Weakness Reaction: Zero's fire slash / Ryuenjin)
 take_damage = function(_amount, _is_weakness = false, _hit_wire = false, _element = "normal") {
-    if (state == WS_STATE.INTRO || state == WS_STATE.DEATH || is_invulnerable) return;
+    if (state == WS_STATE.INTRO || state == WS_STATE.DEATH || state == WS_STATE.WIRE_CUT_FALL || is_invulnerable) return;
     
     // Check Weakness: Zero's fire slash (Ryuenjin / element == "fire") or wire cut
     var _fire_weakness = (_is_weakness || _element == "fire");
@@ -101,12 +102,23 @@ take_damage = function(_amount, _is_weakness = false, _hit_wire = false, _elemen
         flash_timer = 16;
         invincible_timer = 999; // Remains invulnerable throughout falling and recovery!
         is_invulnerable = true;
+        
+        if (y >= y_floor - 8) {
+            weakness_phase = 1; // already on ground
+            weakness_frame = 2;
+            y = y_floor;
+        } else {
+            weakness_phase = 0; // falling from above
+        }
+        
         hp = max(0, hp - max(_amount, 6)); // bonus damage on weakness
+        prev_hp = hp;
         camera_shake(3, 8);
         return;
     }
     
     hp = max(0, hp - _amount);
+    prev_hp = hp;
     flash_timer = 8;
     invincible_timer = 24;
     is_invulnerable = true;

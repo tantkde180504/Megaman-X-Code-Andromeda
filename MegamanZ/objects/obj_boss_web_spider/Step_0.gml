@@ -343,54 +343,77 @@ switch (state) {
         invincible_timer = max(invincible_timer, 2);
         state_timer++;
         
-        // Giai đoạn 1: Rơi tự do từ trên cao xuống sàn (Frames 0..1: Row 2, f0..f1)
-        if (y < y_floor) {
-            vsp = min(vsp + 0.45, 9.5);
-            y += vsp;
-            
-            // Frame 0..1: Rơi lộn nhào trong không trung
-            if (vsp < 4.0) {
-                weakness_frame = 0;
-            } else {
-                weakness_frame = 1;
-            }
-            
-            // Chạm đất
-            if (y >= y_floor) {
+        switch (weakness_phase) {
+            // -----------------------------------------------------------------
+            // Phase 0: Rơi tự do từ trên cao xuống sàn (Frames 0..1)
+            // -----------------------------------------------------------------
+            case 0:
+                vsp = min(vsp + 0.50, 9.5);
+                y += vsp;
+                
+                // Frame 0..1: Rơi lộn nhào trong không trung
+                if (vsp < 4.0) {
+                    weakness_frame = 0;
+                } else {
+                    weakness_frame = 1;
+                }
+                
+                // Khi chạm sàn
+                if (y >= y_floor) {
+                    y = y_floor;
+                    vsp = 0;
+                    ground_timer = 0;
+                    weakness_frame = 2; // Frame 2: Va đập đất tóe tia lửa
+                    weakness_phase = 1; // Chuyển sang Phase 1 trên sàn!
+                    camera_shake(3, 8);
+                    if (object_exists(oFX_HitSpark)) {
+                        instance_create_layer(x, y_floor, "Instances", oFX_HitSpark);
+                    }
+                }
+                break;
+                
+            // -----------------------------------------------------------------
+            // Phase 1: Nằm trên sàn, co giật, lăn lộn, gượng dậy (Frames 2..12)
+            // -----------------------------------------------------------------
+            case 1:
                 y = y_floor;
                 vsp = 0;
-                ground_timer = 0;
-                weakness_frame = 2; // Frame 2: Va đập đất tóe tia lửa
-                camera_shake(3, 8);
-                if (object_exists(oFX_HitSpark)) {
-                    instance_create_layer(x, y_floor, "Instances", oFX_HitSpark);
-                }
-            }
-        } else {
-            // Giai đoạn 2: Nằm trên sàn, co giật, lăn lộn, gượng dậy (Frames 2..12)
-            y = y_floor;
-            vsp = 0;
-            ground_timer++;
-            
-            // Frame 2: Va đập đất (giữ 8 frames)
-            if (ground_timer < 8) {
-                weakness_frame = 2;
-            } 
-            // Frames 3..12: Chuỗi 10 frames giãy giụa và đứng dậy (mỗi frame 4 ticks)
-            else if (ground_timer < 8 + (10 * 4)) {
-                var _step = floor((ground_timer - 8) / 4);
-                weakness_frame = 3 + _step; // 3..12
-            } 
-            // Giai đoạn 3: Frame 13 (Row 3, Frame 6) - Bật lò xo nhảy vút lên trần
-            else {
-                weakness_frame = 13;
+                ground_timer++;
                 
-                // Nhảy phóng vút lên lại trần nhà
-                y -= 6.5;
+                // Frame 2: Va đập đất (giữ 8 frames)
+                if (ground_timer < 8) {
+                    weakness_frame = 2;
+                } 
+                // Frames 3..12: Chuỗi 10 frames giãy giụa và đứng dậy (mỗi frame 3 ticks = 30 ticks)
+                else if (ground_timer < 8 + (10 * 3)) {
+                    var _step = floor((ground_timer - 8) / 3);
+                    weakness_frame = clamp(3 + _step, 3, 12);
+                } 
+                // Hoàn thành giãy giụa -> Chuyển sang Phase 2 bật lò xo đu tơ lên trần!
+                else {
+                    weakness_phase = 2;
+                    weakness_frame = 13; // Frame 13: Thế bật lò xo phóng lên
+                    vsp = -7.0;
+                    anchor_x = x;
+                }
+                break;
+                
+            // -----------------------------------------------------------------
+            // Phase 2: Đu tơ phóng vút ngược lên lại vòm cây trần nhà (Frame 13)
+            // -----------------------------------------------------------------
+            case 2:
+                weakness_frame = 13;
+                vsp = max(vsp - 0.25, -9.0); // Tăng dần tốc độ kéo lên trần
+                y += vsp;
+                
+                // Khi đã chạm tới vòm cây trên trần nhà an toàn
                 if (y <= y_ceiling - 40) {
                     y = y_ceiling - 40;
+                    vsp = 0;
+                    hsp = 0;
                     state_timer = 0;
                     ground_timer = 0;
+                    weakness_phase = 0;
                     is_invulnerable = false;
                     invincible_timer = 0;
                     
@@ -406,7 +429,7 @@ switch (state) {
                         state = WS_STATE.PHASE1_CANOPY_HIDE;
                     }
                 }
-            }
+                break;
         }
         break;
         
