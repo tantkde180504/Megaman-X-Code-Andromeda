@@ -95,8 +95,8 @@ function scr_reset_boss_room() {
             intro_done = false;
             messenkou_done = false;
             warning_timer = 90;
-            x = 5280;
-            y = 2080;
+            x = 5250;
+            y = 2096;
             facing = -1;
             hsp = 0;
             vsp = 0;

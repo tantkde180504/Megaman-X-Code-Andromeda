@@ -99,8 +99,8 @@ switch (gate_state) {
             
             // Cửa 1 (Cửa ngoài vào đường hầm): Tạo điểm Save (Checkpoint) an toàn trong hành lang trước Cửa 2
             if (!is_arena_door) {
-                global.checkpoint_x = 4950;
-                global.checkpoint_y = 2032;
+                global.checkpoint_x = 4730;
+                global.checkpoint_y = 1984;
             }
             
             // If arena door, trigger boss intro & music

@@ -314,8 +314,8 @@ function scr_build_stage_web_spider() {
     instance_create_layer(4600, 1780, "Instances", oEnemy_TentoroidRS);
     
     // =========================================================================
-    // SECTION 6: BOSS CORRIDOR & ARENA (x: 4760 .. 5472, y: 1800 .. 2144)
-    // Hệ thống 2 Cửa Trùm Mega Man X (Door 1 & Door 2) dẫn vào Hang Trùm Nightmare Zero
+    // SECTION 6: BOSS CORRIDOR & ARENA (x: 4656 .. 5440, y: 1800 .. 2144)
+    // Hệ thống 2 Cửa Trùm Mega Man X (Door 1 & Door 2) theo đúng vị trí khoanh đỏ của người dùng
     // =========================================================================
     
     // Xoá các instance cửa cũ (nếu có từ room editor) để thiết lập 2 cửa chuẩn xác
@@ -323,60 +323,46 @@ function scr_build_stage_web_spider() {
         instance_destroy();
     }
     
-    // Thềm đá tiếp cận Cửa 1 (Outside approach platform)
-    _make_solid(4720, 2000, 80, 48);
+    // Bức tường vách đá phía trên Cửa 1 (ngăn nhảy vượt qua Cửa 1)
+    _make_solid(4656, 1872, 32, 48);
     
-    // Checkpoint 4: Điểm Save tạo an toàn trong hành lang sau khi qua Cửa 1 và trước Cửa 2
-    instance_create_layer(4950, 2032 - 16, "Instances", oTrigger_Checkpoint);
-    
-    // Bức tường vách đá phía trên Cửa 1 (ngăn nhảy vượt qua cửa)
-    _make_solid(4800, 1700, 32, 236);
-    
-    // CỬA 1 (Door 1 - Cửa ngoài vào đường hầm hang đá, x: 4800, y: 1936)
-    var _door1 = instance_create_layer(4800, 1936, "Instances", oTrigger_BossGate);
+    // CỬA 1 (Door 1 - Ô khoanh đầu tiên bên trái, x: 4656, y: 1920)
+    // Cửa ngoài đi từ vách đá vào đường hầm tạo điểm Save
+    var _door1 = instance_create_layer(4656, 1920, "Instances", oTrigger_BossGate);
     _door1.door_index = 1;
     _door1.is_arena_door = false;
     _door1.gate_state = GATE_STATE.CLOSED;
     
-    // ĐƯỜNG HẦM CAVE TUNNEL (nối giữa Cửa 1 và Cửa 2, x: 4800 .. 5064)
-    // Trần hang vòm đá:
-    _make_solid(4832, 1904, 232, 32);
+    // Sàn đá bằng phẳng trong hành lang Save (giữa Cửa 1 và Cửa 2, x: 4656 .. 4800)
+    _make_solid(4720, 1984, 80, 48);
     
-    // Sàn hang đá dốc thoải tự nhiên:
-    _make_solid(4800, 2000, 80, 48);
-    _make_solid(4880, 2016, 70, 48);
-    _make_solid(4950, 2032, 70, 48);
-    _make_solid(5020, 2048, 76, 48);
+    // Checkpoint 4: Điểm Save an toàn trong hành lang sau khi qua Cửa 1 và trước Cửa 2
+    instance_create_layer(4730, 1984 - 16, "Instances", oTrigger_Checkpoint);
     
-    // Bức tường cấu trúc cơ khí phía trên Cửa 2:
-    _make_solid(5064, 1856, 32, 128);
+    // Bức tường vách đá phía trên Cửa 2:
+    _make_solid(4800, 1632, 32, 304);
     
-    // CỬA 2 (Door 2 - Cửa trong dẫn thẳng vào đấu trường trùm, x: 5064, y: 1984)
-    var _door2 = instance_create_layer(5064, 1984, "Instances", oTrigger_BossGate);
+    // CỬA 2 (Door 2 - Ô khoanh thứ hai bên phải, x: 4800, y: 1936)
+    // Cửa trong dẫn thẳng từ hành lang save vào hang đấu trùm
+    var _door2 = instance_create_layer(4800, 1936, "Instances", oTrigger_BossGate);
     _door2.door_index = 2;
     _door2.is_arena_door = true;
     _door2.gate_state = GATE_STATE.CLOSED;
     
-    // ĐẤU TRƯỜNG TRÙM NIGHTMARE ZERO (Boss Arena Chamber, x >= 5096)
-    // Bậc thềm bước vào đấu trường:
-    _make_solid(5064, 2048, 48, 48);
-    
-    // Sàn đấu trường trùm (Floor: y = 2080):
-    _make_solid(5096, 2080, 376, 64);
-    
-    // Trần đấu trường trùm (Ceiling: y = 1856):
-    _make_solid(5096, 1856, 376, 32);
-    
-    // Tường phải giới hạn đấu trường (Right wall):
-    _make_solid(5440, 1856, 32, 224);
+    // ĐẤU TRƯỜNG TRÙM NIGHTMARE ZERO (Boss Arena Chamber, x >= 4840)
+    // Sàn dốc và thềm đá dẫn sâu vào hang trùm:
+    _make_solid(4864, 2048, 256, 112);
+    _make_solid(5104, 2096, 368, 64);
+    _make_solid(5104, 1840, 368, 64);
+    _make_solid(5440, 1872, 32, 272);
     
     // Bẫy tơ nhện trang trí/cản trở trong đấu trường trùm
-    instance_create_layer(5180, 2080 - 16, "Instances", oWebTrap);
-    instance_create_layer(5360, 2080 - 16, "Instances", oWebTrap);
+    instance_create_layer(5180, 2096 - 16, "Instances", oWebTrap);
+    instance_create_layer(5360, 2096 - 16, "Instances", oWebTrap);
     
-    // Khởi tạo Boss Nightmare Zero trong đấu trường trùm (x: 5280, y: 2080)
+    // Khởi tạo Boss Nightmare Zero trong đấu trường trùm (x: 5250, y: 2096)
     if (!instance_exists(obj_nightmare_zero)) {
-        var _boss = instance_create_layer(5280, 2080, "Instances", obj_nightmare_zero);
+        var _boss = instance_create_layer(5250, 2096, "Instances", obj_nightmare_zero);
         _boss.facing = -1;
     }
 }
