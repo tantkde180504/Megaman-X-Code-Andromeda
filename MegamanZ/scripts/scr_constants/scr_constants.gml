@@ -36,6 +36,7 @@ enum GATE_STATE {
     CLOSED,
     OPENING,
     WALKING,
+    WAIT_CLOSE,
     CLOSING,
     LOCKED
 }

@@ -1,8 +1,17 @@
-// 0. TRẠNG THÁI SLEEP: Chờ người chơi tới gần đấu trường trùm hoặc tiếp cận boss
+// 0. TRẠNG THÁI SLEEP: Chờ người chơi qua Cửa 2 và cửa đã đóng khóa hoàn tất
 if (state == NZ_STATE.SLEEP) {
-    if (instance_exists(oPlayer)) {
+    // Nếu có Cửa 2 (is_arena_door), boss chỉ thức dậy khi cửa đã khóa (LOCKED)
+    var _door_ready = true;
+    if (instance_exists(oTrigger_BossGate)) {
+        with (oTrigger_BossGate) {
+            if (is_arena_door && gate_state != GATE_STATE.LOCKED) {
+                _door_ready = false;
+            }
+        }
+    }
+    
+    if (_door_ready && instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
-        // Chỉ thức dậy khi người chơi đã bước qua Cửa 2 vào bên trong đấu trường (x >= 5100)
         if (_p.x >= 5100) {
             visible = true;
             nz_change_state(NZ_STATE.INTRO);

@@ -25,6 +25,7 @@ function player_physics_init() {
     in_water = false;
     on_ice = false;
     in_web = false;
+    is_auto_walking = false;
 }
 
 function player_is_solid_at(_check_x, _check_y) {

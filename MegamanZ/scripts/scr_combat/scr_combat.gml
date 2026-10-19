@@ -76,11 +76,13 @@ function scr_reset_boss_room() {
             gate_state = GATE_STATE.CLOSED;
             anim_frame = 0.0;
             image_index = 0;
+            close_wait_timer = 0;
         } else {
             // Door 1 remains locked! Player cannot backtrack out into the stage
             gate_state = GATE_STATE.LOCKED;
             anim_frame = 0.0;
             image_index = 0;
+            close_wait_timer = 0;
         }
     }
     

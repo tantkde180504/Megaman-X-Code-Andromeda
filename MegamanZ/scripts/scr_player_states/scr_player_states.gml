@@ -56,6 +56,13 @@ function player_state_execute() {
 // IDLE STATE
 // -------------------------------------------------------------------------
 function player_state_idle() {
+    // If auto-walking through boss gate, maintain run state
+    if (variable_instance_exists(id, "is_auto_walking") && is_auto_walking) {
+        state = PLAYER_STATE.RUN;
+        facing = 1;
+        return;
+    }
+    
     // Ice sliding friction
     if (on_ice) {
         hsp = lerp(hsp, 0, 0.08);
@@ -131,6 +138,12 @@ function player_state_idle() {
 // RUN STATE
 // -------------------------------------------------------------------------
 function player_state_run() {
+    // If auto-walking through boss gate, maintain run state
+    if (variable_instance_exists(id, "is_auto_walking") && is_auto_walking) {
+        facing = 1;
+        return;
+    }
+    
     var _move = global.input.right - global.input.left;
     
     // Drop off ledge
