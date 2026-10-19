@@ -7,24 +7,26 @@ event_inherited();
 enum NZ_STATE {
     SLEEP,              // -1: Chờ người chơi tới gần phòng đấu trùm trong map lớn
     INTRO,              // 0: Màn hình WARNING & Spawn Ooze -> Zero (hàng 1, 2: 15 frames)
-    IDLE,               // 1: Đứng chờ giữa các cử động / nhịp nghỉ
+    DIALOGUE,           // 1: Thoại giữa nhân vật và Nightmare Zero (Capcom fonts, Enter để qua câu)
+    HEALTH_FILL,        // 2: Nạp đầy thanh máu boss trước khi bắt đầu chiến đấu
+    IDLE,               // 3: Đứng chờ giữa các cử động / nhịp nghỉ
     
     // CỬ ĐỘNG 1:
-    ACT1_DASH,          // 2: Lướt tới gần nhân vật (hàng 19 7 frames)
-    ACT1_SLASH,         // 3: Chém thường (hàng 4, 5: 11 frames)
-    ACT1_SHOOT,         // 4: Bắn (hàng 10: 5 frames, đạn hàng 12: 2 phát thẳng hoặc 10 phát quạt)
-    ACT1_WAVE,          // 5: Chém sóng kiếm nhỏ (hàng 7: 4 frames) bay theo hướng nhân vật
+    ACT1_DASH,          // 4: Lướt tới gần nhân vật (hàng 19 7 frames)
+    ACT1_SLASH,         // 5: Chém thường (hàng 4, 5: 11 frames)
+    ACT1_SHOOT,         // 6: Bắn (hàng 10: 5 frames, đạn hàng 12: 2 phát thẳng hoặc 10 phát quạt)
+    ACT1_WAVE,          // 7: Chém sóng kiếm nhỏ (hàng 7: 4 frames) bay theo hướng nhân vật
     
     // CỬ ĐỘNG 2:
-    ACT2_TELEPORT,      // 6: Teleport (tái sử dụng animation lướt 7 frames)
-    ACT2_SLASH,         // 7: Chém thường 2 lần theo hướng nhân vật (hàng 4, 5: 11 frames)
+    ACT2_TELEPORT,      // 8: Teleport (tái sử dụng animation lướt 7 frames)
+    ACT2_SLASH,         // 9: Chém thường 2 lần theo hướng nhân vật (hàng 4, 5: 11 frames)
     
     // CỬ ĐỘNG 3:
-    ACT3_MESSENKOU,     // 8: Shin Messenkou lúc 20% máu (hàng 13, 14: 16 frames dậm tay + hàng 18 đất 5 frames + hàng 17 tia 4 frames)
+    ACT3_MESSENKOU,     // 10: Shin Messenkou lúc 20% máu (hàng 13, 14: 16 frames dậm tay + hàng 18 đất 5 frames + hàng 17 tia 4 frames)
     
     // HỆ THỐNG:
-    HURT,               // 9: Choáng đòn khi trúng Charged Buster (hàng cuối frame 1) & i-frames
-    DEFEAT              // 10: Tiêu diệt (hàng cuối 2 frame cuối: frame 2 đang nổ -> frame cuối nằm gục)
+    HURT,               // 11: Choáng đòn khi trúng Charged Buster (hàng cuối frame 1) & i-frames
+    DEFEAT              // 12: Tiêu diệt (hàng cuối 2 frame cuối: frame 2 đang nổ -> frame cuối nằm gục)
 }
 
 // -------------------------------------------------------------------------
@@ -111,6 +113,40 @@ death_timer = 0;
 afterimages = [];
 
 // -------------------------------------------------------------------------
+// 4b. THOẠI TRƯỚC TRẬN ĐẤU (DIALOGUE BEFORE BATTLE - CAPCOM FONTS)
+// -------------------------------------------------------------------------
+dialogue_list = [];
+dialogue_index = 0;
+dialogue_char_idx = 0;
+dialogue_type_spd = 0.5;
+dialogue_is_typing = true;
+dialogue_box_alpha = 0.0;
+dialogue_advance_cooldown = 0;
+
+nz_start_dialogue = function() {
+    dialogue_list = [];
+    dialogue_index = 0;
+    dialogue_char_idx = 0;
+    dialogue_box_alpha = 0.0;
+    dialogue_advance_cooldown = 15;
+    
+    var _is_zero = instance_exists(oPlayerZero);
+    if (_is_zero) {
+        array_push(dialogue_list, { speaker: "ZERO", color: make_color_rgb(255, 60, 60), text: "A FAKE REPLICA OF ME...?\nWHO DARES CREATE THIS TRASH?!" });
+        array_push(dialogue_list, { speaker: "NIGHTMARE ZERO", color: make_color_rgb(190, 80, 240), text: "HEHEHE... I AM THE TRUE ZERO!\nYOUR EXISTENCE ENDS HERE!" });
+        array_push(dialogue_list, { speaker: "ZERO", color: make_color_rgb(255, 60, 60), text: "SHUT UP!\nI'LL CUT YOU INTO SCRAP METAL!" });
+        array_push(dialogue_list, { speaker: "NIGHTMARE ZERO", color: make_color_rgb(190, 80, 240), text: "SHOW ME WHAT YOU'VE GOT,\nIMPOSTOR!" });
+    } else {
+        array_push(dialogue_list, { speaker: "X", color: make_color_rgb(60, 160, 255), text: "ZERO...?! IS THAT REALLY YOU?!" });
+        array_push(dialogue_list, { speaker: "NIGHTMARE ZERO", color: make_color_rgb(190, 80, 240), text: "DESTROY... ALL MAVERICKS...\nDESTROY... X..." });
+        array_push(dialogue_list, { speaker: "X", color: make_color_rgb(60, 160, 255), text: "NO, YOU'RE NOT ZERO!\nYOU'RE JUST A SICK NIGHTMARE!" });
+        array_push(dialogue_list, { speaker: "NIGHTMARE ZERO", color: make_color_rgb(190, 80, 240), text: "PREPARE TO PERISH, X!" });
+    }
+    
+    global.input_locked = true;
+};
+
+// -------------------------------------------------------------------------
 // 5. HÀM CHUYỂN TRẠNG THÁI
 // -------------------------------------------------------------------------
 nz_change_state = function(_new_state) {
@@ -126,8 +162,30 @@ nz_change_state = function(_new_state) {
         case NZ_STATE.INTRO:
             anim_sprite = spr_nz_spawn; // Hàng 1, 2 (15 frames)
             anim_delay = 6;
+            warning_timer = 90;
+            intro_done = false;
             is_invulnerable = true;
             music_play_boss_nightmare_zero();
+            break;
+            
+        case NZ_STATE.DIALOGUE:
+            anim_sprite = spr_nz_idle; // Zero đứng thế chiến đấu khi đối thoại
+            anim_delay = 8;
+            hsp = 0;
+            vsp = 0;
+            is_invulnerable = true;
+            global.input_locked = true;
+            break;
+            
+        case NZ_STATE.HEALTH_FILL:
+            anim_sprite = spr_nz_idle;
+            anim_delay = 8;
+            hsp = 0;
+            vsp = 0;
+            hp_display = 0;
+            intro_done = false;
+            is_invulnerable = true;
+            global.input_locked = true;
             break;
             
         case NZ_STATE.IDLE:

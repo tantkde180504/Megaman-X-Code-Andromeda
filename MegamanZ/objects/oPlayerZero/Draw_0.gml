@@ -1,3 +1,13 @@
+// Death state handling
+if (state == PLAYER_STATE.DEATH && death_phase < 2) {
+    if (death_phase == 0 && death_timer > 50) {
+        if (sprite_exists(sZero_Hurt)) {
+            draw_sprite_ext(sZero_Hurt, 2, x, y, facing, 1, 0, c_white, 1);
+        }
+    }
+    return;
+}
+
 // Iframes blinking (only after recovering from HURT state so damage animation remains visible)
 if (state != PLAYER_STATE.HURT && iframes > 0 && (iframes div 3) % 2 == 0) return;
 

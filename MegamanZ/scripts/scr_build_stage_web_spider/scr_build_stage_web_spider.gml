@@ -326,8 +326,8 @@ function scr_build_stage_web_spider() {
     // Thềm đá tiếp cận Cửa 1 (Outside approach platform)
     _make_solid(4720, 2000, 80, 48);
     
-    // Checkpoint 4: Đặt an toàn ngay phía trước Cửa 1
-    instance_create_layer(4760, 2000 - 16, "Instances", oTrigger_Checkpoint);
+    // Checkpoint 4: Điểm Save tạo an toàn trong hành lang sau khi qua Cửa 1 và trước Cửa 2
+    instance_create_layer(4950, 2032 - 16, "Instances", oTrigger_Checkpoint);
     
     // Bức tường vách đá phía trên Cửa 1 (ngăn nhảy vượt qua cửa)
     _make_solid(4800, 1700, 32, 236);

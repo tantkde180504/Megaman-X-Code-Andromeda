@@ -1,4 +1,4 @@
-﻿if (global.debug_overlay) {
+if (global.debug_overlay) {
     draw_set_color(c_black);
     draw_set_alpha(0.75);
     draw_rectangle(VIEW_WIDTH - 150, 4, VIEW_WIDTH - 4, 115, false);
@@ -18,4 +18,12 @@
         draw_text(VIEW_WIDTH - 146, 76, "Spd: " + string(_p.hsp) + ", " + string(_p.vsp));
         draw_text(VIEW_WIDTH - 146, 90, "Gnd: " + string(_p.grounded) + " | Wall: " + string(_p.touching_wall));
     }
+}
+
+// Fullscreen Black Screen Fade Overlay (Death, Respawn, Stage Transition)
+if (variable_global_exists("screen_fade_alpha") && global.screen_fade_alpha > 0.0) {
+    draw_set_alpha(global.screen_fade_alpha);
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, VIEW_WIDTH, VIEW_HEIGHT, false);
+    draw_set_alpha(1.0);
 }

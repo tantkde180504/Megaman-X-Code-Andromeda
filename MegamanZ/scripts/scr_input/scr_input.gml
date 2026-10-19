@@ -34,6 +34,7 @@ function input_init() {
         debug_pressed: false,
         restart_pressed: false
     };
+    global.input_locked = false;
 }
 
 // Update input states every frame
@@ -167,5 +168,30 @@ function input_update() {
         global.input.shoot_buffer = BUFFER_FRAMES;
     } else if (global.input.shoot_buffer > 0) {
         global.input.shoot_buffer--;
+    }
+    
+    // Suppress action inputs when global.input_locked is active (dialogue, cutscenes)
+    if (variable_global_exists("input_locked") && global.input_locked) {
+        global.input.left = false;
+        global.input.right = false;
+        global.input.up = false;
+        global.input.down = false;
+        global.input.left_pressed = false;
+        global.input.right_pressed = false;
+        global.input.up_pressed = false;
+        global.input.down_pressed = false;
+        global.input.jump = false;
+        global.input.jump_pressed = false;
+        global.input.jump_released = false;
+        global.input.jump_buffer = 0;
+        global.input.dash = false;
+        global.input.dash_pressed = false;
+        global.input.dash_buffer = 0;
+        global.input.shoot = false;
+        global.input.shoot_pressed = false;
+        global.input.shoot_released = false;
+        global.input.shoot_buffer = 0;
+        global.input.special = false;
+        global.input.special_pressed = false;
     }
 }

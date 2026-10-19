@@ -2,12 +2,10 @@
 if (state == NZ_STATE.SLEEP) {
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
-        if (_p.x >= 4850 || abs(_p.x - x) < 320) {
+        // Chỉ thức dậy khi người chơi đã bước qua Cửa 2 vào bên trong đấu trường (x >= 5080)
+        if (_p.x >= 5080) {
             visible = true;
-            state = NZ_STATE.INTRO;
-            state_timer = 0;
-            warning_timer = 90;
-            music_play_boss_nightmare_zero();
+            nz_change_state(NZ_STATE.INTRO);
         }
     }
     return;
@@ -31,7 +29,7 @@ if (instance_exists(oPlayer)) {
 }
 
 // CỬ ĐỘNG 3 (KHI CÒN 20% MÁU): Thực hiện đòn Shin Messenkou, sau đó quay lại Cử động 2
-if (hp <= max_hp * 0.2 && !messenkou_done && state != NZ_STATE.INTRO && state != NZ_STATE.DEFEAT) {
+if (hp <= max_hp * 0.2 && !messenkou_done && state != NZ_STATE.INTRO && state != NZ_STATE.DIALOGUE && state != NZ_STATE.HEALTH_FILL && state != NZ_STATE.DEFEAT) {
     messenkou_done = true;
     nz_change_state(NZ_STATE.ACT3_MESSENKOU);
 }
@@ -41,7 +39,7 @@ if (hp < prev_hp) {
     var _dmg_taken = prev_hp - hp;
     prev_hp = hp;
     
-    if (state != NZ_STATE.INTRO && state != NZ_STATE.DEFEAT && 
+    if (state != NZ_STATE.INTRO && state != NZ_STATE.DIALOGUE && state != NZ_STATE.HEALTH_FILL && state != NZ_STATE.DEFEAT && 
         state != NZ_STATE.ACT2_TELEPORT && state != NZ_STATE.ACT3_MESSENKOU && state != NZ_STATE.HURT) {
         if (_dmg_taken >= 2) {
             nz_change_state(NZ_STATE.HURT);
@@ -126,11 +124,87 @@ switch (state) {
             anim_timer = 0;
         } else {
             image_alpha = 1;
-            if (anim_done && intro_done) {
-                act1_loop_count = 0;
-                act1_shoot_wave_step = 0;
-                nz_change_state(NZ_STATE.ACT1_DASH);
+            if (anim_done) {
+                if (!global.nz_dialogue_seen) {
+                    nz_start_dialogue();
+                    nz_change_state(NZ_STATE.DIALOGUE);
+                } else {
+                    nz_change_state(NZ_STATE.HEALTH_FILL);
+                }
             }
+        }
+        break;
+
+    // =====================================================================
+    // 1. DIALOGUE: Đối thoại giữa nhân vật và Boss (sử dụng Capcom Fonts)
+    // =====================================================================
+    case NZ_STATE.DIALOGUE:
+        hsp = 0;
+        vsp = 0;
+        is_invulnerable = true;
+        global.input_locked = true;
+        
+        dialogue_box_alpha = min(1.0, dialogue_box_alpha + 0.1);
+        if (dialogue_advance_cooldown > 0) dialogue_advance_cooldown--;
+        
+        if (dialogue_index < array_length(dialogue_list)) {
+            var _item = dialogue_list[dialogue_index];
+            var _clean_text = string_mmx_clean(_item.text);
+            var _total_chars = string_length(_clean_text);
+            
+            if (dialogue_char_idx < _total_chars) {
+                dialogue_char_idx += dialogue_type_spd;
+                dialogue_is_typing = true;
+            } else {
+                dialogue_char_idx = _total_chars;
+                dialogue_is_typing = false;
+            }
+            
+            // Advance dialogue on Enter, Space, Z, X, C
+            var _advance = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space) ||
+                           keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(ord("X")) || keyboard_check_pressed(ord("C"));
+            
+            if (_advance && dialogue_advance_cooldown <= 0) {
+                if (dialogue_is_typing) {
+                    // Instantly complete sentence
+                    dialogue_char_idx = _total_chars;
+                    dialogue_is_typing = false;
+                    dialogue_advance_cooldown = 6;
+                } else {
+                    // Advance to next sentence
+                    dialogue_index++;
+                    dialogue_char_idx = 0;
+                    dialogue_is_typing = true;
+                    dialogue_advance_cooldown = 10;
+                }
+            }
+        } else {
+            // Dialogue completed!
+            global.nz_dialogue_seen = true;
+            nz_change_state(NZ_STATE.HEALTH_FILL);
+        }
+        break;
+
+    // =====================================================================
+    // 2. HEALTH_FILL: Nạp đầy thanh máu boss trước khi bắt đầu chiến đấu
+    // =====================================================================
+    case NZ_STATE.HEALTH_FILL:
+        hsp = 0;
+        vsp = 0;
+        is_invulnerable = true;
+        global.input_locked = true;
+        
+        if (hp_display < hp) {
+            hp_display = min(hp, hp_display + 1);
+            if (hp_display % 4 == 0) {
+                camera_shake(1, 2);
+            }
+        } else {
+            intro_done = true;
+            global.input_locked = false;
+            act1_loop_count = 0;
+            act1_shoot_wave_step = 0;
+            nz_change_state(NZ_STATE.ACT1_DASH);
         }
         break;
 

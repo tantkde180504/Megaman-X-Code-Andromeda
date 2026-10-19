@@ -1,19 +1,13 @@
 /// @desc Boss Health Bar HUD (Mega Man X Vertical Energy Bar)
-if (is_dead || (variable_instance_exists(id, "state") && state == NZ_STATE.SLEEP)) return;
+if (is_dead || (variable_instance_exists(id, "state") && (state == NZ_STATE.SLEEP || state == NZ_STATE.INTRO || state == NZ_STATE.DIALOGUE))) return;
 
 var _bx = VIEW_WIDTH - 24;
 var _by = 28;
 var _bar_w = 8;
 var _bar_h = 64;
 
-// Hiệu ứng nạp máu lúc mở màn
-if (!intro_done) {
-    if (hp_display < hp) {
-        hp_display += 1;
-    } else {
-        intro_done = true;
-    }
-} else {
+// Sync health display once battle has begun
+if (intro_done) {
     hp_display = hp;
 }
 

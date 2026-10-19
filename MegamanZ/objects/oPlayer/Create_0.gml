@@ -5,6 +5,7 @@ hp_current = 16;
 iframes = 0;
 hurt_timer = 0;
 death_timer = 0;
+death_phase = 0;
 is_dash_jumping = false;
 anim_timer = 0;
 is_ladder_exiting = false;

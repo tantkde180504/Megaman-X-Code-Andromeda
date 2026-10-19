@@ -290,7 +290,8 @@ function player_state_fall() {
     // Bottomless pit death
     if (y > room_height + 16 && state != PLAYER_STATE.DEATH) {
         state = PLAYER_STATE.DEATH;
-        death_timer = 40;
+        death_timer = 90;
+        death_phase = 0;
         camera_shake(4, 12);
         music_stop_boss_nightmare_zero(1000);
         return;
@@ -640,20 +641,69 @@ function player_state_death() {
     hsp = 0;
     vsp = 0;
     
-    if (death_timer > 0) {
-        death_timer--;
-    } else {
-        // Phase 2 Checkpoint Respawn!
-        if (variable_global_exists("checkpoint_x") && variable_global_exists("checkpoint_y")) {
-            x = global.checkpoint_x;
-            y = global.checkpoint_y;
+    if (death_phase == 0) {
+        // Explode sparks/effects in the first few frames
+        if (death_timer == 89 || death_timer == 78 || death_timer == 66) {
+            if (object_exists(oFX_EnemyExplosion)) {
+                instance_create_layer(x + irandom_range(-10, 10), y - 16 + irandom_range(-10, 10), "Instances", oFX_EnemyExplosion);
+            }
+            camera_shake(2, 4);
         }
-        hp_current = hp_max;
-        iframes = 60;
-        state = PLAYER_STATE.IDLE;
-        hsp = 0;
-        vsp = 0;
-        camera_shake(2, 6);
+        
+        if (death_timer > 0) {
+            death_timer--;
+            // Start fading out when timer <= 30
+            if (death_timer <= 30) {
+                global.screen_fade_alpha = min(1.0, global.screen_fade_alpha + (1.0 / 30.0));
+            }
+        } else {
+            // Screen is completely black, transition to Phase 1: Respawn and reset
+            global.screen_fade_alpha = 1.0;
+            death_phase = 1;
+            death_timer = 15; // Hold black screen briefly
+            
+            // Move player to checkpoint
+            if (variable_global_exists("checkpoint_x") && variable_global_exists("checkpoint_y")) {
+                x = global.checkpoint_x;
+                y = global.checkpoint_y;
+            }
+            hp_current = hp_max;
+            facing = 1;
+            grounded = true;
+            is_dash_jumping = false;
+            
+            // Instantly center camera on respawn point
+            if (instance_exists(oCamera)) {
+                oCamera.x = x;
+                oCamera.y = y - 16;
+            }
+            
+            // Reset Boss Room, doors, hazards, dialogue flag
+            scr_reset_boss_room();
+        }
+    }
+    else if (death_phase == 1) {
+        // Hold black screen
+        global.screen_fade_alpha = 1.0;
+        if (death_timer > 0) {
+            death_timer--;
+        } else {
+            death_phase = 2;
+            death_timer = 30; // 30 frames to fade back in
+        }
+    }
+    else if (death_phase == 2) {
+        // Fade in
+        if (death_timer > 0) {
+            death_timer--;
+            global.screen_fade_alpha = max(0.0, death_timer / 30.0);
+        } else {
+            global.screen_fade_alpha = 0.0;
+            state = PLAYER_STATE.IDLE;
+            iframes = 60;
+            death_phase = 0;
+            camera_shake(2, 6);
+        }
     }
 }
 
