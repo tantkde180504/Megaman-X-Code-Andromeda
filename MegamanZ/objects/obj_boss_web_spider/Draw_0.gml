@@ -38,30 +38,53 @@ switch (state) {
         break;
         
     case WS_STATE.PHASE1_FIRE_WEB:
-    case WS_STATE.PHASE2_ATTACK_WEB:
         _row = 1;
         _frame = 0;
         break;
         
     case WS_STATE.PHASE2_TRANSITION:
-        _row = 1;
-        _frame = 0;
+        // Động tác tiếp đất tâm mạng, chổng bụng truyền điện và bung mạng nhện
+        if (state_timer < 20) {
+            _row = 1; 
+            _frame = 0; // Đu tơ hạ xuống tâm
+        } else if (state_timer < 32) {
+            _row = 3; 
+            _frame = 1; // Tiếp đất tâm mạng, chổng bụng tích điện
+        } else if (state_timer < 45) {
+            _row = 3; 
+            _frame = 2; // Động tác dệt mạng bung tơ tỏa ra 8 hướng
+        } else {
+            _row = 3; 
+            _frame = 3; // Bám 8 chân vững vàng trên tâm mạng nhện
+        }
         break;
         
     case WS_STATE.PHASE2_WEB_MOVE:
-        _row = 1;
-        _frame = (floor(anim_timer * 0.20) % 2); // crawl on web
+        // Bò trên các điểm nút của mạng nhện (Row 3, luân phiên Frame 3 và 4)
+        _row = 3;
+        _frame = 3 + (floor(anim_timer * 0.25) % 2);
+        break;
+        
+    case WS_STATE.PHASE2_ATTACK_WEB:
+        // Tích điện và phóng Lightning Web từ trên mạng nhện (Row 3, Frame 4 -> Frame 5)
+        _row = 3;
+        _frame = (state_timer < 20) ? 4 : 5;
         break;
         
     case WS_STATE.PHASE2_SPAWN_SPIDERS:
-        _row = 1;
-        _frame = 1;
+        // Chổng bụng phóng nhện con (Row 3, luân phiên Frame 1 và 2)
+        _row = 3;
+        _frame = (state_timer < 20) ? 1 : 2;
         break;
         
     case WS_STATE.DEATH:
-        _row = 1;
-        _frame = 0;
-        break;
+        // Hiệu ứng kết liễu: Dùng Frame giật điện/chao đảo (Row 2, Frame 2)
+        _row = 2;
+        _frame = 2;
+        _flash = (death_timer % 4 < 2); // Nhấp nháy trắng liên tục khi trúng nổ
+        var _death_alpha = (death_timer < 20) ? max(0, death_timer / 20.0) : 1.0;
+        draw_web_spider_part(_row, _frame, x, y, facing, _flash, _death_alpha);
+        return;
 }
 
 // 4. Render Sprite Part using authentic MMX4 atlas coordinates

@@ -114,6 +114,22 @@ take_damage = function(_amount, _is_weakness = false, _hit_wire = false, _elemen
         hp = max(0, hp - max(_amount, 6)); // bonus damage on weakness
         prev_hp = hp;
         camera_shake(3, 8);
+        
+        if (hp <= 0 && state != WS_STATE.DEATH) {
+            state = WS_STATE.DEATH;
+            state_timer = 0;
+            death_timer = 130;
+            is_invulnerable = true;
+            wire_active = false;
+            vsp = 0;
+            hsp = 0;
+            if (instance_exists(obj_giant_web_network)) with (obj_giant_web_network) instance_destroy();
+            if (instance_exists(obj_mini_spider)) with (obj_mini_spider) {
+                if (object_exists(oFX_HitSpark)) instance_create_layer(x, y, "Instances", oFX_HitSpark);
+                instance_destroy();
+            }
+            if (instance_exists(obj_lightning_web_proj)) with (obj_lightning_web_proj) instance_destroy();
+        }
         return;
     }
     
@@ -127,8 +143,16 @@ take_damage = function(_amount, _is_weakness = false, _hit_wire = false, _elemen
     if (hp <= 0 && state != WS_STATE.DEATH) {
         state = WS_STATE.DEATH;
         state_timer = 0;
-        death_timer = 120;
+        death_timer = 130;
         is_invulnerable = true;
         wire_active = false;
+        vsp = 0;
+        hsp = 0;
+        if (instance_exists(obj_giant_web_network)) with (obj_giant_web_network) instance_destroy();
+        if (instance_exists(obj_mini_spider)) with (obj_mini_spider) {
+            if (object_exists(oFX_HitSpark)) instance_create_layer(x, y, "Instances", oFX_HitSpark);
+            instance_destroy();
+        }
+        if (instance_exists(obj_lightning_web_proj)) with (obj_lightning_web_proj) instance_destroy();
     }
 };

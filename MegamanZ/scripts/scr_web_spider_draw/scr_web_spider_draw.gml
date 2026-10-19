@@ -1,7 +1,7 @@
 /// @desc Web Spider Authentic Drawing System (Mega Man X4 PS1 Architecture)
 
-/// @func draw_web_spider_part(row, frame, x, y, facing, flash, alpha)
-function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false, _alpha = 1.0) {
+/// @func draw_web_spider_part(row, frame, x, y, facing, flash, alpha, xscale, yscale)
+function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false, _alpha = 1.0, _xscale = 1.0, _yscale = 1.0) {
     if (!sprite_exists(WebSpider)) return;
     
     var _sx = 0, _sy = 0, _w = 64, _h = 64, _ox = 32, _oy = 32;
@@ -92,10 +92,10 @@ function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false,
         case 11:
             _sy = 601; _h = 93;
             var _f11 = clamp(floor(_frame), 0, 3);
-            if (_f11 == 0)      { _sx = 266; _w = 83; _h = 92; }
-            else if (_f11 == 1) { _sx = 363; _w = 89; _h = 91; }
-            else if (_f11 == 2) { _sx = 461; _w = 93; _h = 93; }
-            else                { _sx = 566; _w = 83; _h = 88; }
+            if (_f11 == 0)      { _sx = 266; _w = 83; _h = 92; } // Small ring
+            else if (_f11 == 1) { _sx = 363; _w = 89; _h = 91; } // Medium ring
+            else if (_f11 == 2) { _sx = 461; _w = 93; _h = 93; } // Large ring
+            else                { _sx = 566; _w = 83; _h = 88; } // Flashing ring
             _ox = floor(_w / 2); _oy = floor(_h / 2);
             break;
             
@@ -124,29 +124,37 @@ function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false,
             _sy = 776; _h = 31;
             var _f13 = clamp(floor(_frame), 0, 17);
             if (_f13 <= 7) {
-                // Floor crawl
-                _sx = 88 + (_f13 * 36); _w = 28; _h = 24; _sy = 782;
+                // Floor crawl (0..7)
+                var _floor_spans = [[88, 31], [128, 24], [163, 25], [199, 25], [236, 24], [268, 31], [304, 31], [340, 32]];
+                _sx = _floor_spans[_f13][0];
+                _w = _floor_spans[_f13][1];
             } else if (_f13 <= 12) {
-                // Wall climb
-                _sx = 376 + ((_f13 - 8) * 36); _w = 18; _h = 30; _sy = 776;
+                // Wall climb (8..12)
+                var _wall_spans = [[376, 20], [412, 18], [448, 16], [468, 19], [504, 19]];
+                var _widx = _f13 - 8;
+                _sx = _wall_spans[_widx][0];
+                _w = _wall_spans[_widx][1];
             } else {
-                // Air falling
-                _sx = 542 + ((_f13 - 13) * 36); _w = 22; _h = 28; _sy = 778;
+                // Air falling (13..17)
+                var _air_spans = [[542, 25], [578, 19], [609, 23], [648, 22], [686, 19]];
+                var _aidx = clamp(_f13 - 13, 0, 4);
+                _sx = _air_spans[_aidx][0];
+                _w = _air_spans[_aidx][1];
             }
             _ox = floor(_w / 2); _oy = floor(_h / 2);
             break;
     }
     
-    // Draw part with facing, hurt flash & alpha
-    var _draw_x = (_facing == 1) ? floor(_x - _ox) : floor(_x + _ox);
-    var _draw_y = floor(_y - _oy);
+    // Draw part with facing, scale, hurt flash & alpha
+    var _draw_x = floor(_x - (_ox * _xscale * _facing));
+    var _draw_y = floor(_y - (_oy * _yscale));
     
     if (_flash) {
         gpu_set_fog(true, c_white, 0, 0);
-        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, _alpha);
+        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing * _xscale, _yscale, c_white, _alpha);
         gpu_set_fog(false, c_white, 0, 0);
     } else {
-        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing, 1, c_white, _alpha);
+        draw_sprite_part_ext(WebSpider, 0, _sx, _sy, _w, _h, _draw_x, _draw_y, _facing * _xscale, _yscale, c_white, _alpha);
     }
 }
 

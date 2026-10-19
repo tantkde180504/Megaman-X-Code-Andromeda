@@ -5,7 +5,8 @@ cx = x;
 cy = y;
 radius = 88;
 anim_timer = 0;
-build_phase = 0.0;
+build_timer = 0;
+build_duration = 50; // 50 ticks (~0.83s) punchy expansion
 is_active = false;
 pulse_timer = 0;
 

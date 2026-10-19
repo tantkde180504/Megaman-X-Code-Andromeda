@@ -26,6 +26,23 @@ if (hp < prev_hp) {
     take_damage(_diff, false, false);
 }
 
+// Global safety check for death
+if (hp <= 0 && state != WS_STATE.DEATH) {
+    state = WS_STATE.DEATH;
+    state_timer = 0;
+    death_timer = 130;
+    is_invulnerable = true;
+    wire_active = false;
+    vsp = 0;
+    hsp = 0;
+    if (instance_exists(obj_giant_web_network)) with (obj_giant_web_network) instance_destroy();
+    if (instance_exists(obj_mini_spider)) with (obj_mini_spider) {
+        if (object_exists(oFX_HitSpark)) instance_create_layer(x, y, "Instances", oFX_HitSpark);
+        instance_destroy();
+    }
+    if (instance_exists(obj_lightning_web_proj)) with (obj_lightning_web_proj) instance_destroy();
+}
+
 // 3. Web Thread Damage & Wire Cut Detection
 if (wire_active) {
     var _wire_x = anchor_x;
@@ -215,28 +232,37 @@ switch (state) {
     // =========================================================================
     case WS_STATE.PHASE2_TRANSITION:
         is_invulnerable = true;
-        wire_active = false;
+        state_timer++;
         
-        // Move to center node
-        var _cdir = point_direction(x, y, center_node_x, center_node_y);
-        var _cdist = point_distance(x, y, center_node_x, center_node_y);
-        if (_cdist > 4.0) {
-            x += lengthdir_x(5.0, _cdir);
-            y += lengthdir_y(5.0, _cdir);
+        // 0..20: Thả tơ di chuyển từ trên vòm cây xuống đúng tâm mạng nhện
+        if (state_timer < 20) {
+            wire_active = true;
+            anchor_x = center_node_x;
+            var _cdir = point_direction(x, y, center_node_x, center_node_y);
+            var _cdist = point_distance(x, y, center_node_x, center_node_y);
+            if (_cdist > 4.0) {
+                x += lengthdir_x(6.0, _cdir);
+                y += lengthdir_y(6.0, _cdir);
+            } else {
+                x = center_node_x;
+                y = center_node_y;
+            }
         } else {
+            wire_active = false;
             x = center_node_x;
             y = center_node_y;
         }
         
-        state_timer++;
-        
-        // Spawn Giant Web Network
-        if (state_timer == 10 && !instance_exists(obj_giant_web_network)) {
+        // Tại tick 22: Tiếp đất tâm mạng, chổng bụng truyền điện tích và bung mạng nhện khổng lồ
+        if (state_timer == 22 && !instance_exists(obj_giant_web_network)) {
             web_network_inst = instance_create_layer(center_node_x, center_node_y, "Instances", obj_giant_web_network);
-            camera_shake(2, 8);
+            camera_shake(4, 12);
+            if (object_exists(oFX_HitSpark)) {
+                instance_create_layer(center_node_x, center_node_y, "Instances", oFX_HitSpark);
+            }
         }
         
-        if (state_timer >= 60) {
+        if (state_timer >= 70) {
             state = WS_STATE.PHASE2_WEB_MOVE;
             state_timer = 0;
             current_node = 0;
@@ -309,7 +335,7 @@ switch (state) {
         break;
         
     // =========================================================================
-    // C.4. STATE_PHASE2_SPAWN_SPIDERS: Chổng bụng phóng 4 nhện con
+    // C.4. STATE_PHASE2_SPAWN_SPIDERS: Thả 4 nhện con bay đường vòng cung xuống sàn
     // =========================================================================
     case WS_STATE.PHASE2_SPAWN_SPIDERS:
         wire_active = false;
@@ -317,15 +343,26 @@ switch (state) {
         state_timer++;
         
         if (state_timer == 20) {
-            var _angles = [60, 80, 100, 120];
+            // Thả 4 nhện con theo quỹ đạo vòng cung parabol xuống mặt phẳng sàn:
+            // 2 con sang trái và 2 con sang phải với gia tốc trọng lực tự nhiên
+            var _configs = [
+                [-3.5, -2.2, -1], // Nhện 1: bay vòng cung rộng sang trái -> bò sang tường trái
+                [-1.8, -3.2, -1], // Nhện 2: bay vòng cung cao sang trái -> bò sang tường trái
+                [ 1.8, -3.2,  1], // Nhện 3: bay vòng cung cao sang phải -> bò sang tường phải
+                [ 3.5, -2.2,  1]  // Nhện 4: bay vòng cung rộng sang phải -> bò sang tường phải
+            ];
+            
             for (var i = 0; i < 4; i++) {
-                var _sp = instance_create_layer(x, y - 10, "Instances", obj_mini_spider);
-                var _spd = 4.0;
-                _sp.hsp = lengthdir_x(_spd, _angles[i]);
-                _sp.vsp = -lengthdir_y(_spd, _angles[i]);
+                var _sp = instance_create_layer(x, y + 10, "Instances", obj_mini_spider);
+                _sp.hsp = _configs[i][0];
+                _sp.vsp = _configs[i][1];
+                _sp.crawl_dir = _configs[i][2];
                 _sp.spider_state = SPIDER_MINION_STATE.AIR;
             }
             camera_shake(2, 6);
+            if (object_exists(oFX_HitSpark)) {
+                instance_create_layer(x, y + 10, "Instances", oFX_HitSpark);
+            }
         }
         
         if (state_timer >= 55) {
@@ -434,7 +471,7 @@ switch (state) {
         break;
         
     // =========================================================================
-    // E. STATE_DEATH: Trùm nổ liên hoàn và kích hoạt thắng màn
+    // E. STATE_DEATH: Trùm co giật chịu chuỗi nổ liên hoàn và đại nổ kết liễu
     // =========================================================================
     case WS_STATE.DEATH:
         hsp = 0;
@@ -443,17 +480,45 @@ switch (state) {
         wire_active = false;
         death_timer--;
         
-        if (death_timer % 6 == 0) {
-            var _ex = x + irandom_range(-28, 28);
-            var _ey = y + irandom_range(-28, 28);
-            if (object_exists(oFX_EnemyExplosion)) {
-                instance_create_layer(_ex, _ey, "Instances", oFX_EnemyExplosion);
+        // Giai đoạn 1: Chuỗi nổ liên hoàn rải đều khắp cơ thể trùm (death_timer 130 -> 30)
+        if (death_timer > 28) {
+            if (death_timer % 4 == 0) {
+                var _ex = x + irandom_range(-34, 34);
+                var _ey = y + irandom_range(-28, 28);
+                if (object_exists(oFX_EnemyExplosion)) {
+                    instance_create_layer(_ex, _ey, "Instances", oFX_EnemyExplosion);
+                }
+                camera_shake(3, 5);
             }
-            camera_shake(2, 4);
+            if (death_timer % 7 == 0 && object_exists(oFX_HitSpark)) {
+                instance_create_layer(x + irandom_range(-20, 20), y + irandom_range(-20, 20), "Instances", oFX_HitSpark);
+            }
+        } 
+        // Giai đoạn 2: Đại nổ kết liễu tỏa tròn 6 vụ nổ đồng thời (Star-burst blast) tại tick 28
+        else if (death_timer == 28) {
+            for (var _ang = 0; _ang < 360; _ang += 60) {
+                var _bx = x + lengthdir_x(32, _ang);
+                var _by = y + lengthdir_y(26, _ang);
+                if (object_exists(oFX_EnemyExplosion)) {
+                    instance_create_layer(_bx, _by, "Instances", oFX_EnemyExplosion);
+                }
+            }
+            if (object_exists(oFX_EnemyExplosion)) {
+                instance_create_layer(x, y, "Instances", oFX_EnemyExplosion);
+            }
+            camera_shake(7, 24);
         }
         
+        // Giai đoạn 3: Tiêu diệt hoàn toàn trùm và mở cờ thắng màn
         if (death_timer <= 0) {
             global.boss_defeated = true;
+            if (instance_exists(oTrigger_BossGate)) {
+                with (oTrigger_BossGate) {
+                    if (gate_state != GATE_STATE.LOCKED) {
+                        gate_state = GATE_STATE.OPENING;
+                    }
+                }
+            }
             instance_destroy();
         }
         break;
