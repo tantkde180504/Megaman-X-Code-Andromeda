@@ -79,8 +79,11 @@ switch (state) {
         break;
         
     case WS_STATE.PHASE2_SPAWN_SPIDERS:
-        // Animation bung nhện con: Hàng 4 với 7 frame mở nắp kết hợp với phần thân và các chi
-        var _body_f = clamp(floor((state_timer / 55.0) * 7), 0, 6);
+        // Animation bung nhện con: Hàng 4 với 7 frame mở nắp (1..7) kết hợp với phần thân và các chi
+        var _body_f = 0;
+        if (state_timer >= 12 && state_timer <= 46) {
+            _body_f = 1 + clamp(floor(((state_timer - 12) / 34.0) * 7), 0, 6);
+        }
         var _head_f = (anim_timer * 0.15) % 4;
         var _leg_f = (anim_timer * 0.20) % 11;
         var _arm_f = (anim_timer * 0.20) % 7;

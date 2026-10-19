@@ -342,25 +342,26 @@ switch (state) {
         if (target != noone) facing = (target.x >= x) ? 1 : -1;
         state_timer++;
         
-        if (state_timer == 24) {
-            // Thả 4 nhện con bung từ nắp lưng (Hàng 4) rơi theo vòng cung tự nhiên xuống sàn đấu
-            var _configs = [
-                [-1.4, -2.0, -1], // Nhện 1: vòng cung nhẹ sang trái -> bò sàn sang trái
-                [-0.6, -2.5, -1], // Nhện 2: rơi thẳng hơn sang trái -> bò sàn sang trái
-                [ 0.6, -2.5,  1], // Nhện 3: rơi thẳng hơn sang phải -> bò sàn sang phải
-                [ 1.4, -2.0,  1]  // Nhện 4: vòng cung nhẹ sang phải -> bò sàn sang phải
-            ];
-            
-            for (var i = 0; i < 4; i++) {
-                var _sp = instance_create_layer(x, y + 10, "Instances", obj_mini_spider);
-                _sp.hsp = _configs[i][0];
-                _sp.vsp = _configs[i][1];
-                _sp.crawl_dir = _configs[i][2];
+        // Rhythmic, sequential mini spider ejection from the open back hatch (Row 4)
+        // Spawn 4 spiders at ticks 18, 25, 32, 39:
+        var _spawn_ticks = [18, 25, 32, 39];
+        var _hsp_configs = [-0.85, -0.30, 0.30, 0.85];
+        var _crawl_dirs  = [-1, -1, 1, 1];
+        
+        for (var i = 0; i < 4; i++) {
+            if (state_timer == _spawn_ticks[i]) {
+                var _hatch_x = x - (facing * 8);
+                var _hatch_y = y - 18;
+                var _sp = instance_create_layer(_hatch_x, _hatch_y, "Instances", obj_mini_spider);
+                _sp.hsp = _hsp_configs[i];
+                _sp.vsp = -3.2; // graceful pop-up arc out of the back hatch
+                _sp.crawl_dir = _crawl_dirs[i];
                 _sp.spider_state = SPIDER_MINION_STATE.AIR;
-            }
-            camera_shake(2, 6);
-            if (object_exists(oFX_HitSpark)) {
-                instance_create_layer(x, y + 10, "Instances", oFX_HitSpark);
+                
+                camera_shake(1, 3);
+                if (object_exists(oFX_HitSpark)) {
+                    instance_create_layer(_hatch_x, _hatch_y, "Instances", oFX_HitSpark);
+                }
             }
         }
         

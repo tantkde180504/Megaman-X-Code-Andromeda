@@ -20,7 +20,9 @@ switch (spider_state) {
         // Touch flat floor surface
         if (place_meeting(x, y + 1, oSolid) || y >= y_floor) {
             vsp = 0;
-            if (y >= y_floor) y = y_floor;
+            // Snap cleanly to surface
+            while (!place_meeting(x, y + 1, oSolid) && y < y_floor) y++;
+            while (place_meeting(x, y, oSolid)) y--;
             spider_state = SPIDER_MINION_STATE.FLOOR;
             floor_crawl_timer = 0;
             facing = crawl_dir;
@@ -37,26 +39,30 @@ switch (spider_state) {
         
         // Floor snap on slopes/steps
         if (!place_meeting(x, y + 1, oSolid) && place_meeting(x, y + 6, oSolid)) y += 2;
+        while (place_meeting(x, y, oSolid)) y--;
         
         // Bò dưới đất trước, khi tới sát tường và đủ thời gian bò thì từ từ bám tường đi lên
-        var _at_left_wall = (facing == -1 && (place_meeting(x - 4, y, oSolid) || x <= left_wall_x + 8));
-        var _at_right_wall = (facing == 1 && (place_meeting(x + 4, y, oSolid) || x >= right_wall_x - 8));
+        var _hit_wall = place_meeting(x + (facing * 4), y - 4, oSolid) || 
+                        (facing == -1 && x <= left_wall_x + 8) || 
+                        (facing == 1 && x >= right_wall_x - 8);
         
-        if (_at_left_wall || _at_right_wall) {
+        if (_hit_wall) {
             if (floor_crawl_timer >= floor_crawl_min_time) {
                 // Đã bò dưới đất đủ lâu -> bắt đầu bám tường từ từ đi lên
                 spider_state = SPIDER_MINION_STATE.WALL;
                 vsp = wall_climb_speed;
                 hsp = 0;
                 if (facing == -1) {
-                    x = left_wall_x + 8;
-                    facing = 1; // Bám tường trái -> bụng hướng sang phải
+                    // Bám tường trái -> chân chạm tường trái (facing = 1 trong sprite sheet)
+                    facing = 1;
+                    while (place_meeting(x, y, oSolid)) x++;
                 } else {
-                    x = right_wall_x - 8;
-                    facing = -1; // Bám tường phải -> bụng hướng sang trái
+                    // Bám tường phải -> chân chạm tường phải (facing = -1 trong sprite sheet)
+                    facing = -1;
+                    while (place_meeting(x, y, oSolid)) x--;
                 }
             } else {
-                // Nếu chạm góc tường quá sớm -> quay đầu bò tiếp tục dưới mặt đất
+                // Nếu chạm góc tường quá sớm -> quay đầu tiếp tục bò dưới mặt đất
                 facing = -facing;
                 crawl_dir = facing;
             }

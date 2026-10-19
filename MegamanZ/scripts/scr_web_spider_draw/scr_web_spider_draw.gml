@@ -124,24 +124,29 @@ function draw_web_spider_part(_row, _frame, _x, _y, _facing = 1, _flash = false,
             _sy = 776; _h = 31;
             var _f13 = clamp(floor(_frame), 0, 17);
             if (_f13 <= 7) {
-                // Floor crawl (0..7)
-                var _floor_spans = [[88, 31], [128, 24], [163, 25], [199, 25], [236, 24], [268, 31], [304, 31], [340, 32]];
+                // Floor crawl (0..7): Ground contact baseline at y=799 in sprite sheet (799 - 776 = 23)
+                var _floor_spans = [[88, 31, 16], [128, 24, 12], [163, 25, 13], [199, 25, 13], [236, 24, 12], [268, 31, 16], [304, 31, 16], [340, 32, 16]];
                 _sx = _floor_spans[_f13][0];
                 _w = _floor_spans[_f13][1];
+                _ox = _floor_spans[_f13][2];
+                _oy = 23;
             } else if (_f13 <= 12) {
-                // Wall climb (8..12)
+                // Wall climb (8..12): Vertical climb against surface
                 var _wall_spans = [[376, 20], [412, 18], [448, 16], [468, 19], [504, 19]];
                 var _widx = _f13 - 8;
                 _sx = _wall_spans[_widx][0];
                 _w = _wall_spans[_widx][1];
+                _ox = 8;
+                _oy = 16;
             } else {
-                // Air falling (13..17)
+                // Air falling (13..17): Parabolic descent
                 var _air_spans = [[542, 25], [578, 19], [609, 23], [648, 22], [686, 19]];
                 var _aidx = clamp(_f13 - 13, 0, 4);
                 _sx = _air_spans[_aidx][0];
                 _w = _air_spans[_aidx][1];
+                _ox = 11;
+                _oy = 17;
             }
-            _ox = floor(_w / 2); _oy = floor(_h / 2);
             break;
     }
     
@@ -204,66 +209,71 @@ function draw_web_spider_weakness_hurt(_frame_idx, _x, _y, _facing = 1, _flash =
 }
 
 /// @func draw_web_spider_multipart(body_f, head_f, big_leg_f, small_leg_f, arm_f, x, y, facing, flash, alpha)
-/// @desc Multi-part animation renderer matching Rows 4, 5, 6, 7, 8
+/// @desc Multi-part animation renderer matching Rows 4, 5, 6, 7, 8 (Capcom Mega Man X4 architecture)
 function draw_web_spider_multipart(_body_f, _head_f, _big_leg_f, _small_leg_f, _arm_f, _x, _y, _facing = 1, _flash = false, _alpha = 1.0) {
     if (!sprite_exists(WebSpider)) return;
     
-    // Row 4: Thân rỗng & 7 trạng thái mở nắp bung nhện con
-    static r4_boxes = [
-        [276, 264, 40, 60], // Frame 0: Thân gốc chuẩn (hàng 4 frame 1)
-        [324, 268, 16, 56], // Frame 1: Nắp lưng hé mở nấc 1
-        [344, 268, 16, 48], // Frame 2: Nắp lưng hé mở nấc 2
-        [364, 264, 68, 59], // Frame 3: Bụng mở rộng bung nhện con
-        [436, 260, 32, 24], // Frame 4: Xả nhện nấc 1
-        [472, 250, 32, 34], // Frame 5: Xả nhện nấc 2
-        [508, 252, 32, 32]  // Frame 6: Nắp lưng khép lại
+    // Row 4: Base torso (hàng 4 frame 1) & 7 trạng thái mở nắp bung nhện con
+    static r4_torso = [276, 264, 40, 60]; // Thân gốc chuẩn
+    static r4_hatch = [
+        [0, 0, 0, 0, 0, 0],          // Frame 0: Đóng (không vẽ nắp đè)
+        [324, 268, 16, 16, -4, -26], // Frame 1: Hé mở nấc 1
+        [344, 268, 16, 16, -4, -26], // Frame 2: Hé mở nấc 2
+        [364, 265, 32, 19, -8, -29], // Frame 3: Hé mở nấc 3
+        [400, 264, 32, 20, -8, -30], // Frame 4: Bụng mở rộng
+        [436, 260, 32, 24, -8, -34], // Frame 5: Xả nhện nấc 1
+        [472, 250, 32, 34, -8, -44], // Frame 6: Xả nhện nấc 2
+        [508, 252, 32, 32, -8, -42]  // Frame 7: Nắp lưng khép lại
     ];
     
-    // Row 5: Cử động của đầu (4 frames đầu kết hợp với phần thân)
+    // Row 5: Cử động của đầu (4 frames đầu kết hợp với phần thân, strip y=336, h=32)
     static r5_boxes = [
-        [89, 340, 16, 25],
-        [111, 338, 17, 28],
-        [134, 338, 18, 21],
-        [164, 339, 16, 29]
+        [89, 336, 16, 32],
+        [111, 336, 17, 32],
+        [134, 336, 18, 32],
+        [164, 336, 16, 32]
     ];
     
-    // Row 6: Cử động bò của chân lớn kết hợp với thân (11 frames)
+    // Row 6: Cử động bò của chân lớn kết hợp với thân (11 frames, strip y=376, h=22)
     static r6_boxes = [
-        [228, 380, 18, 16], [258, 380, 20, 16], [291, 376, 18, 22],
-        [323, 381, 18, 13], [354, 384, 19, 10], [386, 383, 19, 11],
-        [418, 380, 19, 18], [450, 383, 19, 11], [482, 384, 19, 10],
-        [515, 381, 18, 13], [555, 380, 17, 16]
+        [228, 376, 18, 22], [258, 376, 20, 22], [291, 376, 18, 22],
+        [323, 376, 18, 22], [354, 376, 19, 22], [386, 376, 19, 22],
+        [418, 376, 19, 22], [450, 376, 19, 22], [482, 376, 19, 22],
+        [515, 376, 18, 22], [555, 376, 17, 22]
     ];
     
-    // Row 7: Cử động của các chân nhỏ (11 frames)
+    // Row 7: Cử động của các chân nhỏ (11 frames, strip y=408, h=32)
     static r7_boxes = [
-        [10, 410, 14, 18], [31, 408, 13, 19], [52, 412, 16, 28],
-        [79, 413, 13, 18], [100, 414, 12, 26], [117, 408, 13, 13],
-        [137, 409, 15, 22], [157, 416, 15, 21], [177, 409, 14, 29],
-        [197, 416, 13, 15], [217, 415, 14, 18]
+        [10, 408, 14, 32], [31, 408, 13, 32], [52, 408, 16, 32],
+        [79, 408, 13, 32], [100, 408, 12, 32], [117, 408, 13, 32],
+        [137, 408, 15, 32], [157, 408, 15, 32], [177, 408, 14, 32],
+        [197, 408, 13, 32], [217, 408, 14, 32]
     ];
     
-    // Row 8: Cử động lúc bò của tay kết hợp với thân (7 frames)
+    // Row 8: Cử động lúc bò của tay kết hợp với thân (7 frames, strip y=457, h=15)
     static r8_boxes = [
-        [332, 457, 16, 15], [352, 459, 16, 12], [372, 460, 16, 11],
-        [392, 458, 16, 13], [412, 457, 14, 15], [432, 457, 16, 13],
-        [455, 458, 19, 11]
+        [332, 457, 16, 15], [352, 457, 16, 15], [372, 457, 16, 15],
+        [392, 457, 16, 15], [412, 457, 14, 15], [432, 457, 16, 15],
+        [455, 457, 19, 15]
     ];
     
-    var _b_idx = clamp(floor(_body_f), 0, 6);
+    var _b_idx = clamp(floor(_body_f), 0, 7);
     var _h_idx = clamp(floor(_head_f), 0, 3);
     var _l_idx = clamp(floor(_big_leg_f), 0, 10);
     var _sl_idx = clamp(floor(_small_leg_f), 0, 10);
     var _a_idx = clamp(floor(_arm_f), 0, 6);
     
-    // Hàm phụ vẽ từng bộ phận theo offset và facing
-    var _draw_sub = function(_b, _ox, _oy, _px, _py, _f, _fl, _al) {
+    // Hàm phụ vẽ từng bộ phận chuẩn xác theo anchor và facing:
+    // Khi _f == 1: _dx = _px + _off_x - _anchor_x (vẽ sang phải từ _dx)
+    // Khi _f == -1: _dx = _px - _off_x + _anchor_x (vẽ sang trái từ _dx)
+    // Đảm bảo tuyệt đối không lệch trục và đối xứng gương 100%
+    var _draw_sub = function(_b, _off_x, _off_y, _anchor_x, _anchor_y, _px, _py, _f, _fl, _al) {
         var _sx = _b[0];
         var _sy = _b[1];
         var _w = _b[2];
         var _h = _b[3];
-        var _dx = (_f == 1) ? floor(_px + _ox) : floor(_px - _ox - _w);
-        var _dy = floor(_py + _oy);
+        var _dx = (_f == 1) ? floor(_px + _off_x - _anchor_x) : floor(_px - _off_x + _anchor_x);
+        var _dy = floor(_py + _off_y - _anchor_y);
         
         if (_fl) {
             gpu_set_fog(true, c_white, 0, 0);
@@ -274,23 +284,24 @@ function draw_web_spider_multipart(_body_f, _head_f, _big_leg_f, _small_leg_f, _
         }
     };
     
-    // 1. Lớp Chân lớn (Hàng 6)
-    _draw_sub(r6_boxes[_l_idx], -16, 2, _x, _y, _facing, _flash, _alpha);
+    // 1. Lớp Chân lớn (Hàng 6) - Bám sau thân, vươn cao về phía sau
+    _draw_sub(r6_boxes[_l_idx], -10, -2, floor(r6_boxes[_l_idx][2] / 2), 4, _x, _y, _facing, _flash, _alpha);
     
-    // 2. Lớp Chân nhỏ (Hàng 7)
-    _draw_sub(r7_boxes[_sl_idx], -14, 10, _x, _y, _facing, _flash, _alpha);
+    // 2. Lớp Chân nhỏ (Hàng 7) - Bám dưới chân lớn
+    _draw_sub(r7_boxes[_sl_idx], -8, 8, floor(r7_boxes[_sl_idx][2] / 2), 4, _x, _y, _facing, _flash, _alpha);
     
-    // 3. Lớp Thân (Hàng 4 Frame 1)
-    _draw_sub(r4_boxes[0], -20, -25, _x, _y, _facing, _flash, _alpha);
+    // 3. Lớp Thân (Hàng 4 Frame 1) - Tâm thân làm gốc (20, 30)
+    _draw_sub(r4_torso, 0, 0, 20, 30, _x, _y, _facing, _flash, _alpha);
     
     // 3b. Nắp mở bung nhện con (Hàng 4 với 7 frame) nếu đang ở hoạt ảnh xả nhện
     if (_b_idx > 0) {
-        _draw_sub(r4_boxes[_b_idx], -20, -25, _x, _y, _facing, _flash, _alpha);
+        var _hatch = r4_hatch[_b_idx];
+        _draw_sub(_hatch, _hatch[4], _hatch[5], floor(_hatch[2] / 2), 0, _x, _y, _facing, _flash, _alpha);
     }
     
-    // 4. Lớp Đầu (Hàng 5 với 4 frame)
-    _draw_sub(r5_boxes[_h_idx], 10, -15, _x, _y, _facing, _flash, _alpha);
+    // 4. Lớp Đầu (Hàng 5 với 4 frame) - Phía trước thân
+    _draw_sub(r5_boxes[_h_idx], 12, -6, floor(r5_boxes[_h_idx][2] / 2), 8, _x, _y, _facing, _flash, _alpha);
     
-    // 5. Lớp Tay lúc bò (Hàng 8 với 7 frame)
-    _draw_sub(r8_boxes[_a_idx], 15, -2, _x, _y, _facing, _flash, _alpha);
+    // 5. Lớp Tay lúc bò (Hàng 8 với 7 frame) - Phía trước thân bên dưới đầu
+    _draw_sub(r8_boxes[_a_idx], 14, 4, floor(r8_boxes[_a_idx][2] / 2), 4, _x, _y, _facing, _flash, _alpha);
 }
