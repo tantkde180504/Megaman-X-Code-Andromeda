@@ -314,7 +314,9 @@ function draw_web_spider_multipart() {
         var _conn_x = _px + (_off_x * _f);
         var _conn_y = _py + _off_y;
         
-        var _dx = (_net_scale == 1) ? floor(_conn_x - _anchor_x) : floor(_conn_x - (_w - _anchor_x));
+        // Trong GameMaker, draw_sprite_part_ext với xscale = -1 vẽ sprite lật từ dx sang bên TRÁI.
+        // Để điểm neo _anchor_x rơi trúng _conn_x: dx = _conn_x + _anchor_x (thay vì trừ đi làm bay chi sang không gian trống)
+        var _dx = (_net_scale == 1) ? floor(_conn_x - _anchor_x) : floor(_conn_x + _anchor_x);
         var _dy = floor(_conn_y - _anchor_y);
         
         if (_fl) {
@@ -328,17 +330,17 @@ function draw_web_spider_multipart() {
     
     // 1. Lớp Chân lớn (Hàng 6) - Bám sau thân, vươn cao hai bên vai
     // Chân lớn bên TRÁI: xoay gương (_local_scale = -1)
-    _draw_sub(r6_big_legs[_l_idx], -16, -12, 2, 4, _x, _y, -1, _facing, _flash, _alpha);
+    _draw_sub(r6_big_legs[_l_idx], -14, -14, 3, 4, _x, _y, -1, _facing, _flash, _alpha);
     // Chân lớn bên PHẢI: nguyên bản (_local_scale = 1)
-    _draw_sub(r6_big_legs[_r_idx], 16, -12, 2, 4, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(r6_big_legs[_r_idx], 14, -14, 3, 4, _x, _y, 1, _facing, _flash, _alpha);
     
-    // 2. Lớp Chân nhỏ (Hàng 7) - Bám dưới hai bên sườn
+    // 2. Lớp Chân nhỏ (Hàng 7) - Bám hai bên sườn
     // Chân nhỏ bên TRÁI (Row 7 F00..F10)
     var _bl = r7_left_legs[_l_idx];
-    _draw_sub(_bl, -15, 8, _bl[2] - 2, 2, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(_bl, -14, -2, _bl[2] - 2, 2, _x, _y, 1, _facing, _flash, _alpha);
     // Chân nhỏ bên PHẢI (Row 7 F11..F21)
     var _br = r7_right_legs[_r_idx];
-    _draw_sub(_br, 15, 8, 2, 2, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(_br, 14, -2, 2, 2, _x, _y, 1, _facing, _flash, _alpha);
     
     // 3. Lớp Thân (Hàng 4 Frame 1) - Tâm thân làm gốc (20, 30)
     _draw_sub(r4_torso, 0, 0, 20, 30, _x, _y, 1, _facing, _flash, _alpha);
@@ -349,9 +351,9 @@ function draw_web_spider_multipart() {
         _draw_sub(_hatch, _hatch[4], _hatch[5], floor(_hatch[2] / 2), 0, _x, _y, 1, _facing, _flash, _alpha);
     }
     
-    // 4. Lớp Đầu (Hàng 5 với 4 frame) - Phía trước thân
+    // 4. Lớp Đầu (Hàng 5 với 4 frame) - Phía trên đỉnh thân
     var _bh = r5_boxes[_h_idx];
-    _draw_sub(_bh, 0, -8, floor(_bh[2] / 2), 12, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(_bh, 0, -22, floor(_bh[2] / 2), 8, _x, _y, 1, _facing, _flash, _alpha);
     
     // 5. Lớp Tay lúc bò (Hàng 7 F22..F30) - Phía trước ngực
     // Tay bên TRÁI
