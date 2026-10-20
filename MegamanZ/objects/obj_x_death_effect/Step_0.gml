@@ -34,8 +34,8 @@ if (timer == 0) {
         music_stop_boss_nightmare_zero(100);
     }
     
-    // Âm thanh tiếng hét của X khi bị hạ gục
-    var _snd_scream = asset_get_index("snd_x_scream");
+    // Âm thanh tiếng hét khi bị hạ gục (X hoặc Zero)
+    var _snd_scream = (character_type == "ZERO") ? snd_zero_scream : snd_x_scream;
     if (_snd_scream != -1 && audio_exists(_snd_scream)) {
         audio_play_sound(_snd_scream, 100, false);
     }
