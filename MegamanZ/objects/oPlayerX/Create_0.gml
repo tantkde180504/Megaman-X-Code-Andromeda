@@ -3,6 +3,9 @@ charge_timer = 0;
 charge_level = 0;
 charge_anim_frame = 0.0;
 shoot_anim_timer = 0;
+muzzle_flash_sprite = noone;
+muzzle_flash_frame = 0.0;
+muzzle_flash_max = 0;
 
 // Sprite Animation Variables
 jump_frame = 0.0;

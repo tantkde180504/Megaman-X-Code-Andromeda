@@ -14,29 +14,29 @@
   "frames": [
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "a7c199b5-7557-419e-8049-636f47e91179",
-      "name": "a7c199b5-7557-419e-8049-636f47e91179",
+      "%Name": "e759ec50-b393-4981-aa4e-545b9eed7079",
+      "name": "e759ec50-b393-4981-aa4e-545b9eed7079",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "22ee28b7-6893-42c8-9c56-695fb4012e20",
-      "name": "22ee28b7-6893-42c8-9c56-695fb4012e20",
+      "%Name": "4da03922-0495-4c93-a50c-9bb55b3e57ff",
+      "name": "4da03922-0495-4c93-a50c-9bb55b3e57ff",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "3b080a70-3b34-40b3-87d9-b5a63ebb2165",
-      "name": "3b080a70-3b34-40b3-87d9-b5a63ebb2165",
+      "%Name": "af31232c-b616-4703-a577-8ef3326ec679",
+      "name": "af31232c-b616-4703-a577-8ef3326ec679",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "b9ca31fd-fded-467d-ace8-ccbca865f72d",
-      "name": "b9ca31fd-fded-467d-ace8-ccbca865f72d",
+      "%Name": "a3a4ac6c-e06e-493a-860e-b0d2f9f65786",
+      "name": "a3a4ac6c-e06e-493a-860e-b0d2f9f65786",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     }
@@ -48,11 +48,11 @@
   "layers": [
     {
       "$GMImageLayer": "",
-      "%Name": "5a221be0-ee21-4451-b8e6-56b7d406acde",
+      "%Name": "21f1db08-ae81-449d-84a1-759324bc62f5",
       "blendMode": 0,
       "displayName": "default",
       "isLocked": false,
-      "name": "5a221be0-ee21-4451-b8e6-56b7d406acde",
+      "name": "21f1db08-ae81-449d-84a1-759324bc62f5",
       "opacity": 100.0,
       "resourceType": "GMImageLayer",
       "resourceVersion": "2.0",
@@ -121,7 +121,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "a7c199b5-7557-419e-8049-636f47e91179",
+                    "name": "e759ec50-b393-4981-aa4e-545b9eed7079",
                     "path": "sprites/sBullet_SemiCharge/sBullet_SemiCharge.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -129,7 +129,7 @@
                 }
               },
               "Disabled": false,
-              "id": "2380faa0-7abd-4c38-a41b-915cfcf54782",
+              "id": "432a1d63-acc5-48a7-aa83-f1e324deb261",
               "IsCreationKey": false,
               "Key": 0.0,
               "Length": 1.0,
@@ -143,7 +143,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "22ee28b7-6893-42c8-9c56-695fb4012e20",
+                    "name": "4da03922-0495-4c93-a50c-9bb55b3e57ff",
                     "path": "sprites/sBullet_SemiCharge/sBullet_SemiCharge.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -151,7 +151,7 @@
                 }
               },
               "Disabled": false,
-              "id": "12815440-6a1c-463a-be01-cf70202cb844",
+              "id": "b0ea3323-8adc-4262-90eb-358c3da02f01",
               "IsCreationKey": false,
               "Key": 1.0,
               "Length": 1.0,
@@ -165,7 +165,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "3b080a70-3b34-40b3-87d9-b5a63ebb2165",
+                    "name": "af31232c-b616-4703-a577-8ef3326ec679",
                     "path": "sprites/sBullet_SemiCharge/sBullet_SemiCharge.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -173,7 +173,7 @@
                 }
               },
               "Disabled": false,
-              "id": "6dc5a308-2f95-43dc-8804-3e1a763313a2",
+              "id": "f2f8c177-5336-4c27-a5ab-87e64558173f",
               "IsCreationKey": false,
               "Key": 2.0,
               "Length": 1.0,
@@ -187,7 +187,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "b9ca31fd-fded-467d-ace8-ccbca865f72d",
+                    "name": "a3a4ac6c-e06e-493a-860e-b0d2f9f65786",
                     "path": "sprites/sBullet_SemiCharge/sBullet_SemiCharge.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -195,7 +195,7 @@
                 }
               },
               "Disabled": false,
-              "id": "41495156-a896-47be-8f04-8a07ea4cc7ce",
+              "id": "10544588-dfbb-4ea0-bfcd-2c104771bccd",
               "IsCreationKey": false,
               "Key": 3.0,
               "Length": 1.0,

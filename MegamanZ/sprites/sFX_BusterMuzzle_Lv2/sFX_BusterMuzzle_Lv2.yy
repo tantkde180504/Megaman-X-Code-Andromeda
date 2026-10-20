@@ -14,29 +14,29 @@
   "frames": [
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "1b3c778b-5c44-49a0-8d77-9411f0e81ede",
-      "name": "1b3c778b-5c44-49a0-8d77-9411f0e81ede",
+      "%Name": "d7e9adcc-cba8-49e4-a0f3-49f32e1bf8a0",
+      "name": "d7e9adcc-cba8-49e4-a0f3-49f32e1bf8a0",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "376a19e0-d1a5-4cdd-9de7-e534f86a5bff",
-      "name": "376a19e0-d1a5-4cdd-9de7-e534f86a5bff",
+      "%Name": "2ed138ea-65f7-4b2a-bb74-290412032e41",
+      "name": "2ed138ea-65f7-4b2a-bb74-290412032e41",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "1ead11b3-07fc-46aa-878e-aa107254bd31",
-      "name": "1ead11b3-07fc-46aa-878e-aa107254bd31",
+      "%Name": "176a90a3-5feb-482f-aad5-eace66fdb8a0",
+      "name": "176a90a3-5feb-482f-aad5-eace66fdb8a0",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     },
     {
       "$GMSpriteFrame": "v1",
-      "%Name": "c93e68a6-1646-4d5b-b5e2-e062ba7bb0ae",
-      "name": "c93e68a6-1646-4d5b-b5e2-e062ba7bb0ae",
+      "%Name": "1d2ab6f2-0c6f-4722-9bc2-eb09fd74a337",
+      "name": "1d2ab6f2-0c6f-4722-9bc2-eb09fd74a337",
       "resourceType": "GMSpriteFrame",
       "resourceVersion": "2.0"
     }
@@ -48,11 +48,11 @@
   "layers": [
     {
       "$GMImageLayer": "",
-      "%Name": "e0d2c93f-92bf-42af-a5b1-9377a206417a",
+      "%Name": "ef86c617-275d-4a3e-a25e-a8ab11f764c0",
       "blendMode": 0,
       "displayName": "default",
       "isLocked": false,
-      "name": "e0d2c93f-92bf-42af-a5b1-9377a206417a",
+      "name": "ef86c617-275d-4a3e-a25e-a8ab11f764c0",
       "opacity": 100.0,
       "resourceType": "GMImageLayer",
       "resourceVersion": "2.0",
@@ -121,7 +121,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "1b3c778b-5c44-49a0-8d77-9411f0e81ede",
+                    "name": "d7e9adcc-cba8-49e4-a0f3-49f32e1bf8a0",
                     "path": "sprites/sFX_BusterMuzzle_Lv2/sFX_BusterMuzzle_Lv2.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -129,7 +129,7 @@
                 }
               },
               "Disabled": false,
-              "id": "57998471-779a-4448-a2c9-37d57af2c3dd",
+              "id": "3d1581dc-7622-4f28-91cb-b909b14446ec",
               "IsCreationKey": false,
               "Key": 0.0,
               "Length": 1.0,
@@ -143,7 +143,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "376a19e0-d1a5-4cdd-9de7-e534f86a5bff",
+                    "name": "2ed138ea-65f7-4b2a-bb74-290412032e41",
                     "path": "sprites/sFX_BusterMuzzle_Lv2/sFX_BusterMuzzle_Lv2.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -151,7 +151,7 @@
                 }
               },
               "Disabled": false,
-              "id": "e325598a-55b8-407c-a00a-bcecf9428e56",
+              "id": "8b3eb374-2016-4f75-bac3-53c4da24e1de",
               "IsCreationKey": false,
               "Key": 1.0,
               "Length": 1.0,
@@ -165,7 +165,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "1ead11b3-07fc-46aa-878e-aa107254bd31",
+                    "name": "176a90a3-5feb-482f-aad5-eace66fdb8a0",
                     "path": "sprites/sFX_BusterMuzzle_Lv2/sFX_BusterMuzzle_Lv2.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -173,7 +173,7 @@
                 }
               },
               "Disabled": false,
-              "id": "faab2b50-f379-44ad-85a1-00226a785ff9",
+              "id": "bd4b3853-6fc5-47f5-878b-280a86c085e1",
               "IsCreationKey": false,
               "Key": 2.0,
               "Length": 1.0,
@@ -187,7 +187,7 @@
                 "0": {
                   "$SpriteFrameKeyframe": "",
                   "Id": {
-                    "name": "c93e68a6-1646-4d5b-b5e2-e062ba7bb0ae",
+                    "name": "1d2ab6f2-0c6f-4722-9bc2-eb09fd74a337",
                     "path": "sprites/sFX_BusterMuzzle_Lv2/sFX_BusterMuzzle_Lv2.yy"
                   },
                   "resourceType": "SpriteFrameKeyframe",
@@ -195,7 +195,7 @@
                 }
               },
               "Disabled": false,
-              "id": "af5b3ea7-e9ba-4ad8-b894-d52d1e035434",
+              "id": "9f0ebfc8-2271-4f11-82d5-ca73a64770bb",
               "IsCreationKey": false,
               "Key": 3.0,
               "Length": 1.0,

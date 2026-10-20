@@ -203,18 +203,84 @@ if (charge_timer >= 15 && sprite_exists(sFX_X_Charge)) {
         }
     }
     
-    // 2. 13-Frame Energy Particles & Flare Pulses
+    // 2. 13-Frame Energy Particles & Flare Pulses in ONE clean continuous direction
     gpu_set_blendmode(bm_add);
     if (charge_level == 2) {
         // Full charge: Intense electric cyan aura
-        draw_sprite_ext(sFX_X_Charge, _cf, _cx, _cy, facing, 1, 0, c_white, 1.0);
-        draw_sprite_ext(sFX_X_Charge, (_cf + 6) % 13, _cx, _cy, -facing, 1, 0, make_color_rgb(80, 200, 255), 0.6);
+        draw_sprite_ext(sFX_X_Charge, _cf, _cx, _cy, 1, 1, 0, make_color_rgb(100, 225, 255), 1.0);
     } else if (charge_level == 1) {
         // Semi charge: Greenish-cyan charge energy
-        draw_sprite_ext(sFX_X_Charge, _cf, _cx, _cy, facing, 1, 0, make_color_rgb(120, 255, 170), 0.9);
+        draw_sprite_ext(sFX_X_Charge, _cf, _cx, _cy, 1, 1, 0, make_color_rgb(120, 255, 170), 0.9);
     } else {
         // Initial charge gathering (timer 15..29): Subtle incoming blue particles
-        draw_sprite_ext(sFX_X_Charge, _cf % 8, _cx, _cy, facing, 1, 0, make_color_rgb(100, 210, 255), 0.7);
+        draw_sprite_ext(sFX_X_Charge, _cf % 8, _cx, _cy, 1, 1, 0, make_color_rgb(100, 210, 255), 0.7);
     }
+    gpu_set_blendmode(bm_normal);
+}
+
+// -------------------------------------------------------------
+// Dynamic Buster Muzzle Flash (perfectly attached to X's buster)
+// -------------------------------------------------------------
+if (muzzle_flash_sprite != noone && sprite_exists(muzzle_flash_sprite)) {
+    var _dx = 31;
+    var _dy = -31;
+    
+    if (is_dash_recovering) {
+        _dx = 22;
+        _dy = -30;
+    } else if (is_landing) {
+        _dx = 20;
+        _dy = -24;
+    } else {
+        switch (state) {
+            case PLAYER_STATE.IDLE:
+                _dx = 31;
+                _dy = -31;
+                break;
+                
+            case PLAYER_STATE.RUN:
+                var _rf = floor((anim_timer * 0.3) % 16);
+                if (_rf >= 6 && _rf <= 11) {
+                    _dx = 35;
+                } else if (_rf >= 12 && _rf <= 13) {
+                    _dx = 31;
+                } else if (_rf >= 14 || _rf <= 1) {
+                    _dx = 28;
+                } else {
+                    _dx = 27;
+                }
+                _dy = -31;
+                break;
+                
+            case PLAYER_STATE.JUMP:
+            case PLAYER_STATE.FALL:
+            case PLAYER_STATE.WALL_JUMP:
+                _dx = 17;
+                _dy = -40;
+                break;
+                
+            case PLAYER_STATE.DASH:
+                _dx = 32;
+                _dy = -17;
+                break;
+                
+            case PLAYER_STATE.WALL_SLIDE:
+                _dx = 32;
+                _dy = -39;
+                break;
+                
+            case PLAYER_STATE.LADDER:
+                _dx = 28;
+                _dy = -40;
+                break;
+        }
+    }
+    
+    var _bx = x + (facing * _dx);
+    var _by = y + _dy;
+    
+    var _mf = clamp(floor(muzzle_flash_frame), 0, sprite_get_number(muzzle_flash_sprite) - 1);
+    gpu_set_blendmode(bm_add);
+    draw_sprite_ext(muzzle_flash_sprite, _mf, _bx, _by, facing, 1, 0, c_white, 1.0);
     gpu_set_blendmode(bm_normal);
 }

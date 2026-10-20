@@ -10,88 +10,105 @@ if (global.input.shoot && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DE
     } else {
         charge_level = 0;
     }
-    charge_anim_frame += 0.35;
-    if (charge_anim_frame >= 13.0) charge_anim_frame -= 13.0;
+    charge_anim_frame = (charge_anim_frame + 0.35) % 13.0;
 } else {
     charge_anim_frame = 0.0;
 }
 
+// Muzzle Flash Animation Advance
+if (muzzle_flash_sprite != noone) {
+    muzzle_flash_frame += 0.45;
+    if (muzzle_flash_frame >= muzzle_flash_max) {
+        muzzle_flash_sprite = noone;
+        muzzle_flash_frame = 0.0;
+    }
+}
+
 // Firing
 if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer < 5)) {
-    var _bx = x + (facing * 31);
-    var _by = y - 31;
+    var _dx = 31;
+    var _dy = -31;
     
     if (is_dash_recovering) {
-        _bx = x + (facing * 22);
-        _by = y - 30;
+        _dx = 22;
+        _dy = -30;
     } else if (is_landing) {
-        _bx = x + (facing * 20);
-        _by = y - 24;
+        _dx = 20;
+        _dy = -24;
     } else {
         switch (state) {
             case PLAYER_STATE.IDLE:
-                _bx = x + (facing * 31);
-                _by = y - 31;
+                _dx = 31;
+                _dy = -31;
                 break;
                 
             case PLAYER_STATE.RUN:
                 var _rf = floor((anim_timer * 0.3) % 16);
-                var _run_dx = (6 <= _rf && _rf <= 11) ? 34 : 29;
-                _bx = x + (facing * _run_dx);
-                _by = y - 31;
+                if (_rf >= 6 && _rf <= 11) {
+                    _dx = 35;
+                } else if (_rf >= 12 && _rf <= 13) {
+                    _dx = 31;
+                } else if (_rf >= 14 || _rf <= 1) {
+                    _dx = 28;
+                } else {
+                    _dx = 27;
+                }
+                _dy = -31;
                 break;
                 
             case PLAYER_STATE.JUMP:
             case PLAYER_STATE.FALL:
             case PLAYER_STATE.WALL_JUMP:
-                _bx = x + (facing * 18);
-                _by = y - 40;
+                _dx = 17;
+                _dy = -40;
                 break;
                 
             case PLAYER_STATE.DASH:
-                _bx = x + (facing * 32);
-                _by = y - 17;
+                _dx = 32;
+                _dy = -17;
                 break;
                 
             case PLAYER_STATE.WALL_SLIDE:
-                _bx = x + (facing * 32);
-                _by = y - 39;
+                _dx = 32;
+                _dy = -39;
                 break;
                 
             case PLAYER_STATE.LADDER:
-                _bx = x + (facing * 29);
-                _by = y - 39;
+                _dx = 28;
+                _dy = -40;
                 break;
         }
     }
     
+    var _bx = x + (facing * _dx);
+    var _by = y + _dy;
+    
     if (charge_level == 2) {
-        _bx += facing * 4;
-        var _b = instance_create_layer(_bx, _by, "Instances", oBullet_FullCharge);
+        var _b = instance_create_layer(_bx + (facing * 16), _by, "Instances", oBullet_FullCharge);
         _b.hspeed = facing * 9;
         _b.image_xscale = facing;
         camera_shake(2, 6);
         
-        var _m = instance_create_layer(_bx, _by, "Instances", oFX_BusterMuzzle);
-        _m.sprite_index = sFX_BusterMuzzle_Lv3;
-        _m.image_xscale = facing;
+        muzzle_flash_sprite = sFX_BusterMuzzle_Lv3;
+        muzzle_flash_frame = 0.0;
+        muzzle_flash_max = 3;
     } else if (charge_level == 1) {
-        var _b = instance_create_layer(_bx, _by, "Instances", oBullet_SemiCharge);
+        var _b = instance_create_layer(_bx + (facing * 10), _by, "Instances", oBullet_SemiCharge);
         _b.hspeed = facing * 8;
         _b.image_xscale = facing;
         
-        var _m = instance_create_layer(_bx, _by, "Instances", oFX_BusterMuzzle);
-        _m.sprite_index = sFX_BusterMuzzle_Lv2;
-        _m.image_xscale = facing;
+        muzzle_flash_sprite = sFX_BusterMuzzle_Lv2;
+        muzzle_flash_frame = 0.0;
+        muzzle_flash_max = 4;
     } else {
         if (instance_number(oBullet_Buster) < 3) {
-            var _b = instance_create_layer(_bx, _by, "Instances", oBullet_Buster);
+            var _b = instance_create_layer(_bx + (facing * 6), _by, "Instances", oBullet_Buster);
             _b.hspeed = facing * 7;
             _b.image_xscale = facing;
             
-            var _m = instance_create_layer(_bx, _by, "Instances", oFX_BusterMuzzle);
-            _m.sprite_index = sFX_BusterMuzzle_Lv1;
-            _m.image_xscale = facing;
+            muzzle_flash_sprite = sFX_BusterMuzzle_Lv1;
+            muzzle_flash_frame = 0.0;
+            muzzle_flash_max = 4;
         }
     }
     
