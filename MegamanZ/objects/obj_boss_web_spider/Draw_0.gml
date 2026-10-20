@@ -98,12 +98,53 @@ switch (state) {
         return;
         
     case WS_STATE.DEATH:
-        // Hiệu ứng kết liễu: Dùng Frame giật điện/chao đảo (Row 2, Frame 2)
+        // Hiệu ứng kết liễu chuẩn Mega Man X4:
+        // 1. Tư thế giật điện / choáng váng co cụm (Row 2, Frame 2)
         _row = 2;
         _frame = 2;
-        _flash = (death_timer % 4 < 2); // Nhấp nháy trắng liên tục khi trúng nổ
+        _flash = (death_timer % 4 < 2); // Nhấp nháy trắng liên tục khi trúng chuỗi nổ
         var _death_alpha = (death_timer < 20) ? max(0, death_timer / 20.0) : 1.0;
         draw_web_spider_part(_row, _frame, x, y, facing, _flash, _death_alpha);
+        
+        // 2. Tia sáng năng lượng (Death Laser Light Rays) phóng tỏa tròn từ tâm boss
+        if (death_timer <= 95 && death_timer >= 15) {
+            gpu_set_blendmode(bm_add);
+            var _ray_count = 8;
+            var _rot = (130 - death_timer) * 4.2;
+            var _len = lerp(30, 260, clamp((95 - death_timer) / 70.0, 0, 1.0));
+            
+            for (var r = 0; r < _ray_count; r++) {
+                var _a = _rot + (r * (360 / _ray_count));
+                var _rx = x + lengthdir_x(_len, _a);
+                var _ry = y + lengthdir_y(_len, _a);
+                
+                // Tia sáng vàng cam bên ngoài
+                draw_set_color(make_color_rgb(255, 200, 50));
+                draw_line_width(x, y, _rx, _ry, 4);
+                // Tia sáng trắng sáng chói bên trong
+                draw_set_color(c_white);
+                draw_line_width(x, y, _rx, _ry, 2);
+            }
+            
+            // Quả cầu năng lượng rực sáng ở lõi boss
+            draw_set_color(c_white);
+            draw_circle(x, y, 12 + (sin(death_timer * 0.4) * 4), false);
+            draw_set_color(make_color_rgb(255, 220, 80));
+            draw_circle(x, y, 22 + (sin(death_timer * 0.4) * 6), true);
+            gpu_set_blendmode(bm_normal);
+        }
+        
+        // 3. Chớp trắng toàn màn hình khi đại nổ xảy ra (tick 28..24)
+        if (death_timer <= 28 && death_timer >= 24) {
+            gpu_set_blendmode(bm_add);
+            draw_set_color(c_white);
+            var _vx = camera_get_view_x(view_camera[0]);
+            var _vy = camera_get_view_y(view_camera[0]);
+            var _vw = camera_get_view_width(view_camera[0]);
+            var _vh = camera_get_view_height(view_camera[0]);
+            draw_rectangle(_vx, _vy, _vx + _vw, _vy + _vh, false);
+            gpu_set_blendmode(bm_normal);
+        }
         return;
 }
 
