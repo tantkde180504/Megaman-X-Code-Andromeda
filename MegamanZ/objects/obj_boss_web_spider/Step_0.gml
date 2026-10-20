@@ -339,6 +339,7 @@ switch (state) {
     // =========================================================================
     case WS_STATE.PHASE2_SPAWN_SPIDERS:
         wire_active = false;
+        anim_timer += 0.2;
         if (target != noone) facing = (target.x >= x) ? 1 : -1;
         state_timer++;
         
