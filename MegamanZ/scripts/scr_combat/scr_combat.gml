@@ -14,12 +14,7 @@ function player_take_damage(_amount, _knockback_dir) {
     camera_shake(4, 12);
     
     if (_p.hp_current <= 0) {
-        _p.state = PLAYER_STATE.DEATH;
-        _p.hsp = 0;
-        _p.vsp = 0;
-        _p.death_timer = 90;
-        _p.death_phase = 0;
-        music_stop_boss_nightmare_zero(1000);
+        player_trigger_death(_p);
     } else {
         _p.state = PLAYER_STATE.HURT;
         _p.hurt_timer = 18;

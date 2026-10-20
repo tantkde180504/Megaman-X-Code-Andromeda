@@ -8,13 +8,8 @@ var _draw_player = function(_spr, _sub, _dx, _dy, _xsc, _ysc, _rot, _col, _alp) 
     draw_sprite_ext(_spr, _sub, _dx, _dy, _xsc, _ysc, _rot, _col, _alp);
 };
 
-// Death state handling
-if (state == PLAYER_STATE.DEATH && death_phase < 2) {
-    if (death_phase == 0 && death_timer > 50) {
-        if (sprite_exists(sZero_Hurt)) {
-            _draw_player(sZero_Hurt, 2, x, y, facing, 1, 0, c_white, 1);
-        }
-    }
+// Death state handling (managed exclusively by obj_x_death_effect)
+if (state == PLAYER_STATE.DEATH) {
     return;
 }
 

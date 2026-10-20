@@ -151,6 +151,13 @@ if (keyboard_check_pressed(ord("O"))) {
     }
 }
 
+// Debug Shortcut: [K] Trigger Mega Man X4 Player Death Effect
+if (keyboard_check_pressed(ord("K"))) {
+    if (instance_exists(oPlayer)) {
+        player_trigger_death();
+    }
+}
+
 // Boss Shortcut: [B] Summon / Reset Nightmare Zero Boss
 if (keyboard_check_pressed(ord("B"))) {
     if (instance_exists(oPlayer)) {

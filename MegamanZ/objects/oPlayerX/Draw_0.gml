@@ -1,6 +1,11 @@
 // Draw dash afterimages / ghost trail
 player_draw_afterimages();
 
+// Death state handling (managed exclusively by obj_x_death_effect)
+if (state == PLAYER_STATE.DEATH) {
+    return;
+}
+
 // Helper to track current sprite and frame for dash afterimages
 var _draw_player = function(_spr, _sub, _dx, _dy, _xsc, _ysc, _rot, _col, _alp) {
     current_sprite = _spr;
