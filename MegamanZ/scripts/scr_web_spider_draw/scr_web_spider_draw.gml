@@ -258,15 +258,14 @@ function draw_web_spider_multipart() {
         [508, 252, 32, 32, -8, -42]  // Frame 7: Nắp lưng khép lại
     ];
     
-    // Row 5: Cử động của đầu (4 frames đầu kết hợp với phần thân, strip y=336..340)
-    static r5_boxes = [
-        [89, 340, 16, 25],
-        [111, 338, 17, 28],
-        [134, 338, 18, 21],
-        [164, 339, 16, 29]
+    // Row 5: Đôi càng pháo lớn trên vai (Upper Shoulder Cannons - 11 frames crawl cycle strip y=336..344)
+    static r5_cannon = [
+        [188, 344, 23, 18], [222, 342, 23, 19], [249, 342, 24, 18], [281, 342, 27, 25],
+        [312, 340, 19, 26], [342, 339, 23, 18], [376, 337, 28, 17], [413, 336, 24, 18],
+        [448, 343, 17, 24], [477, 336, 22, 22], [508, 340, 25, 22]
     ];
     
-    // Row 6: Cử động bò của chân lớn (11 frames, strip y=376..384, vươn cao hai bên vai)
+    // Row 6: Cử động bò của chân lớn (11 frames, strip y=376..384, khớp hông giữa thân)
     static r6_big_legs = [
         [228, 380, 18, 16], [258, 380, 20, 16], [291, 376, 18, 22],
         [323, 381, 18, 13], [354, 384, 19, 10], [386, 383, 19, 11],
@@ -298,7 +297,6 @@ function draw_web_spider_multipart() {
     ];
     
     var _b_idx = clamp(floor(_body_f), 0, 7);
-    var _h_idx = clamp(floor(_head_f), 0, 3);
     var _l_idx = clamp(floor(_l_leg_f), 0, 10);
     var _r_idx = clamp(floor(_r_leg_f), 0, 10);
     var _al_idx = clamp(floor(_l_arm_f), 0, 8);
@@ -314,8 +312,6 @@ function draw_web_spider_multipart() {
         var _conn_x = _px + (_off_x * _f);
         var _conn_y = _py + _off_y;
         
-        // Trong GameMaker, draw_sprite_part_ext với xscale = -1 vẽ sprite lật từ dx sang bên TRÁI.
-        // Để điểm neo _anchor_x rơi trúng _conn_x: dx = _conn_x + _anchor_x (thay vì trừ đi làm bay chi sang không gian trống)
         var _dx = (_net_scale == 1) ? floor(_conn_x - _anchor_x) : floor(_conn_x + _anchor_x);
         var _dy = floor(_conn_y - _anchor_y);
         
@@ -328,21 +324,21 @@ function draw_web_spider_multipart() {
         }
     };
     
-    // 1. Lớp Chân lớn (Hàng 6) - Bám sau thân, vươn cao hai bên vai
+    // 1. Lớp Chân lớn (Hàng 6) - Bám hai bên hông giữa thân (Socket chuẩn y = -3)
     // Chân lớn bên TRÁI: xoay gương (_local_scale = -1)
-    _draw_sub(r6_big_legs[_l_idx], -14, -14, 3, 4, _x, _y, -1, _facing, _flash, _alpha);
+    _draw_sub(r6_big_legs[_l_idx], -10, -3, 2, 2, _x, _y, -1, _facing, _flash, _alpha);
     // Chân lớn bên PHẢI: nguyên bản (_local_scale = 1)
-    _draw_sub(r6_big_legs[_r_idx], 14, -14, 3, 4, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(r6_big_legs[_r_idx], 10, -3, 2, 2, _x, _y, 1, _facing, _flash, _alpha);
     
-    // 2. Lớp Chân nhỏ (Hàng 7) - Bám hai bên sườn
+    // 2. Lớp Chân nhỏ (Hàng 7) - Bám sườn dưới (Socket chuẩn y = 6)
     // Chân nhỏ bên TRÁI (Row 7 F00..F10)
     var _bl = r7_left_legs[_l_idx];
-    _draw_sub(_bl, -14, -2, _bl[2] - 2, 2, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(_bl, -11, 6, _bl[2] - 2, 2, _x, _y, 1, _facing, _flash, _alpha);
     // Chân nhỏ bên PHẢI (Row 7 F11..F21)
     var _br = r7_right_legs[_r_idx];
-    _draw_sub(_br, 14, -2, 2, 2, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(_br, 11, 6, 2, 2, _x, _y, 1, _facing, _flash, _alpha);
     
-    // 3. Lớp Thân (Hàng 4 Frame 1) - Tâm thân làm gốc (20, 30)
+    // 3. Lớp Thân (Hàng 4 Frame 1) - Trung tâm làm gốc (chứa toàn vẹn thân, bụng và đầu)
     _draw_sub(r4_torso, 0, 0, 20, 30, _x, _y, 1, _facing, _flash, _alpha);
     
     // 3b. Nắp mở bung nhện con (Hàng 4 với 7 frame) nếu đang ở hoạt ảnh xả nhện
@@ -351,15 +347,17 @@ function draw_web_spider_multipart() {
         _draw_sub(_hatch, _hatch[4], _hatch[5], floor(_hatch[2] / 2), 0, _x, _y, 1, _facing, _flash, _alpha);
     }
     
-    // 4. Lớp Đầu (Hàng 5 với 4 frame) - Phía trên đỉnh thân
-    var _bh = r5_boxes[_h_idx];
-    _draw_sub(_bh, 0, -22, floor(_bh[2] / 2), 8, _x, _y, 1, _facing, _flash, _alpha);
+    // 4. Lớp Càng pháo lớn trên vai (Hàng 5) - Vươn cao phía sau vai hai bên
+    var _cl = r5_cannon[_l_idx];
+    _draw_sub(_cl, -16, -30, _cl[2] - 2, 2, _x, _y, 1, _facing, _flash, _alpha);
+    var _cr = r5_cannon[_r_idx];
+    _draw_sub(_cr, 16, -30, 2, 2, _x, _y, -1, _facing, _flash, _alpha);
     
-    // 5. Lớp Tay lúc bò (Hàng 7 F22..F30) - Phía trước ngực
+    // 5. Lớp Tay lúc bò (Hàng 7 F22..F30) - Hai bên ngực phía trước thân
     // Tay bên TRÁI
     var _bal = r7_hands[_al_idx];
-    _draw_sub(_bal, -10, 10, floor(_bal[2] / 2), 4, _x, _y, 1, _facing, _flash, _alpha);
+    _draw_sub(_bal, -8, 12, floor(_bal[2] / 2), 4, _x, _y, 1, _facing, _flash, _alpha);
     // Tay bên PHẢI (xoay gương sang phải)
     var _bar = r7_hands[_ar_idx];
-    _draw_sub(_bar, 10, 10, floor(_bar[2] / 2), 4, _x, _y, -1, _facing, _flash, _alpha);
+    _draw_sub(_bar, 8, 12, floor(_bar[2] / 2), 4, _x, _y, -1, _facing, _flash, _alpha);
 }
