@@ -176,19 +176,45 @@ if (state == PLAYER_STATE.HURT && sprite_exists(sX_Hurt)) {
     draw_rectangle(_arm_x + 4, _arm_y - 2, _arm_x + 7, _arm_y + 2, false);
 }
 
-// Charge particles / aura
-if (charge_level == 1) {
-    draw_set_color(make_color_rgb(80, 255, 120));
-    draw_set_alpha(0.6);
-    var _pulse = (sin(anim_timer * 0.4) * 3);
-    draw_circle(x, y - 16, 14 + _pulse, true);
-    draw_set_alpha(1.0);
-} else if (charge_level == 2) {
-    draw_set_color(make_color_rgb(255, 100, 220));
-    draw_set_alpha(0.7);
-    var _pulse = (sin(anim_timer * 0.5) * 4);
-    draw_circle(x, y - 16, 18 + _pulse, true);
-    draw_set_color(make_color_rgb(40, 200, 255));
-    draw_circle(x, y - 16, 12 - _pulse, true);
-    draw_set_alpha(1.0);
+// -------------------------------------------------------------
+// Authentic 13-Frame Energy Charge Effect & Glowing Body Aura
+// -------------------------------------------------------------
+if (charge_timer >= 15 && sprite_exists(sFX_X_Charge)) {
+    var _cf = clamp(floor(charge_anim_frame), 0, 12);
+    var _cx = x;
+    var _cy = y - 18;
+    
+    // 1. Charge flash on X's body (matching upload1.webp & original MMX)
+    if (charge_level == 2) {
+        if (((anim_timer div 3) % 4) == 0 && sprite_exists(current_sprite)) {
+            gpu_set_fog(true, make_color_rgb(50, 220, 255), 0, 0);
+            gpu_set_blendmode(bm_add);
+            draw_sprite_ext(current_sprite, current_frame, x, y, facing, 1, 0, c_white, 0.75);
+            gpu_set_blendmode(bm_normal);
+            gpu_set_fog(false, c_white, 0, 0);
+        }
+    } else if (charge_level == 1) {
+        if (((anim_timer div 4) % 3) == 0 && sprite_exists(current_sprite)) {
+            gpu_set_fog(true, make_color_rgb(80, 255, 140), 0, 0);
+            gpu_set_blendmode(bm_add);
+            draw_sprite_ext(current_sprite, current_frame, x, y, facing, 1, 0, c_white, 0.6);
+            gpu_set_blendmode(bm_normal);
+            gpu_set_fog(false, c_white, 0, 0);
+        }
+    }
+    
+    // 2. 13-Frame Energy Particles & Flare Pulses
+    gpu_set_blendmode(bm_add);
+    if (charge_level == 2) {
+        // Full charge: Intense electric cyan aura
+        draw_sprite_ext(sFX_X_Charge, _cf, _cx, _cy, facing, 1, 0, c_white, 1.0);
+        draw_sprite_ext(sFX_X_Charge, (_cf + 6) % 13, _cx, _cy, -facing, 1, 0, make_color_rgb(80, 200, 255), 0.6);
+    } else if (charge_level == 1) {
+        // Semi charge: Greenish-cyan charge energy
+        draw_sprite_ext(sFX_X_Charge, _cf, _cx, _cy, facing, 1, 0, make_color_rgb(120, 255, 170), 0.9);
+    } else {
+        // Initial charge gathering (timer 15..29): Subtle incoming blue particles
+        draw_sprite_ext(sFX_X_Charge, _cf % 8, _cx, _cy, facing, 1, 0, make_color_rgb(100, 210, 255), 0.7);
+    }
+    gpu_set_blendmode(bm_normal);
 }

@@ -1,7 +1,7 @@
 event_inherited();
 
 // Buster Charging
-if (global.input.shoot) {
+if (global.input.shoot && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DEATH && state != PLAYER_STATE.INTRO && state != PLAYER_STATE.TELEPORT_OUT) {
     charge_timer++;
     if (charge_timer >= CHARGE_LV2_FRAMES) {
         charge_level = 2;
@@ -10,6 +10,10 @@ if (global.input.shoot) {
     } else {
         charge_level = 0;
     }
+    charge_anim_frame += 0.35;
+    if (charge_anim_frame >= 13.0) charge_anim_frame -= 13.0;
+} else {
+    charge_anim_frame = 0.0;
 }
 
 // Firing
@@ -67,15 +71,27 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
         _b.hspeed = facing * 9;
         _b.image_xscale = facing;
         camera_shake(2, 6);
+        
+        var _m = instance_create_layer(_bx, _by, "Instances", oFX_BusterMuzzle);
+        _m.sprite_index = sFX_BusterMuzzle_Lv3;
+        _m.image_xscale = facing;
     } else if (charge_level == 1) {
         var _b = instance_create_layer(_bx, _by, "Instances", oBullet_SemiCharge);
         _b.hspeed = facing * 8;
         _b.image_xscale = facing;
+        
+        var _m = instance_create_layer(_bx, _by, "Instances", oFX_BusterMuzzle);
+        _m.sprite_index = sFX_BusterMuzzle_Lv2;
+        _m.image_xscale = facing;
     } else {
         if (instance_number(oBullet_Buster) < 3) {
             var _b = instance_create_layer(_bx, _by, "Instances", oBullet_Buster);
             _b.hspeed = facing * 7;
             _b.image_xscale = facing;
+            
+            var _m = instance_create_layer(_bx, _by, "Instances", oFX_BusterMuzzle);
+            _m.sprite_index = sFX_BusterMuzzle_Lv1;
+            _m.image_xscale = facing;
         }
     }
     

@@ -1,6 +1,7 @@
 event_inherited();
 charge_timer = 0;
 charge_level = 0;
+charge_anim_frame = 0.0;
 shoot_anim_timer = 0;
 
 // Sprite Animation Variables
