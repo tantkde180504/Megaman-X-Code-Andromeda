@@ -60,16 +60,19 @@ switch (state) {
         break;
         
     case WS_STATE.PHASE2_WEB_MOVE:
-        // Cử động bò đa bộ phận (Multi-part) trên mạng nhện theo đúng yêu cầu:
-        // - Thân: Hàng 4 Frame 1 (index 0)
-        // - Đầu: Hàng 5 với 4 frame kết hợp với phần thân
-        // - Chân lớn: Hàng 6 (11 frame) kết hợp với thân
-        // - Chân nhỏ: Hàng 7 (11 frame)
-        // - Tay: Hàng 8 (7 frame)
-        var _head_f = (anim_timer * 0.15) % 4;
-        var _leg_f = (anim_timer * 0.35) % 11;
-        var _arm_f = (anim_timer * 0.25) % 7;
-        draw_web_spider_multipart(0, _head_f, _leg_f, _leg_f, _arm_f, x, y, facing, _flash, 1.0);
+        // Cử động bò đa bộ phận (Multi-part) trên mạng nhện theo đúng chuẩn Mega Man X4:
+        // - Thân: Hàng 4 Frame 1 (tâm chuẩn)
+        // - Đầu: Hàng 5 với 4 frame kết hợp phía trước thân
+        // - Chân lớn: Hàng 6 (11 frame) tách biệt Trái / Phải vươn cao
+        // - Chân nhỏ: Hàng 7 (11 frame Trái F0..10, 11 frame Phải F11..21)
+        // - Tay: Hàng 7 (9 frame F22..30) phía trước ngực
+        // - Nhịp bước chân so le (alternating gait) giữa bên Trái và bên Phải
+        var _head_f = floor(anim_timer * 0.15) % 4;
+        var _l_leg_f = floor(anim_timer * 0.35) % 11;
+        var _r_leg_f = floor(anim_timer * 0.35 + 5.5) % 11;
+        var _l_arm_f = floor(anim_timer * 0.25) % 9;
+        var _r_arm_f = floor(anim_timer * 0.25 + 4.5) % 9;
+        draw_web_spider_multipart(0, _head_f, _l_leg_f, _r_leg_f, _l_arm_f, _r_arm_f, x, y, facing, _flash, 1.0);
         return;
         
     case WS_STATE.PHASE2_ATTACK_WEB:
@@ -84,10 +87,12 @@ switch (state) {
         if (state_timer >= 12 && state_timer <= 46) {
             _body_f = 1 + clamp(floor(((state_timer - 12) / 34.0) * 7), 0, 6);
         }
-        var _head_f = (anim_timer * 0.15) % 4;
-        var _leg_f = (anim_timer * 0.20) % 11;
-        var _arm_f = (anim_timer * 0.20) % 7;
-        draw_web_spider_multipart(_body_f, _head_f, _leg_f, _leg_f, _arm_f, x, y, facing, _flash, 1.0);
+        var _head_f = floor(anim_timer * 0.15) % 4;
+        var _l_leg_f = floor(anim_timer * 0.20) % 11;
+        var _r_leg_f = floor(anim_timer * 0.20 + 5.5) % 11;
+        var _l_arm_f = floor(anim_timer * 0.20) % 9;
+        var _r_arm_f = floor(anim_timer * 0.20 + 4.5) % 9;
+        draw_web_spider_multipart(_body_f, _head_f, _l_leg_f, _r_leg_f, _l_arm_f, _r_arm_f, x, y, facing, _flash, 1.0);
         return;
         
     case WS_STATE.DEATH:
