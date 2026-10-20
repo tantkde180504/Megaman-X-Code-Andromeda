@@ -11,6 +11,13 @@ anim_timer = 0;
 is_ladder_exiting = false;
 ladder_exit_frame = 0.0;
 
+// Dash Afterimage / Ghost Trail variables
+afterimages = [];
+afterimage_timer = 0;
+afterimage_interval = 3;
+current_sprite = noone;
+current_frame = 0;
+
 // Intro & Teleport variables
 intro_phase = 0;
 teleport_beam_y = 0;

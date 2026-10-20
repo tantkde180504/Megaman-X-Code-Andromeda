@@ -105,6 +105,23 @@ function player_state_idle() {
         global.input.jump_buffer = 0;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         state = PLAYER_STATE.JUMP;
+        var _move = global.input.right - global.input.left;
+        if ((global.input.dash || global.input.dash_buffer > 0) && !in_web) {
+            is_dash_jumping = true;
+            if (_move != 0) facing = _move;
+            hsp = facing * DASH_JUMP_SPEED;
+            if (object_exists(oFX_DashDust)) {
+                instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+            }
+        } else {
+            is_dash_jumping = false;
+            if (_move != 0) {
+                facing = _move;
+                hsp = _move * RUN_SPEED;
+            } else {
+                hsp = 0;
+            }
+        }
         return;
     }
     
@@ -174,6 +191,15 @@ function player_state_run() {
         global.input.jump_buffer = 0;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         state = PLAYER_STATE.JUMP;
+        if ((global.input.dash || global.input.dash_buffer > 0) && !in_web) {
+            is_dash_jumping = true;
+            hsp = facing * DASH_JUMP_SPEED;
+            if (object_exists(oFX_DashDust)) {
+                instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+            }
+        } else {
+            is_dash_jumping = false;
+        }
         return;
     }
     
@@ -245,6 +271,11 @@ function player_state_jump() {
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
+        var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
+        if (_dash_active) {
+            is_dash_jumping = true;
+            hsp = facing * DASH_JUMP_SPEED;
+        }
         if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
@@ -267,14 +298,16 @@ function player_state_jump() {
         wall_jump_timer--;
     } else {
         var _move = global.input.right - global.input.left;
-        var _spd = is_dash_jumping ? DASH_SPEED : RUN_SPEED;
+        var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
+        var _spd = _dash_active ? DASH_JUMP_SPEED : RUN_SPEED;
         if (in_water) _spd *= 0.8;
         
         if (_move != 0) {
             facing = _move;
             hsp = _move * _spd;
+            if (_dash_active) is_dash_jumping = true;
         } else {
-            if (!is_dash_jumping) {
+            if (!_dash_active) {
                 hsp = 0;
             }
         }
@@ -333,6 +366,10 @@ function player_state_fall() {
         if (global.input.jump_buffer > 0) {
             global.input.jump_buffer = 0;
             vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
+            if ((global.input.dash || global.input.dash_buffer > 0) && !in_web) {
+                is_dash_jumping = true;
+                hsp = facing * DASH_JUMP_SPEED;
+            }
             state = PLAYER_STATE.JUMP;
             return;
         }
@@ -345,6 +382,11 @@ function player_state_fall() {
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
+        var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
+        if (_dash_active) {
+            is_dash_jumping = true;
+            hsp = facing * DASH_JUMP_SPEED;
+        }
         if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
@@ -363,14 +405,16 @@ function player_state_fall() {
         wall_jump_timer--;
     } else {
         var _move = global.input.right - global.input.left;
-        var _spd = is_dash_jumping ? DASH_SPEED : RUN_SPEED;
+        var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
+        var _spd = _dash_active ? DASH_JUMP_SPEED : RUN_SPEED;
         if (in_water) _spd *= 0.8;
         
         if (_move != 0) {
             facing = _move;
             hsp = _move * _spd;
+            if (_dash_active) is_dash_jumping = true;
         } else {
-            if (!is_dash_jumping) {
+            if (!_dash_active) {
                 hsp = 0;
             }
         }
@@ -425,7 +469,11 @@ function player_state_dash() {
         global.input.jump_buffer = 0;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         is_dash_jumping = true;
+        hsp = dash_dir * DASH_JUMP_SPEED;
         state = PLAYER_STATE.JUMP;
+        if (object_exists(oFX_DashDust)) {
+            instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+        }
         return;
     }
     
@@ -439,6 +487,7 @@ function player_state_dash() {
             is_dash_jumping = true;
             var _move = global.input.right - global.input.left;
             if (_move != 0) facing = _move;
+            hsp = facing * DASH_JUMP_SPEED;
             if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
             if (object_exists(oFX_DashDust)) {
                 instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
@@ -491,10 +540,12 @@ function player_state_wall_slide() {
         global.input.jump_buffer = 0;
         var _kick_dir = -touching_wall;
         facing = _kick_dir;
-        hsp = _kick_dir * WALL_JUMP_X_SPEED;
+        var _is_dash_wall = (global.input.dash || global.input.dash_buffer > 0);
+        var _wall_spd = _is_dash_wall ? DASH_JUMP_SPEED : WALL_JUMP_X_SPEED;
+        hsp = _kick_dir * _wall_spd;
         vsp = WALL_JUMP_Y_SPEED;
         wall_jump_timer = WALL_JUMP_LOCK_FRAMES;
-        is_dash_jumping = false;
+        is_dash_jumping = _is_dash_wall;
         air_dash_used = false;
         double_jump_used = false;
         state = PLAYER_STATE.WALL_JUMP;
@@ -552,6 +603,11 @@ function player_state_wall_jump() {
             vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
             var _move = global.input.right - global.input.left;
             if (_move != 0) facing = _move;
+            var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
+            if (_dash_active) {
+                is_dash_jumping = true;
+                hsp = facing * DASH_JUMP_SPEED;
+            }
             if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
             if (object_exists(oFX_DashDust)) {
                 instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
@@ -563,7 +619,11 @@ function player_state_wall_jump() {
         var _move = global.input.right - global.input.left;
         if (_move != 0) {
             facing = _move;
-            hsp = _move * RUN_SPEED;
+            var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
+            var _spd = _dash_active ? DASH_JUMP_SPEED : RUN_SPEED;
+            if (in_water) _spd *= 0.8;
+            hsp = _move * _spd;
+            if (_dash_active) is_dash_jumping = true;
         }
     }
     
@@ -621,7 +681,10 @@ function player_state_ladder() {
     if (global.input.jump_pressed) {
         var _jump_dir = global.input.right - global.input.left;
         if (_jump_dir != 0) facing = _jump_dir;
-        hsp = facing * RUN_SPEED;
+        var _dash_active = (global.input.dash && !in_web);
+        is_dash_jumping = _dash_active;
+        var _spd = _dash_active ? DASH_JUMP_SPEED : RUN_SPEED;
+        hsp = facing * _spd;
         vsp = JUMP_VELOCITY * 0.8;
         state = PLAYER_STATE.JUMP;
         return;
@@ -802,4 +865,24 @@ function player_state_teleport_out() {
             y += vsp;
         }
     }
+}
+
+// -------------------------------------------------------------------------
+// AFTERIMAGE RENDERING
+// -------------------------------------------------------------------------
+/// @desc Draw afterimages / ghost trail for dashing player
+function player_draw_afterimages() {
+    if (!variable_instance_exists(id, "afterimages") || array_length(afterimages) == 0) return;
+    
+    gpu_set_blendmode(bm_add);
+    var _len = array_length(afterimages);
+    for (var i = 0; i < _len; i++) {
+        var _img = afterimages[i];
+        if (sprite_exists(_img.sprite)) {
+            gpu_set_fog(true, _img.color, 0, 0);
+            draw_sprite_ext(_img.sprite, _img.frame, _img.x, _img.y, _img.facing, 1, 0, c_white, _img.alpha);
+        }
+    }
+    gpu_set_fog(false, c_white, 0, 0);
+    gpu_set_blendmode(bm_normal);
 }

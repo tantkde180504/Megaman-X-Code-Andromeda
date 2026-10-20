@@ -3,6 +3,49 @@ if (iframes > 0) iframes--;
 player_state_execute();
 player_handle_movement_and_collision();
 
+// -------------------------------------------------------------------------
+// Dash Afterimage / Ghost Trail Spawner & Updater
+// -------------------------------------------------------------------------
+var _is_dash_action = (state == PLAYER_STATE.DASH) || 
+    ((state == PLAYER_STATE.JUMP || state == PLAYER_STATE.FALL || state == PLAYER_STATE.WALL_JUMP) && (is_dash_jumping || global.input.dash));
+
+if (_is_dash_action && !in_web && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DEATH) {
+    afterimage_timer++;
+    if (afterimage_timer >= afterimage_interval) {
+        afterimage_timer = 0;
+        
+        var _spr = current_sprite;
+        var _sub = current_frame;
+        if (!sprite_exists(_spr)) { _spr = sprite_index; _sub = image_index; }
+        if (sprite_exists(_spr)) {
+            var _ghost_col = (object_index == oPlayerZero) ? 
+                choose(make_color_rgb(255, 50, 100), make_color_rgb(255, 120, 160), make_color_rgb(255, 180, 80)) :
+                choose(make_color_rgb(50, 200, 255), make_color_rgb(120, 230, 255), make_color_rgb(0, 150, 255));
+                
+            array_push(afterimages, {
+                sprite: _spr,
+                frame: _sub,
+                x: x,
+                y: y,
+                facing: facing,
+                alpha: 0.65,
+                fade_speed: 0.048,
+                color: _ghost_col
+            });
+        }
+    }
+} else {
+    afterimage_timer = max(0, afterimage_timer - 1);
+}
+
+// Fade and clean up expired afterimages
+for (var i = array_length(afterimages) - 1; i >= 0; i--) {
+    afterimages[i].alpha -= afterimages[i].fade_speed;
+    if (afterimages[i].alpha <= 0) {
+        array_delete(afterimages, i, 1);
+    }
+}
+
 // Debug shortcuts:
 // 'B' or 'F8': Teleport directly in front of Door 1 (Note 1 - Entrance to Save Corridor)
 if (keyboard_check_pressed(ord("B")) || keyboard_check_pressed(vk_f8)) {
