@@ -211,14 +211,16 @@ if (_active) {
     var _num_e = instance_place_list(x, y, oEnemyParent, _enemies, false);
     for (var i = 0; i < _num_e; i++) {
         var _tgt = _enemies[| i];
-        if (ds_list_find_index(hit_list, _tgt) == -1) {
+        if (instance_exists(_tgt) && ds_list_find_index(hit_list, _tgt) == -1) {
             ds_list_add(hit_list, _tgt);
+            var _tx = _tgt.x;
+            var _ty = _tgt.y;
             if (variable_instance_exists(_tgt, "is_deflecting") && _tgt.is_deflecting && slash_type != "slash3") {
-                instance_create_layer(_tgt.x, _tgt.y - 12, "Instances", oFX_HitSpark);
+                instance_create_layer(_tx, _ty - 12, "Instances", oFX_HitSpark);
                 camera_shake(1, 4);
             } else {
                 var _is_fire = (element == "fire" || slash_type == "ryuenjin");
-                deal_damage_to_target(_tgt, damage, _tgt.x, _tgt.y - 12, _is_fire, false, element);
+                deal_damage_to_target(_tgt, damage, _tx, _ty - 12, _is_fire, false, element);
                 camera_shake(2, 6);
             }
         }
@@ -230,16 +232,20 @@ if (_active) {
     var _num_w = instance_place_list(x, y, oWebTrap, _webs, false);
     for (var i = 0; i < _num_w; i++) {
         var _w = _webs[| i];
-        if (ds_list_find_index(hit_list, _w) == -1) {
+        if (instance_exists(_w) && ds_list_find_index(hit_list, _w) == -1) {
             ds_list_add(hit_list, _w);
+            var _wx = _w.x;
+            var _wy = _w.y;
             if (element == "fire") {
                 _w.hp = 0;
             } else {
                 _w.hp -= damage;
             }
-            _w.flash_timer = 6;
-            if (_w.hp <= 0 && object_exists(oFX_HitSpark)) {
-                instance_create_layer(_w.x, _w.y, "Instances", oFX_HitSpark);
+            if (instance_exists(_w)) {
+                _w.flash_timer = 6;
+                if (_w.hp <= 0 && object_exists(oFX_HitSpark)) {
+                    instance_create_layer(_wx, _wy, "Instances", oFX_HitSpark);
+                }
             }
         }
     }
