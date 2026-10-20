@@ -434,10 +434,10 @@ function draw_web_spider_multipart() {
         var _hdy = floor(_y + _hoy);
         if (_flash) {
             gpu_set_fog(true, c_white, 0, 0);
-            draw_sprite_part_ext(WebSpider, 0, _hsx, _hsy, _hw, _hh, _hdx, _hdy, _facing, 1, c_white, _al);
+            draw_sprite_part_ext(WebSpider, 0, _hsx, _hsy, _hw, _hh, _hdx, _hdy, _facing, 1, c_white, _alpha);
             gpu_set_fog(false, c_white, 0, 0);
         } else {
-            draw_sprite_part_ext(WebSpider, 0, _hsx, _hsy, _hw, _hh, _hdx, _hdy, _facing, 1, c_white, _al);
+            draw_sprite_part_ext(WebSpider, 0, _hsx, _hsy, _hw, _hh, _hdx, _hdy, _facing, 1, c_white, _alpha);
         }
     }
     
