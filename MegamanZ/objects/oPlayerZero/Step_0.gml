@@ -78,6 +78,7 @@ if (global.input.special_pressed && technique_state == TECHNIQUE.NONE && slash_a
         hsp = 0;
         vsp = 0;
         if (audio_exists(snd_zero_ryuenjin)) audio_play_sound(snd_zero_ryuenjin, 90, false);
+        if (audio_exists(snd_zero_voice_ryuenjin)) audio_play_sound(snd_zero_voice_ryuenjin, 85, false);
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "ryuenjin";
@@ -94,6 +95,7 @@ if (global.input.special_pressed && technique_state == TECHNIQUE.NONE && slash_a
         hsp = 0;
         vsp = 8.5;
         if (audio_exists(snd_zero_hyouretsuzan)) audio_play_sound(snd_zero_hyouretsuzan, 85, false);
+        if (audio_exists(snd_zero_voice_hyouretsuzan)) audio_play_sound(snd_zero_voice_hyouretsuzan, 85, false);
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "hyouretsuzan";
@@ -119,6 +121,8 @@ if (global.input.special_pressed && technique_state == TECHNIQUE.NONE && slash_a
         technique_timer = 50;
         hsp = 0;
         vsp = 0;
+        if (audio_exists(snd_zero_raijingeki)) audio_play_sound(snd_zero_raijingeki, 85, false);
+        if (audio_exists(snd_zero_voice_raijingeki)) audio_play_sound(snd_zero_voice_raijingeki, 90, false);
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "raijingeki";
@@ -172,6 +176,7 @@ if (global.input.shoot_pressed && technique_state == TECHNIQUE.NONE && state != 
             hsp = 0;
             vsp = 8.5;
             if (audio_exists(snd_zero_hyouretsuzan)) audio_play_sound(snd_zero_hyouretsuzan, 85, false);
+            if (audio_exists(snd_zero_voice_hyouretsuzan)) audio_play_sound(snd_zero_voice_hyouretsuzan, 85, false);
             var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
             _h.owner = id;
             _h.slash_type = "hyouretsuzan";
@@ -200,6 +205,7 @@ if (global.input.shoot_pressed && technique_state == TECHNIQUE.NONE && state != 
         is_wall_slashing = false;
         is_ladder_slashing = false;
         if (audio_exists(snd_zero_shippuuga)) audio_play_sound(snd_zero_shippuuga, 85, false);
+        if (audio_exists(snd_zero_voice_shippuuga)) audio_play_sound(snd_zero_voice_shippuuga, 85, false);
         var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
         _h.owner = id;
         _h.slash_type = "dash_slash";
@@ -214,6 +220,7 @@ if (global.input.shoot_pressed && technique_state == TECHNIQUE.NONE && state != 
             hsp = 0;
             vsp = 0;
             if (audio_exists(snd_zero_ryuenjin)) audio_play_sound(snd_zero_ryuenjin, 90, false);
+            if (audio_exists(snd_zero_voice_ryuenjin)) audio_play_sound(snd_zero_voice_ryuenjin, 85, false);
             var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
             _h.owner = id;
             _h.slash_type = "ryuenjin";
@@ -234,6 +241,7 @@ if (global.input.shoot_pressed && technique_state == TECHNIQUE.NONE && state != 
                 slash_total_frames = 10;
                 hsp = 0;
                 if (audio_exists(snd_zero_saber_1)) audio_play_sound(snd_zero_saber_1, 80, false);
+                if (audio_exists(snd_zero_voice_slash1)) audio_play_sound(snd_zero_voice_slash1, 75, false);
                 var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
                 _h.owner = id;
                 _h.slash_type = "slash1";
@@ -247,6 +255,7 @@ if (global.input.shoot_pressed && technique_state == TECHNIQUE.NONE && state != 
                 slash_total_frames = 10;
                 hsp = 0;
                 if (audio_exists(snd_zero_saber_2)) audio_play_sound(snd_zero_saber_2, 85, false);
+                if (audio_exists(snd_zero_voice_slash2)) audio_play_sound(snd_zero_voice_slash2, 75, false);
                 var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
                 _h.owner = id;
                 _h.slash_type = "slash2";
@@ -260,6 +269,7 @@ if (global.input.shoot_pressed && technique_state == TECHNIQUE.NONE && state != 
                 slash_total_frames = 14;
                 hsp = 0;
                 if (audio_exists(snd_zero_saber_3)) audio_play_sound(snd_zero_saber_3, 90, false);
+                if (audio_exists(snd_zero_voice_slash3)) audio_play_sound(snd_zero_voice_slash3, 85, false);
                 var _h = instance_create_layer(x, y, "Instances", oSaberHitbox);
                 _h.owner = id;
                 _h.slash_type = "slash3";

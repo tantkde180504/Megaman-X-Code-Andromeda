@@ -107,6 +107,7 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
         _b.image_xscale = facing;
         camera_shake(2, 6);
         if (audio_exists(snd_x_buster_lv3)) audio_play_sound(snd_x_buster_lv3, 90, false);
+        if (audio_exists(snd_x_voice_charged)) audio_play_sound(snd_x_voice_charged, 85, false);
         
         muzzle_flash_sprite = sFX_BusterMuzzle_Lv3;
         muzzle_flash_frame = 0.0;

@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.1448,
+  "duration": 0.6108,
   "exportDir": "",
   "name": "snd_player_land",
   "parent": {

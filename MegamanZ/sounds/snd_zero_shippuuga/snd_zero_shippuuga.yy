@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 1.0667,
+  "duration": 0.5727,
   "exportDir": "",
   "name": "snd_zero_shippuuga",
   "parent": {

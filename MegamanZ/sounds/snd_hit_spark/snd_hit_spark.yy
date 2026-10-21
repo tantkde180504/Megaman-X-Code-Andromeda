@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.3543,
+  "duration": 0.6527,
   "exportDir": "",
   "name": "snd_hit_spark",
   "parent": {

@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.2616,
+  "duration": 0.7644,
   "exportDir": "",
   "name": "snd_player_wall_slide",
   "parent": {

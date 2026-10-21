@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 1.1568,
+  "duration": 0.3073,
   "exportDir": "",
   "name": "snd_zero_ryuenjin",
   "parent": {

@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.899,
+  "duration": 1.0728,
   "exportDir": "",
   "name": "snd_x_charge_max",
   "parent": {
@@ -20,7 +20,7 @@
   "preload": true,
   "resourceType": "GMSound",
   "resourceVersion": "2.0",
-  "sampleRate": 22050,
+  "sampleRate": 16000,
   "soundFile": "snd_x_charge_max.wav",
   "volume": 1.0
 }

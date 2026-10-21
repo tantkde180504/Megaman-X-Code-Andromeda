@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.5206,
+  "duration": 1.0286,
   "exportDir": "",
   "name": "snd_x_buster_lv2",
   "parent": {

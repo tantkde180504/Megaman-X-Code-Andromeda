@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 1.2622,
+  "duration": 0.7175,
   "exportDir": "",
   "name": "snd_pickup_life",
   "parent": {

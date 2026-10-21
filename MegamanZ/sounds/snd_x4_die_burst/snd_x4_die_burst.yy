@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.701,
+  "duration": 0.5867,
   "exportDir": "",
   "name": "snd_x4_die_burst",
   "parent": {

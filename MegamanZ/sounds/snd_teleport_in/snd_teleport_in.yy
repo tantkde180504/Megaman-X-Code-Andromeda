@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.5257,
+  "duration": 0.701,
   "exportDir": "",
   "name": "snd_teleport_in",
   "parent": {

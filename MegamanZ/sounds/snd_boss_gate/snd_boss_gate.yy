@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.4152,
+  "duration": 0.3543,
   "exportDir": "",
   "name": "snd_boss_gate",
   "parent": {

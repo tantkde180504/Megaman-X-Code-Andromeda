@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 1.503,
+  "duration": 0.3606,
   "exportDir": "",
   "name": "snd_x_scream",
   "parent": {
@@ -20,7 +20,7 @@
   "preload": true,
   "resourceType": "GMSound",
   "resourceVersion": "2.0",
-  "sampleRate": 18070,
+  "sampleRate": 22050,
   "soundFile": "snd_x_scream.wav",
   "volume": 1.0
 }

@@ -67,7 +67,8 @@ function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y, _is_wea
         if (object_exists(oFX_HitSpark)) {
             instance_create_layer(_hit_x, _hit_y, "Instances", oFX_HitSpark);
         }
-        if (audio_exists(snd_hit_spark)) audio_play_sound(snd_hit_spark, 75, false);
+        var _snd_hit = audio_exists(snd_enemy_hit) ? snd_enemy_hit : snd_hit_spark;
+        if (audio_exists(_snd_hit)) audio_play_sound(_snd_hit, 75, false);
     }
 }
 

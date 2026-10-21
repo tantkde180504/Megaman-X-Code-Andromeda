@@ -10,7 +10,7 @@
   "compression": 0,
   "compressionQuality": 6,
   "conversionMode": 0,
-  "duration": 0.3606,
+  "duration": 0.2337,
   "exportDir": "",
   "name": "snd_x_hurt",
   "parent": {
