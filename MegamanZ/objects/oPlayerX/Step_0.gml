@@ -3,6 +3,11 @@ event_inherited();
 // Buster Charging
 if (global.input.shoot && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DEATH && state != PLAYER_STATE.INTRO && state != PLAYER_STATE.TELEPORT_OUT) {
     charge_timer++;
+    if (charge_timer == 15) {
+        if (charge_sound == noone && audio_exists(snd_x_charge)) {
+            charge_sound = audio_play_sound(snd_x_charge, 70, true);
+        }
+    }
     if (charge_timer >= CHARGE_LV2_FRAMES) {
         charge_level = 2;
     } else if (charge_timer >= CHARGE_LV1_FRAMES) {
@@ -13,6 +18,10 @@ if (global.input.shoot && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DE
     charge_anim_frame = (charge_anim_frame + 0.35) % 13.0;
 } else {
     charge_anim_frame = 0.0;
+    if (charge_sound != noone) {
+        if (audio_is_playing(charge_sound)) audio_stop_sound(charge_sound);
+        charge_sound = noone;
+    }
 }
 
 // Muzzle Flash Animation Advance
@@ -28,7 +37,7 @@ if (muzzle_flash_sprite != noone) {
 if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer < 5)) {
     var _dx = 31;
     var _dy = -31;
-    
+
     if (is_dash_recovering) {
         _dx = 22;
         _dy = -30;
@@ -41,7 +50,7 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
                 _dx = 31;
                 _dy = -31;
                 break;
-                
+
             case PLAYER_STATE.RUN:
                 var _rf = floor((anim_timer * 0.3) % 16);
                 if (_rf >= 6 && _rf <= 11) {
@@ -55,40 +64,47 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
                 }
                 _dy = -31;
                 break;
-                
+
             case PLAYER_STATE.JUMP:
             case PLAYER_STATE.FALL:
             case PLAYER_STATE.WALL_JUMP:
                 _dx = 17;
                 _dy = -40;
                 break;
-                
+
             case PLAYER_STATE.DASH:
                 _dx = 32;
                 _dy = -17;
                 break;
-                
+
             case PLAYER_STATE.WALL_SLIDE:
                 _dx = 32;
                 _dy = -39;
                 break;
-                
+
             case PLAYER_STATE.LADDER:
                 _dx = 28;
                 _dy = -40;
                 break;
         }
     }
-    
+
     var _bx = x + (facing * _dx);
     var _by = y + _dy;
-    
+
+    if (charge_sound != noone) {
+        if (audio_is_playing(charge_sound)) audio_stop_sound(charge_sound);
+        charge_sound = noone;
+    }
+
     if (charge_level == 2) {
         var _b = instance_create_layer(_bx + (facing * 16), _by, "Instances", oBullet_FullCharge);
         _b.hspeed = facing * 9;
         _b.image_xscale = facing;
         camera_shake(2, 6);
-        
+        if (audio_exists(snd_x_charge_shot_full)) audio_play_sound(snd_x_charge_shot_full, 90, false);
+        if (audio_exists(snd_x_shot_lv3)) audio_play_sound(snd_x_shot_lv3, 85, false);
+
         muzzle_flash_sprite = sFX_BusterMuzzle_Lv3;
         muzzle_flash_frame = 0.0;
         muzzle_flash_max = 3;
@@ -96,7 +112,8 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
         var _b = instance_create_layer(_bx + (facing * 10), _by, "Instances", oBullet_SemiCharge);
         _b.hspeed = facing * 8;
         _b.image_xscale = facing;
-        
+        if (audio_exists(snd_x_shot_lv2)) audio_play_sound(snd_x_shot_lv2, 85, false);
+
         muzzle_flash_sprite = sFX_BusterMuzzle_Lv2;
         muzzle_flash_frame = 0.0;
         muzzle_flash_max = 4;
@@ -105,13 +122,14 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
             var _b = instance_create_layer(_bx + (facing * 6), _by, "Instances", oBullet_Buster);
             _b.hspeed = facing * 7;
             _b.image_xscale = facing;
-            
+            if (audio_exists(snd_x_buster_shot)) audio_play_sound(snd_x_buster_shot, 80, false);
+
             muzzle_flash_sprite = sFX_BusterMuzzle_Lv1;
             muzzle_flash_frame = 0.0;
             muzzle_flash_max = 4;
         }
     }
-    
+
     charge_timer = 0;
     charge_level = 0;
     shoot_anim_timer = 14;
@@ -124,6 +142,7 @@ if (shoot_anim_timer > 0) shoot_anim_timer--;
 // -------------------------------------------------------------
 var _just_landed = (was_airborne && grounded);
 if (_just_landed) {
+    if (audio_exists(snd_x_land)) audio_play_sound(snd_x_land, 65, false);
     if (abs(hsp) <= 0.1 && (state == PLAYER_STATE.IDLE || state == PLAYER_STATE.FALL)) {
         is_landing = true;
         landing_frame = 8.0; // Frame 9 in 1-based indexing
@@ -238,7 +257,7 @@ if (state == PLAYER_STATE.LADDER) {
         is_landing = false;
         is_dash_recovering = false;
     }
-    
+
     if (is_ladder_exiting) {
         ladder_exit_frame += 0.20;
         y -= 0.8;

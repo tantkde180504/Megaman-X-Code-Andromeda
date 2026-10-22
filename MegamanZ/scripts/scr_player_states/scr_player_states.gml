@@ -5,47 +5,47 @@ function player_state_execute() {
         case PLAYER_STATE.IDLE:
             player_state_idle();
             break;
-            
+
         case PLAYER_STATE.RUN:
             player_state_run();
             break;
-            
+
         case PLAYER_STATE.JUMP:
             player_state_jump();
             break;
-            
+
         case PLAYER_STATE.FALL:
             player_state_fall();
             break;
-            
+
         case PLAYER_STATE.DASH:
             player_state_dash();
             break;
-            
+
         case PLAYER_STATE.WALL_SLIDE:
             player_state_wall_slide();
             break;
-            
+
         case PLAYER_STATE.WALL_JUMP:
             player_state_wall_jump();
             break;
-            
+
         case PLAYER_STATE.LADDER:
             player_state_ladder();
             break;
-            
+
         case PLAYER_STATE.HURT:
             player_state_hurt();
             break;
-            
+
         case PLAYER_STATE.DEATH:
             player_state_death();
             break;
-            
+
         case PLAYER_STATE.INTRO:
             player_state_intro();
             break;
-            
+
         case PLAYER_STATE.TELEPORT_OUT:
             player_state_teleport_out();
             break;
@@ -62,7 +62,7 @@ function player_state_idle() {
         facing = 1;
         return;
     }
-    
+
     // Ice sliding friction
     if (on_ice) {
         hsp = lerp(hsp, 0, 0.08);
@@ -70,13 +70,13 @@ function player_state_idle() {
     } else {
         hsp = 0;
     }
-    
+
     // Leaving ground
     if (!grounded) {
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Drop down through OneWay platform
     if (global.input.down && global.input.jump_pressed) {
         drop_through_timer = 14;
@@ -84,7 +84,7 @@ function player_state_idle() {
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Check ladder grab
     if ((global.input.up || global.input.down) && place_meeting(x, y, oLadder)) {
         var _lad = instance_place(x, y, oLadder);
@@ -99,12 +99,15 @@ function player_state_idle() {
         state = PLAYER_STATE.LADDER;
         return;
     }
-    
+
     // Check Jump (buffered)
     if (global.input.jump_buffer > 0) {
         global.input.jump_buffer = 0;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         state = PLAYER_STATE.JUMP;
+        if (object_index == oPlayerZero) {
+            if (audio_exists(snd_zero_jump1)) audio_play_sound(snd_zero_jump1, 75, false);
+        }
         var _move = global.input.right - global.input.left;
         if ((global.input.dash || global.input.dash_buffer > 0) && !in_web) {
             is_dash_jumping = true;
@@ -124,7 +127,7 @@ function player_state_idle() {
         }
         return;
     }
-    
+
     // Check Dash (buffered)
     if (global.input.dash_buffer > 0 && !in_web) {
         global.input.dash_buffer = 0;
@@ -132,12 +135,17 @@ function player_state_idle() {
         dash_dir = facing;
         hsp = dash_dir * DASH_SPEED;
         state = PLAYER_STATE.DASH;
+        if (object_index == oPlayerX) {
+            if (audio_exists(snd_x_dash)) audio_play_sound(snd_x_dash, 75, false);
+        } else {
+            if (audio_exists(snd_zero_dash)) audio_play_sound(snd_zero_dash, 75, false);
+        }
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
         }
         return;
     }
-    
+
     // Check Run
     var _move = global.input.right - global.input.left;
     if (_move != 0) {
@@ -160,16 +168,16 @@ function player_state_run() {
         facing = 1;
         return;
     }
-    
+
     var _move = global.input.right - global.input.left;
-    
+
     // Drop off ledge
     if (!grounded) {
         coyote_timer = COYOTE_FRAMES;
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Drop through OneWay platform
     if (global.input.down && global.input.jump_pressed) {
         drop_through_timer = 14;
@@ -177,7 +185,7 @@ function player_state_run() {
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Check ladder grab
     if ((global.input.up || global.input.down) && place_meeting(x, y, oLadder)) {
         var _lad = instance_place(x, y, oLadder);
@@ -185,12 +193,15 @@ function player_state_run() {
         state = PLAYER_STATE.LADDER;
         return;
     }
-    
+
     // Check Jump
     if (global.input.jump_buffer > 0) {
         global.input.jump_buffer = 0;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         state = PLAYER_STATE.JUMP;
+        if (object_index == oPlayerZero) {
+            if (audio_exists(snd_zero_jump1)) audio_play_sound(snd_zero_jump1, 75, false);
+        }
         if ((global.input.dash || global.input.dash_buffer > 0) && !in_web) {
             is_dash_jumping = true;
             hsp = facing * DASH_JUMP_SPEED;
@@ -202,7 +213,7 @@ function player_state_run() {
         }
         return;
     }
-    
+
     // Check Dash
     if (global.input.dash_buffer > 0 && !in_web) {
         global.input.dash_buffer = 0;
@@ -210,17 +221,22 @@ function player_state_run() {
         dash_dir = facing;
         hsp = dash_dir * DASH_SPEED;
         state = PLAYER_STATE.DASH;
+        if (object_index == oPlayerX) {
+            if (audio_exists(snd_x_dash)) audio_play_sound(snd_x_dash, 75, false);
+        } else {
+            if (audio_exists(snd_zero_dash)) audio_play_sound(snd_zero_dash, 75, false);
+        }
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
         }
         return;
     }
-    
+
     // Movement update
     var _spd = RUN_SPEED;
     if (in_web) _spd *= 0.5;
     if (in_water) _spd *= 0.8;
-    
+
     if (_move != 0) {
         facing = _move;
         if (on_ice) {
@@ -250,6 +266,11 @@ function player_state_jump() {
     var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
     if (global.input.dash_pressed && _can_air_dash && !air_dash_used && !in_web) {
         air_dash_used = true;
+        if (object_index == oPlayerX) {
+            if (audio_exists(snd_x_air_dash)) audio_play_sound(snd_x_air_dash, 75, false);
+        } else {
+            if (audio_exists(snd_zero_air_dash)) audio_play_sound(snd_zero_air_dash, 75, false);
+        }
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
         dash_timer = AIR_DASH_DURATION;
@@ -258,17 +279,23 @@ function player_state_jump() {
         vsp = 0;
         is_dash_jumping = true;
         state = PLAYER_STATE.DASH;
+        if (object_index == oPlayerX) {
+            if (audio_exists(snd_x_air_dash)) audio_play_sound(snd_x_air_dash, 75, false);
+        } else {
+            if (audio_exists(snd_zero_air_dash)) audio_play_sound(snd_zero_air_dash, 75, false);
+        }
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
         }
         return;
     }
-    
+
     // Double Jump capability!
     var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
     if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
         double_jump_used = true;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
+        if (audio_exists(snd_zero_jump2)) audio_play_sound(snd_zero_jump2, 75, false);
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
         var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
@@ -282,17 +309,17 @@ function player_state_jump() {
         }
         return;
     }
-    
+
     // Variable jump height
     if (global.input.jump_released && vsp < -1.5) {
         vsp = -1.5;
     }
-    
+
     // Apply gravity
     var _grav = in_water ? WATER_GRAVITY : GRAVITY;
     var _max_fall = in_water ? MAX_WATER_FALL_SPEED : MAX_FALL_SPEED;
     vsp = min(vsp + _grav, _max_fall);
-    
+
     // Air steering
     if (wall_jump_timer > 0) {
         wall_jump_timer--;
@@ -301,7 +328,7 @@ function player_state_jump() {
         var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
         var _spd = _dash_active ? DASH_JUMP_SPEED : RUN_SPEED;
         if (in_water) _spd *= 0.8;
-        
+
         if (_move != 0) {
             facing = _move;
             hsp = _move * _spd;
@@ -312,13 +339,13 @@ function player_state_jump() {
             }
         }
     }
-    
+
     // Transition to Fall when apex reached
     if (vsp >= 0) {
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Grab ladder in mid-air
     if (global.input.up && place_meeting(x, y, oLadder)) {
         var _lad = instance_place(x, y, oLadder);
@@ -342,6 +369,11 @@ function player_state_fall() {
     var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
     if (global.input.dash_pressed && _can_air_dash && !air_dash_used && !in_web) {
         air_dash_used = true;
+        if (object_index == oPlayerX) {
+            if (audio_exists(snd_x_air_dash)) audio_play_sound(snd_x_air_dash, 75, false);
+        } else {
+            if (audio_exists(snd_zero_air_dash)) audio_play_sound(snd_zero_air_dash, 75, false);
+        }
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
         dash_timer = AIR_DASH_DURATION;
@@ -350,12 +382,17 @@ function player_state_fall() {
         vsp = 0;
         is_dash_jumping = true;
         state = PLAYER_STATE.DASH;
+        if (object_index == oPlayerX) {
+            if (audio_exists(snd_x_air_dash)) audio_play_sound(snd_x_air_dash, 75, false);
+        } else {
+            if (audio_exists(snd_zero_air_dash)) audio_play_sound(snd_zero_air_dash, 75, false);
+        }
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
         }
         return;
     }
-    
+
     // Coyote jump check
     if (coyote_timer > 0) {
         coyote_timer--;
@@ -370,12 +407,13 @@ function player_state_fall() {
             return;
         }
     }
-    
+
     // Double Jump capability!
     var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
     if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
         double_jump_used = true;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
+        if (audio_exists(snd_zero_jump2)) audio_play_sound(snd_zero_jump2, 75, false);
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
         var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
@@ -390,12 +428,12 @@ function player_state_fall() {
         state = PLAYER_STATE.JUMP;
         return;
     }
-    
+
     // Apply gravity
     var _grav = in_water ? WATER_GRAVITY : GRAVITY;
     var _max_fall = in_water ? MAX_WATER_FALL_SPEED : MAX_FALL_SPEED;
     vsp = min(vsp + _grav, _max_fall);
-    
+
     // Air steering
     if (wall_jump_timer > 0) {
         wall_jump_timer--;
@@ -404,7 +442,7 @@ function player_state_fall() {
         var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
         var _spd = _dash_active ? DASH_JUMP_SPEED : RUN_SPEED;
         if (in_water) _spd *= 0.8;
-        
+
         if (_move != 0) {
             facing = _move;
             hsp = _move * _spd;
@@ -415,7 +453,7 @@ function player_state_fall() {
             }
         }
     }
-    
+
     // Wall Slide Check
     var _move = global.input.right - global.input.left;
     if (touching_wall != 0 && (_move == touching_wall || touching_wall == facing)) {
@@ -425,7 +463,7 @@ function player_state_fall() {
             return;
         }
     }
-    
+
     // Grab ladder
     if (global.input.up && place_meeting(x, y, oLadder)) {
         var _lad = instance_place(x, y, oLadder);
@@ -434,7 +472,7 @@ function player_state_fall() {
         state = PLAYER_STATE.LADDER;
         return;
     }
-    
+
     // Land on ground
     if (grounded) {
         is_dash_jumping = false;
@@ -454,12 +492,12 @@ function player_state_fall() {
 function player_state_dash() {
     hsp = dash_dir * DASH_SPEED;
     dash_timer--;
-    
+
     // Fall off ledge during ground dash
     if (!grounded) {
         is_dash_jumping = true;
     }
-    
+
     // Dash Jump!
     if (global.input.jump_buffer > 0 && grounded) {
         global.input.jump_buffer = 0;
@@ -467,12 +505,15 @@ function player_state_dash() {
         is_dash_jumping = true;
         hsp = dash_dir * DASH_JUMP_SPEED;
         state = PLAYER_STATE.JUMP;
+        if (object_index == oPlayerZero) {
+            if (audio_exists(snd_zero_jump1)) audio_play_sound(snd_zero_jump1, 75, false);
+        }
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
         }
         return;
     }
-    
+
     // Air Dash into Double Jump!
     if (!grounded) {
         var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
@@ -492,7 +533,7 @@ function player_state_dash() {
             return;
         }
     }
-    
+
     // Turn around cancels dash
     var _move = global.input.right - global.input.left;
     if (_move != 0 && _move != dash_dir) {
@@ -502,7 +543,7 @@ function player_state_dash() {
         state = grounded ? PLAYER_STATE.RUN : PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Dash timeout
     if (dash_timer <= 0) {
         if (grounded) {
@@ -519,18 +560,23 @@ function player_state_dash() {
 function player_state_wall_slide() {
     hsp = 0;
     vsp = min(vsp + (GRAVITY * 0.5), WALL_SLIDE_SPEED);
+    if (anim_timer % 14 == 0) {
+        if (object_index == oPlayerZero && audio_exists(snd_zero_slide)) {
+            audio_play_sound(snd_zero_slide, 60, false);
+        }
+    }
     facing = -touching_wall;
-    
+
     if (grounded) {
         state = PLAYER_STATE.IDLE;
         return;
     }
-    
+
     if (touching_wall == 0) {
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Wall Jump!
     if (global.input.jump_buffer > 0) {
         global.input.jump_buffer = 0;
@@ -545,13 +591,18 @@ function player_state_wall_slide() {
         air_dash_used = false;
         double_jump_used = false;
         state = PLAYER_STATE.WALL_JUMP;
-        
+        if (object_index == oPlayerX) {
+            if (audio_exists(snd_x_wall_jump)) audio_play_sound(snd_x_wall_jump, 75, false);
+        } else {
+            if (audio_exists(snd_zero_wall_jump)) audio_play_sound(snd_zero_wall_jump, 75, false);
+        }
+
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x + (touching_wall * 10), y, "Instances", oFX_DashDust);
         }
         return;
     }
-    
+
     var _move = global.input.right - global.input.left;
     if (_move == -touching_wall) {
         state = PLAYER_STATE.FALL;
@@ -566,11 +617,11 @@ function player_state_wall_jump() {
     if (global.input.jump_released && vsp < -1.5) {
         vsp = -1.5;
     }
-    
+
     var _grav = in_water ? WATER_GRAVITY : GRAVITY;
     var _max_fall = in_water ? MAX_WATER_FALL_SPEED : MAX_FALL_SPEED;
     vsp = min(vsp + _grav, _max_fall);
-    
+
     if (wall_jump_timer > 0) {
         wall_jump_timer--;
     } else {
@@ -591,7 +642,7 @@ function player_state_wall_jump() {
             }
             return;
         }
-        
+
         // Double Jump capability!
         var _can_double_jump = (has_double_jump || (variable_global_exists("has_double_jump") && global.has_double_jump));
         if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
@@ -611,7 +662,7 @@ function player_state_wall_jump() {
             state = PLAYER_STATE.JUMP;
             return;
         }
-        
+
         var _move = global.input.right - global.input.left;
         if (_move != 0) {
             facing = _move;
@@ -622,12 +673,12 @@ function player_state_wall_jump() {
             if (_dash_active) is_dash_jumping = true;
         }
     }
-    
+
     if (vsp >= 0) {
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     if (grounded) {
         state = PLAYER_STATE.IDLE;
         return;
@@ -640,23 +691,23 @@ function player_state_wall_jump() {
 function player_state_ladder() {
     hsp = 0;
     vsp = 0;
-    
+
     // If currently performing top exit animation, don't interrupt
     if (is_ladder_exiting) {
         return;
     }
-    
+
     if (!place_meeting(x, y, oLadder)) {
         state = PLAYER_STATE.FALL;
         return;
     }
-    
+
     // Turn facing on ladder
     var _move = global.input.right - global.input.left;
     if (_move != 0) {
         facing = _move;
     }
-    
+
     var _climb_speed = 1.5;
     var _shooting = (variable_instance_exists(id, "shoot_anim_timer") && shoot_anim_timer > 0);
     if (!_shooting) {
@@ -673,7 +724,7 @@ function player_state_ladder() {
             vsp = _climb_speed;
         }
     }
-    
+
     if (global.input.jump_pressed) {
         var _jump_dir = global.input.right - global.input.left;
         if (_jump_dir != 0) facing = _jump_dir;
@@ -685,7 +736,7 @@ function player_state_ladder() {
         state = PLAYER_STATE.JUMP;
         return;
     }
-    
+
     if (grounded && global.input.down) {
         state = PLAYER_STATE.IDLE;
         return;
@@ -697,7 +748,7 @@ function player_state_ladder() {
 // -------------------------------------------------------------------------
 function player_state_hurt() {
     vsp = min(vsp + GRAVITY, MAX_FALL_SPEED);
-    
+
     if (hurt_timer > 0) {
         hurt_timer--;
     } else {
@@ -712,7 +763,7 @@ function player_state_hurt() {
 function player_state_death() {
     hsp = 0;
     vsp = 0;
-    
+
     // Nếu chưa khởi tạo đối tượng hiệu ứng hạ gục obj_x_death_effect thì kích hoạt
     if (!instance_exists(obj_x_death_effect)) {
         player_trigger_death(id);
@@ -725,7 +776,13 @@ function player_state_death() {
 function player_state_intro() {
     hsp = 0;
     vsp = 0;
-    
+
+    // Play Teleport In SFX at the start of beam descent
+    if (!variable_instance_exists(id, "intro_sound_played") || !intro_sound_played) {
+        intro_sound_played = true;
+        if (audio_exists(snd_teleport_in)) audio_play_sound(snd_teleport_in, 85, false);
+    }
+
     // Fallback if intro sprites do not exist
     var _has_intro = (global.current_char == CHAR_TYPE.ZERO) ? (sprite_exists(sZero_Teleport_In) || sprite_exists(sZero_Intro)) : (sprite_exists(sX_Teleport_In) || sprite_exists(sX_Intro));
     if (!_has_intro) {
@@ -733,7 +790,7 @@ function player_state_intro() {
         intro_sound_played = false;
         return;
     }
-    
+
     if (intro_phase == 0) {
         // Phase 0: Beam descending from above
         teleport_beam_y += 18;
@@ -774,13 +831,18 @@ function player_state_intro() {
 // -------------------------------------------------------------------------
 function player_state_teleport_out() {
     hsp = 0;
-    
+
+    if (!variable_instance_exists(id, "teleport_out_sound_played") || !teleport_out_sound_played) {
+        teleport_out_sound_played = true;
+        if (audio_exists(snd_teleport_out)) audio_play_sound(snd_teleport_out, 85, false);
+    }
+
     var _has_tout = (global.current_char == CHAR_TYPE.ZERO) ? sprite_exists(sZero_Teleport_Out) : sprite_exists(sX_Teleport_Out);
     if (!_has_tout) {
         state = PLAYER_STATE.IDLE;
         return;
     }
-    
+
     if (global.current_char == CHAR_TYPE.ZERO) {
         if (teleport_out_frame < 12.0) {
             teleport_out_frame += 0.20;
@@ -811,7 +873,7 @@ function player_state_teleport_out() {
 /// @desc Draw afterimages / ghost trail for dashing player
 function player_draw_afterimages() {
     if (!variable_instance_exists(id, "afterimages") || array_length(afterimages) == 0) return;
-    
+
     gpu_set_blendmode(bm_add);
     var _len = array_length(afterimages);
     for (var i = 0; i < _len; i++) {

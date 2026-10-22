@@ -19,6 +19,13 @@ function player_take_damage(_amount, _knockback_dir) {
         _p.state = PLAYER_STATE.HURT;
         _p.hurt_timer = 18;
         _p.iframes = 60;
+        if (_p.object_index == oPlayerX) {
+            var _h_snd = choose(snd_x_hurt1, snd_x_hurt2);
+            if (audio_exists(_h_snd)) audio_play_sound(_h_snd, 85, false);
+        } else {
+            var _h_snd = choose(snd_zero_hurt1, snd_zero_hurt2);
+            if (audio_exists(_h_snd)) audio_play_sound(_h_snd, 85, false);
+        }
         if (_knockback_dir != 0) _p.facing = -_knockback_dir;
         _p.hsp = _knockback_dir * 1.8;
         _p.vsp = -2.5;

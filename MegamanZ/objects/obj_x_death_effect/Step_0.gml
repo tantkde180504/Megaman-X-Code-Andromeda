@@ -33,6 +33,9 @@ if (timer == 0) {
     if (script_exists(asset_get_index("music_stop_boss_nightmare_zero"))) {
         music_stop_boss_nightmare_zero(100);
     }
+    var _die_snd = (character_type == "ZERO") ? snd_zero_die : snd_x_die;
+    if (audio_exists(_die_snd)) audio_play_sound(_die_snd, 100, false);
+    sound_played_scream = true;
     camera_shake(3, 8);
 }
 
