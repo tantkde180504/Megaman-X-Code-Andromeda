@@ -2,7 +2,6 @@ event_inherited();
 charge_timer = 0;
 charge_level = 0;
 charge_anim_frame = 0.0;
-charge_sound = noone;
 shoot_anim_timer = 0;
 muzzle_flash_sprite = noone;
 muzzle_flash_frame = 0.0;

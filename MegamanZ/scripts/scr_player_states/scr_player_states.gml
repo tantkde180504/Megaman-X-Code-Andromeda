@@ -105,7 +105,6 @@ function player_state_idle() {
         global.input.jump_buffer = 0;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         state = PLAYER_STATE.JUMP;
-        if (audio_exists(snd_player_jump)) audio_play_sound(snd_player_jump, 70, false);
         var _move = global.input.right - global.input.left;
         if ((global.input.dash || global.input.dash_buffer > 0) && !in_web) {
             is_dash_jumping = true;
@@ -133,7 +132,6 @@ function player_state_idle() {
         dash_dir = facing;
         hsp = dash_dir * DASH_SPEED;
         state = PLAYER_STATE.DASH;
-        if (audio_exists(snd_player_dash)) audio_play_sound(snd_player_dash, 75, false);
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
         }
@@ -193,7 +191,6 @@ function player_state_run() {
         global.input.jump_buffer = 0;
         vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
         state = PLAYER_STATE.JUMP;
-        if (audio_exists(snd_player_jump)) audio_play_sound(snd_player_jump, 70, false);
         if ((global.input.dash || global.input.dash_buffer > 0) && !in_web) {
             is_dash_jumping = true;
             hsp = facing * DASH_JUMP_SPEED;
@@ -213,7 +210,6 @@ function player_state_run() {
         dash_dir = facing;
         hsp = dash_dir * DASH_SPEED;
         state = PLAYER_STATE.DASH;
-        if (audio_exists(snd_player_dash)) audio_play_sound(snd_player_dash, 75, false);
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
         }
@@ -254,7 +250,6 @@ function player_state_jump() {
     var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
     if (global.input.dash_pressed && _can_air_dash && !air_dash_used && !in_web) {
         air_dash_used = true;
-        if (audio_exists(snd_player_air_dash)) audio_play_sound(snd_player_air_dash, 75, false);
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
         dash_timer = AIR_DASH_DURATION;
@@ -263,7 +258,6 @@ function player_state_jump() {
         vsp = 0;
         is_dash_jumping = true;
         state = PLAYER_STATE.DASH;
-        if (audio_exists(snd_player_dash)) audio_play_sound(snd_player_dash, 75, false);
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
         }
@@ -348,7 +342,6 @@ function player_state_fall() {
     var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
     if (global.input.dash_pressed && _can_air_dash && !air_dash_used && !in_web) {
         air_dash_used = true;
-        if (audio_exists(snd_player_air_dash)) audio_play_sound(snd_player_air_dash, 75, false);
         var _move = global.input.right - global.input.left;
         if (_move != 0) facing = _move;
         dash_timer = AIR_DASH_DURATION;
@@ -357,7 +350,6 @@ function player_state_fall() {
         vsp = 0;
         is_dash_jumping = true;
         state = PLAYER_STATE.DASH;
-        if (audio_exists(snd_player_dash)) audio_play_sound(snd_player_dash, 75, false);
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
         }
@@ -475,7 +467,6 @@ function player_state_dash() {
         is_dash_jumping = true;
         hsp = dash_dir * DASH_JUMP_SPEED;
         state = PLAYER_STATE.JUMP;
-        if (audio_exists(snd_player_jump)) audio_play_sound(snd_player_jump, 70, false);
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
         }
@@ -528,9 +519,6 @@ function player_state_dash() {
 function player_state_wall_slide() {
     hsp = 0;
     vsp = min(vsp + (GRAVITY * 0.5), WALL_SLIDE_SPEED);
-    if (anim_timer % 14 == 0 && audio_exists(snd_player_wall_slide)) {
-        audio_play_sound(snd_player_wall_slide, 60, false);
-    }
     facing = -touching_wall;
     
     if (grounded) {
@@ -557,7 +545,6 @@ function player_state_wall_slide() {
         air_dash_used = false;
         double_jump_used = false;
         state = PLAYER_STATE.WALL_JUMP;
-        if (audio_exists(snd_player_jump)) audio_play_sound(snd_player_jump, 70, false);
         
         if (object_exists(oFX_DashDust)) {
             instance_create_layer(x + (touching_wall * 10), y, "Instances", oFX_DashDust);
@@ -591,7 +578,6 @@ function player_state_wall_jump() {
         var _can_air_dash = (has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
         if (global.input.dash_pressed && _can_air_dash && !air_dash_used && !in_web) {
             air_dash_used = true;
-        if (audio_exists(snd_player_air_dash)) audio_play_sound(snd_player_air_dash, 75, false);
             var _move = global.input.right - global.input.left;
             if (_move != 0) facing = _move;
             dash_timer = AIR_DASH_DURATION;
@@ -611,7 +597,6 @@ function player_state_wall_jump() {
         if (global.input.jump_pressed && _can_double_jump && !double_jump_used && !in_web) {
             double_jump_used = true;
             vsp = in_water ? WATER_JUMP_VELOCITY : JUMP_VELOCITY;
-            if (audio_exists(snd_player_jump)) audio_play_sound(snd_player_jump, 70, false);
             var _move = global.input.right - global.input.left;
             if (_move != 0) facing = _move;
             var _dash_active = (is_dash_jumping || (global.input.dash && !in_web));
@@ -740,12 +725,6 @@ function player_state_death() {
 function player_state_intro() {
     hsp = 0;
     vsp = 0;
-    
-    // Play Teleport In SFX at the start of beam descent
-    if (!variable_instance_exists(id, "intro_sound_played") || !intro_sound_played) {
-        intro_sound_played = true;
-        if (audio_exists(snd_teleport_in)) audio_play_sound(snd_teleport_in, 85, false);
-    }
     
     // Fallback if intro sprites do not exist
     var _has_intro = (global.current_char == CHAR_TYPE.ZERO) ? (sprite_exists(sZero_Teleport_In) || sprite_exists(sZero_Intro)) : (sprite_exists(sX_Teleport_In) || sprite_exists(sX_Intro));

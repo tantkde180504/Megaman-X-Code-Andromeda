@@ -22,7 +22,6 @@ if (instance_exists(oPlayer)) {
     var _p = instance_place(x, y, oPlayer);
     if (_p != noone && _p.state != PLAYER_STATE.DEATH) {
         _p.hp_current = min(_p.hp_max, _p.hp_current + heal_amount);
-        if (audio_exists(snd_pickup_life)) audio_play_sound(snd_pickup_life, 85, false);
         instance_create_layer(x, y, "Instances", oFX_HitSpark);
         instance_destroy();
     }

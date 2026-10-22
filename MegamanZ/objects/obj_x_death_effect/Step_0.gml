@@ -33,13 +33,6 @@ if (timer == 0) {
     if (script_exists(asset_get_index("music_stop_boss_nightmare_zero"))) {
         music_stop_boss_nightmare_zero(100);
     }
-    
-    // Âm thanh tiếng hét khi bị hạ gục (X hoặc Zero)
-    var _snd_scream = (character_type == "ZERO") ? snd_zero_scream : snd_x_scream;
-    if (_snd_scream != -1 && audio_exists(_snd_scream)) {
-        audio_play_sound(_snd_scream, 100, false);
-    }
-    sound_played_scream = true;
     camera_shake(3, 8);
 }
 
@@ -81,14 +74,6 @@ else if (timer <= 32) {
     if (timer == 25) {
         if (instance_exists(player_id)) {
             player_id.visible = false;
-        }
-        
-        if (!sound_played_burst) {
-            sound_played_burst = true;
-            var _snd_burst = asset_get_index("snd_x4_die_burst");
-            if (_snd_burst != -1 && audio_exists(_snd_burst)) {
-                audio_play_sound(_snd_burst, 100, false);
-            }
         }
         camera_shake(5, 10);
     }

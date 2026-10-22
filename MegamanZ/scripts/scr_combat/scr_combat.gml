@@ -19,8 +19,6 @@ function player_take_damage(_amount, _knockback_dir) {
         _p.state = PLAYER_STATE.HURT;
         _p.hurt_timer = 18;
         _p.iframes = 60;
-        var _snd_hurt = (_p.object_index == oPlayerZero) ? snd_zero_hurt : snd_x_hurt;
-        if (audio_exists(_snd_hurt)) audio_play_sound(_snd_hurt, 85, false);
         if (_knockback_dir != 0) _p.facing = -_knockback_dir;
         _p.hsp = _knockback_dir * 1.8;
         _p.vsp = -2.5;
@@ -43,7 +41,6 @@ function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y, _is_wea
                 if (object_exists(oFX_HitSpark)) {
                     instance_create_layer(_hit_x, _hit_y, "Instances", oFX_HitSpark);
                 }
-                if (audio_exists(snd_hit_spark)) audio_play_sound(snd_hit_spark, 80, false);
                 camera_shake(1, 4);
                 return; // Attack bounced off with zero damage!
             }
@@ -67,8 +64,6 @@ function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y, _is_wea
         if (object_exists(oFX_HitSpark)) {
             instance_create_layer(_hit_x, _hit_y, "Instances", oFX_HitSpark);
         }
-        var _snd_hit = audio_exists(snd_enemy_hit) ? snd_enemy_hit : snd_hit_spark;
-        if (audio_exists(_snd_hit)) audio_play_sound(_snd_hit, 75, false);
     }
 }
 

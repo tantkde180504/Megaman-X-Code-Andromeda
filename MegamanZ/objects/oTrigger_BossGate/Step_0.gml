@@ -16,7 +16,6 @@ switch (gate_state) {
                  
             if (_touching) {
                 gate_state = GATE_STATE.OPENING;
-                if (audio_exists(snd_boss_gate)) audio_play_sound(snd_boss_gate, 85, false);
                 anim_frame = 0.0;
                 global.input_locked = true;
                 _p.hsp = 0;
@@ -107,7 +106,6 @@ switch (gate_state) {
             close_wait_timer--;
         } else {
             gate_state = GATE_STATE.CLOSING;
-            if (audio_exists(snd_boss_gate)) audio_play_sound(snd_boss_gate, 85, false);
         }
         break;
         
