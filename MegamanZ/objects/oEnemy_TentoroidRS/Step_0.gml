@@ -1,5 +1,5 @@
 event_inherited();
-if (is_dead) return;
+if (is_dead || stage_frozen) return;
 
 switch (state) {
     case 0: // JET_HOVER: Airborne hovering with bottom thruster

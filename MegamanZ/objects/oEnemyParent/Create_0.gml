@@ -14,6 +14,7 @@ projectile_damage = 2;
 knockback = 1.8;
 target = noone;
 is_dead = false;
+stage_frozen = false;
 is_invulnerable = false;
 shield_direction = 0; // 0: 360-degree, 1: Frontal shield
 

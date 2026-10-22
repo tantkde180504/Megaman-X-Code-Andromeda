@@ -1,5 +1,5 @@
 event_inherited();
-if (is_dead) return;
+if (is_dead || stage_frozen) return;
 
 if (target != noone) {
     facing = (target.x >= x) ? 1 : -1;

@@ -97,3 +97,9 @@ if (!instance_exists(oPlayer)) {
     _p.intro_hold_timer = 25;
 }
 
+// Play READY on stage entry alongside the player's teleport-in.
+// Menu rooms return above, and the overlay is non-persistent.
+if (!instance_exists(obj_ready_intro)) {
+    instance_create_layer(0, 0, "Instances", obj_ready_intro);
+}
+

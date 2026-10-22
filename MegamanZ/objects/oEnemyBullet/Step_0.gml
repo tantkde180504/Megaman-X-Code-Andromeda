@@ -1,3 +1,5 @@
+if (variable_global_exists("stage_ready") && !global.stage_ready) return;
+
 x += hsp;
 y += vsp;
 life--;

@@ -1,3 +1,9 @@
+if (variable_global_exists("stage_ready") && !global.stage_ready) {
+    stage_frozen = true;
+    return;
+}
+stage_frozen = false;
+
 anim_timer++;
 if (flash_timer > 0) flash_timer--;
 if (invulnerability_timer > 0) invulnerability_timer--;

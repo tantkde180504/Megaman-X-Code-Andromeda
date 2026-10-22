@@ -741,10 +741,17 @@ function player_state_intro() {
     hsp = 0;
     vsp = 0;
     
+    // Play Teleport In SFX at the start of beam descent
+    if (!variable_instance_exists(id, "intro_sound_played") || !intro_sound_played) {
+        intro_sound_played = true;
+        if (audio_exists(snd_teleport_in)) audio_play_sound(snd_teleport_in, 85, false);
+    }
+    
     // Fallback if intro sprites do not exist
     var _has_intro = (global.current_char == CHAR_TYPE.ZERO) ? (sprite_exists(sZero_Teleport_In) || sprite_exists(sZero_Intro)) : (sprite_exists(sX_Teleport_In) || sprite_exists(sX_Intro));
     if (!_has_intro) {
         state = PLAYER_STATE.IDLE;
+        intro_sound_played = false;
         return;
     }
     
@@ -772,11 +779,12 @@ function player_state_intro() {
                 intro_anim_frame = 8.0;
             }
         } else {
-            // Held at final battle stance (frame 8)
+            // Held at final battle stance (frame 8), waits until READY intro completes
             if (intro_hold_timer > 0) {
                 intro_hold_timer--;
-            } else {
+            } else if (!variable_global_exists("stage_ready") || global.stage_ready) {
                 state = PLAYER_STATE.IDLE;
+                intro_sound_played = false;
             }
         }
     }

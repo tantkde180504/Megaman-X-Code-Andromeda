@@ -1,3 +1,5 @@
+if (variable_global_exists("stage_ready") && !global.stage_ready) return;
+
 timer++;
 vsp = min(5.0, vsp + grav);
 y += vsp;

@@ -34,7 +34,7 @@ if (state == 3) {
 }
 
 event_inherited();
-if (is_dead) return;
+if (is_dead || stage_frozen) return;
 
 state_timer++;
 

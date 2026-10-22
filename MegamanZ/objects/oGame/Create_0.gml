@@ -15,6 +15,7 @@ global.checkpoint_y = 440;
 global.has_air_dash = false;
 global.nz_dialogue_seen = false;
 global.screen_fade_alpha = 0.0;
+global.stage_ready = true;
 
 if (!instance_exists(oInput)) instance_create_layer(0, 0, "Instances", oInput);
 if (!instance_exists(oCamera)) instance_create_layer(0, 0, "Instances", oCamera);

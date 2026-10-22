@@ -1,3 +1,5 @@
+if (variable_global_exists("stage_ready") && !global.stage_ready) return;
+
 /// @desc Web Spider Boss Step Event (Master Finite State Machine)
 
 // 1. Target Tracking

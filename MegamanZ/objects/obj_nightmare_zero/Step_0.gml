@@ -1,3 +1,5 @@
+if (variable_global_exists("stage_ready") && !global.stage_ready) return;
+
 // 0. TRẠNG THÁI SLEEP: Chờ người chơi qua Cửa 2 và cửa đã đóng khóa hoàn tất
 if (state == NZ_STATE.SLEEP) {
     // Nếu có Cửa 2 (is_arena_door), boss chỉ thức dậy khi cửa đã khóa (LOCKED)

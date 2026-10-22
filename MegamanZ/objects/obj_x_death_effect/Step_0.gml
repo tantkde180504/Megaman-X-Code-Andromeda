@@ -204,9 +204,9 @@ else if (timer <= 140) {
             player_id.facing = 1;
             player_id.grounded = true;
             player_id.is_dash_jumping = false;
-            player_id.state = PLAYER_STATE.IDLE;
-            player_id.iframes = 60;
-            player_id.visible = true; // Hiện lại nhân vật
+            player_id.hsp = 0;
+            player_id.vsp = 0;
+            player_id.visible = false; // Giữ ẩn trong lúc màn hình đang fade-in từ màu đen
         }
         
         // Căn tâm Camera vào vị trí hồi sinh
@@ -234,6 +234,24 @@ else if (timer <= 170) {
     
     if (timer == 170) {
         global.screen_fade_alpha = 0.0;
+        
+        // Kích hoạt lại hiệu ứng Teleport Beam & READY Intro khi hồi sinh tại checkpoint
+        if (instance_exists(player_id)) {
+            player_id.state = PLAYER_STATE.INTRO;
+            player_id.intro_phase = 0;
+            player_id.teleport_beam_y = player_id.y - 240;
+            player_id.teleport_sphere_frame = 1.0;
+            player_id.intro_anim_frame = 0.0;
+            player_id.intro_hold_timer = 25;
+            player_id.intro_sound_played = false;
+            player_id.iframes = 60;
+            player_id.visible = true;
+        }
+        
+        if (!instance_exists(obj_ready_intro)) {
+            instance_create_layer(0, 0, "Instances", obj_ready_intro);
+        }
+        
         instance_destroy();
         return;
     }
