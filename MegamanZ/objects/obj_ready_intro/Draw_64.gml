@@ -20,8 +20,7 @@ if (_t < 40) {
     var _bar_alpha = 0.55 * clamp(_t / 6, 0, 1);
     if (_t >= 25) _bar_alpha *= 1 - clamp((_t - 25) / 15, 0, 1);
     gpu_set_blendmode(bm_add);
-    draw_ready_part(ready_bars, _cx, _cy, _s,
-        _s * lerp(0.04, 1, _ease), _bar_alpha);
+    draw_sprite_ext(ready_sprite, 4, _cx, _cy, _s, _s * lerp(0.04, 1, _ease), 0, c_white, _bar_alpha);
 
     // A travelling white core with a blue-violet halo.
     if (_t <= 15) {
@@ -42,7 +41,7 @@ if (_t < 40) {
 }
 
 if (_t >= 10) {
-    var _rect = ready_main;
+    var _frame = 0; // Frame 0: main READY
     var _sx = 1;
     var _sy = 1;
     var _alpha = 1;
@@ -54,26 +53,25 @@ if (_t >= 10) {
         _sx = lerp(1.5, 1, _ease_in);
         _sy = lerp(2.2, 1, _ease_in);
         if (_t >= 18) {
-            _rect = (((_t - 18) div 2) mod 2 == 0)
-                ? ready_flash_1 : ready_flash_2;
+            _frame = (((_t - 18) div 2) mod 2 == 0) ? 1 : 2; // Frame 1: flash_1, Frame 2: flash_2
         }
     } else if (_t < 85) {
         // Phase 2: 10 main + 2 flash2 + 2 flash1 + 2 flash2.
         var _shine = (_t - 27) mod 16;
-        if (_shine >= 10 && _shine < 12) _rect = ready_flash_2;
-        else if (_shine >= 12 && _shine < 14) _rect = ready_flash_1;
-        else if (_shine >= 14) _rect = ready_flash_2;
-        draw_ready_part(ready_shadow, _cx + 2 * _s, _cy + 2 * _s,
-            _s, _s, 0.75);
+        if (_shine >= 10 && _shine < 12) _frame = 2;
+        else if (_shine >= 12 && _shine < 14) _frame = 1;
+        else if (_shine >= 14) _frame = 2;
+        // Frame 3: Shadow offset
+        draw_sprite_ext(ready_sprite, 3, _cx + 2 * _s, _cy + 2 * _s, _s, _s, 0, c_white, 0.75);
     } else {
         // Phase 3: collapse to a bright horizontal slit and disappear.
         var _close = clamp((_t - 85) / 15, 0, 1);
-        _rect = ready_flash_1;
+        _frame = 1; // Flash 1 for bright collapse slit
         _sx = lerp(1, 1.35, _close);
         _sy = 1 - _close;
         _alpha = 1 - _close;
     }
-    draw_ready_part(_rect, _cx, _cy, _sx * _s, _sy * _s, _alpha);
+    draw_sprite_ext(ready_sprite, _frame, _cx, _cy, _sx * _s, _sy * _s, 0, c_white, _alpha);
 }
 
 gpu_set_blendmode(bm_normal);

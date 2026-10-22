@@ -34,7 +34,6 @@
   },
   "name":"MegamanZ",
   "resources":[
-    {"id":{"name":"obj_ready_intro","path":"objects/obj_ready_intro/obj_ready_intro.yy",},},
     {"id":{"name":"obj_boss_parent","path":"objects/obj_boss_parent/obj_boss_parent.yy",},},
     {"id":{"name":"obj_boss_web_spider","path":"objects/obj_boss_web_spider/obj_boss_web_spider.yy",},},
     {"id":{"name":"obj_giant_web_network","path":"objects/obj_giant_web_network/obj_giant_web_network.yy",},},
@@ -51,6 +50,7 @@
     {"id":{"name":"obj_nz_skull_wave","path":"objects/obj_nz_skull_wave/obj_nz_skull_wave.yy",},},
     {"id":{"name":"obj_nz_slash_hitbox","path":"objects/obj_nz_slash_hitbox/obj_nz_slash_hitbox.yy",},},
     {"id":{"name":"obj_nz_spike","path":"objects/obj_nz_spike/obj_nz_spike.yy",},},
+    {"id":{"name":"obj_ready_intro","path":"objects/obj_ready_intro/obj_ready_intro.yy",},},
     {"id":{"name":"obj_web_leaf_telegraph","path":"objects/obj_web_leaf_telegraph/obj_web_leaf_telegraph.yy",},},
     {"id":{"name":"obj_x_death_effect","path":"objects/obj_x_death_effect/obj_x_death_effect.yy",},},
     {"id":{"name":"oBoss_WebSpider_Projectile","path":"objects/oBoss_WebSpider_Projectile/oBoss_WebSpider_Projectile.yy",},},
@@ -188,6 +188,7 @@
     {"id":{"name":"PlayerSelect","path":"sprites/PlayerSelect/PlayerSelect.yy",},},
     {"id":{"name":"Raijingeki","path":"sprites/Raijingeki/Raijingeki.yy",},},
     {"id":{"name":"ReadyIntro","path":"sprites/ReadyIntro/ReadyIntro.yy",},},
+    {"id":{"name":"spr_ready_intro","path":"sprites/spr_ready_intro/spr_ready_intro.yy",},},
     {"id":{"name":"Ryuenjin","path":"sprites/Ryuenjin/Ryuenjin.yy",},},
     {"id":{"name":"sBG_Far","path":"sprites/sBG_Far/sBG_Far.yy",},},
     {"id":{"name":"sBG_Mid","path":"sprites/sBG_Mid/sBG_Mid.yy",},},
