@@ -1,7 +1,17 @@
 if (instance_exists(obj_title_intro)) return;
 if (state < MENU_STATE.CHAR_SELECT) {
-    draw_set_color(c_black);
-    draw_rectangle(0, 0, VIEW_WIDTH, VIEW_HEIGHT, false);
+    if (room == rTitle && !instance_exists(obj_title_intro)) {
+        instance_create_layer(0, 0, "Instances", obj_title_intro);
+    }
+    if (sprite_exists(spr_title_bg)) {
+        draw_sprite(spr_title_bg, 0, 80, 15);
+    }
+    if (sprite_exists(spr_logo_andromeda)) {
+        draw_sprite(spr_logo_andromeda, 0, 240, 90);
+    }
+    if (sprite_exists(spr_menu_press_start)) {
+        draw_sprite(spr_menu_press_start, 0, 240, 200);
+    }
     return;
 }
 // -------------------------------------------------------------

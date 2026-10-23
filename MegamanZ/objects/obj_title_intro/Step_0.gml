@@ -14,7 +14,7 @@ for (var _pad = 0; _pad < 4; _pad++) {
     }
 }
 
-// Bam Enter/Space/Z bat ky luc nao trong intro de Skip ngay vao man hinh Press Start
+// Bam Enter/Space/Z/X bat ky luc nao trong intro de Skip ngay vao man hinh Press Start
 if (state != TITLE_INTRO_STATE.MENU && (_confirm || _cancel)) {
     enter_title_state(TITLE_INTRO_STATE.MENU);
     exit;
@@ -37,36 +37,37 @@ switch (state) {
         // Tia sang dan ngang thanh chu MEGAMAN (~0.5s)
         var _t = clamp(state_frame / 29, 0, 1);
         var _ease = 1 - power(1 - _t, 3);
-        megaman_xscale = lerp(3, 1, _ease);
-        megaman_yscale = lerp(0.05, 1, _ease);
+        megaman_xscale = lerp(2.5, 1, _ease);
+        megaman_yscale = lerp(0.2, 1, _ease);
         if (state_frame >= 30) enter_title_state(TITLE_INTRO_STATE.TEXT);
         break;
 
     case TITLE_INTRO_STATE.TEXT:
-        // Giu chu MEGAMAN (~0.5s)
-        if (state_frame >= 30) enter_title_state(TITLE_INTRO_STATE.IMPACT);
+        // Giu chu MEGAMAN (~0.4s)
+        if (state_frame >= 25) enter_title_state(TITLE_INTRO_STATE.IMPACT);
         break;
 
     case TITLE_INTRO_STATE.IMPACT:
         // Chu X phong to thu nhanh vao tam (~0.33s)
-        var _t = clamp(state_frame / 12, 0, 1);
-        impact_scale = lerp(4.5, 1, 1 - power(1 - _t, 3));
-        if (state_frame >= 20) enter_title_state(TITLE_INTRO_STATE.LOGO);
+        var _t = clamp(state_frame / 15, 0, 1);
+        impact_scale = lerp(3.5, 1, 1 - power(1 - _t, 3));
+        if (state_frame >= 18) enter_title_state(TITLE_INTRO_STATE.LOGO);
         break;
 
     case TITLE_INTRO_STATE.LOGO:
-        // Ghep logo va chay sang vien (~0.66s)
-        if (state_frame == 10) play_title_sound(sound_voice);
-        if (state_frame >= 40) enter_title_state(TITLE_INTRO_STATE.BACKGROUND);
+        // Ghep logo va chay sang vien (~0.6s)
+        if (state_frame == 8) play_title_sound(sound_voice);
+        if (state_frame >= 35) enter_title_state(TITLE_INTRO_STATE.BACKGROUND);
         break;
 
     case TITLE_INTRO_STATE.BACKGROUND:
-        // Nen vu tru hien dan len (~0.5s)
-        bg_alpha = clamp(state_frame / 30, 0, 1);
-        if (state_frame >= 30) enter_title_state(TITLE_INTRO_STATE.MENU);
+        // Nen vu tru hien day du len (~0.4s)
+        bg_alpha = clamp(0.4 + (state_frame / 25) * 0.6, 0.4, 1.0);
+        if (state_frame >= 25) enter_title_state(TITLE_INTRO_STATE.MENU);
         break;
 
     case TITLE_INTRO_STATE.MENU:
+        bg_alpha = 1.0;
         if (menu_state == TITLE_MENU_STATE.PRESS_START) {
             if (_confirm) {
                 play_title_sound(sound_confirm);

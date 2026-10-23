@@ -22,15 +22,15 @@ menu_blink = 0;
 logo_frame = 0;
 logo_direction = 1;
 
-megaman_xscale = 3.0;
-megaman_yscale = 0.05;
-impact_scale = 4.5;
+megaman_xscale = 2.5;
+megaman_yscale = 0.2;
+impact_scale = 3.5;
 flash_alpha = 0.0;
-bg_alpha = 0.0;
+bg_alpha = 0.4; // Nen vu tru sang nhe ngay tu frame 0 de khong bao gio bi man hinh den
 
 menu_notice = "";
 menu_notice_timer = 0;
-depth = -20000;
+depth = -100;
 global.title_intro_done = false;
 global.title_menu_action = "";
 
@@ -56,22 +56,22 @@ enter_title_state = function(_state) {
     state_frame = 0;
     switch (_state) {
         case TITLE_INTRO_STATE.TEXT:
-            flash_alpha = 1.0;
+            flash_alpha = 0.9;
             megaman_xscale = 1.0;
             megaman_yscale = 1.0;
             if (bgm_handle == noone) bgm_handle = play_title_sound(sound_bgm, true);
             break;
         case TITLE_INTRO_STATE.IMPACT:
-            impact_scale = 4.5;
+            impact_scale = 3.5;
             play_title_sound(sound_slash);
             break;
         case TITLE_INTRO_STATE.LOGO:
-            flash_alpha = 1.0;
+            flash_alpha = 0.9;
             impact_scale = 1.0;
             play_title_sound(sound_impact);
             break;
         case TITLE_INTRO_STATE.BACKGROUND:
-            bg_alpha = 0.0;
+            bg_alpha = 0.5;
             break;
         case TITLE_INTRO_STATE.MENU:
             bg_alpha = 1.0;

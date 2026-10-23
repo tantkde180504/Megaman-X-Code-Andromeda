@@ -3,6 +3,12 @@ if (state < MENU_STATE.CHAR_SELECT) {
     if (room == rTitle && !instance_exists(obj_title_intro)) {
         instance_create_layer(0, 0, "Instances", obj_title_intro);
     }
+    var _quick_confirm = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space) || keyboard_check_pressed(ord("Z"));
+    if (_quick_confirm) {
+        state = MENU_STATE.CHAR_SELECT;
+        char_confirmed = false;
+        selected_char = 0;
+    }
     return;
 }
 if (title_intro_input_cooldown > 0) {
