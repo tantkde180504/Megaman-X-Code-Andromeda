@@ -1,4 +1,10 @@
 if (instance_exists(obj_title_intro)) return;
+if (state < MENU_STATE.CHAR_SELECT) {
+    if (room == rTitle && !instance_exists(obj_title_intro)) {
+        instance_create_layer(0, 0, "Instances", obj_title_intro);
+    }
+    return;
+}
 if (title_intro_input_cooldown > 0) {
     title_intro_input_cooldown--;
     return;

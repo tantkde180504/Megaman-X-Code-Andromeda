@@ -1,4 +1,4 @@
-/// @desc Khởi tạo Title Intro & Menu logic 320x240
+/// @desc Khoi tao Title Intro & Menu logic 320x240 (MMX4 Authentic)
 enum TITLE_INTRO_STATE { BEAM, TEXT, IMPACT, LOGO, BACKGROUND, MENU }
 enum TITLE_MENU_STATE { PRESS_START, OPTIONS }
 
@@ -7,25 +7,12 @@ if (instance_number(obj_title_intro) > 1) {
     exit;
 }
 
-// Nạp resource sprite (hỗ trợ cả tên chuẩn và có hậu tố strip)
-title_bg = asset_get_index("spr_title_bg");
-megaman_text = asset_get_index("spr_megaman_text");
-
-logo_andromeda = asset_get_index("spr_logo_andromeda");
-if (!sprite_exists(logo_andromeda)) logo_andromeda = asset_get_index("spr_logo_andromeda_strip11");
-
-press_start = asset_get_index("spr_menu_press_start");
-
-menu_options = asset_get_index("spr_menu_options");
-if (!sprite_exists(menu_options)) menu_options = asset_get_index("spr_menu_options_strip3");
-
-if (!sprite_exists(title_bg) || !sprite_exists(megaman_text)
-    || !sprite_exists(logo_andromeda) || !sprite_exists(press_start)
-    || !sprite_exists(menu_options)) {
-    show_debug_message("Title: Vui lòng kiểm tra lại 5 sprite (spr_title_bg, spr_megaman_text, spr_logo_andromeda, spr_menu_press_start, spr_menu_options).");
-    instance_destroy();
-    exit;
-}
+// Nap resource sprite truc tiep
+title_bg = spr_title_bg;
+megaman_text = spr_megaman_text;
+logo_andromeda = spr_logo_andromeda;
+press_start = spr_menu_press_start;
+menu_options = spr_menu_options;
 
 state = TITLE_INTRO_STATE.BEAM;
 state_frame = -1;
@@ -47,24 +34,14 @@ depth = -20000;
 global.title_intro_done = false;
 global.title_menu_action = "";
 
-// Âm thanh chính thống của Mega Man X4
-sound_beam = asset_get_index("snd_teleport_in");
-if (sound_beam == -1) sound_beam = asset_get_index("snd_title_beam");
-
-sound_slash = asset_get_index("snd_zero_slash");
-if (sound_slash == -1) sound_slash = asset_get_index("snd_slash");
-
-sound_impact = asset_get_index("snd_x_charge_shot_full");
-if (sound_impact == -1) sound_impact = asset_get_index("snd_title_logo_impact");
-
-sound_voice = asset_get_index("snd_x_shot_lv3");
-if (sound_voice == -1) sound_voice = asset_get_index("snd_voice_mmx4");
-
-sound_confirm = asset_get_index("snd_teleport_out");
-if (sound_confirm == -1) sound_confirm = asset_get_index("snd_menu_confirm");
-
-sound_bgm = asset_get_index("snd_intro_bgm");
-sound_move = asset_get_index("snd_menu_move");
+// Am thanh chinh thong cua Mega Man X4
+sound_beam = snd_teleport_in;
+sound_slash = snd_zero_slash;
+sound_impact = snd_x_charge_shot_full;
+sound_voice = snd_x_shot_lv3;
+sound_confirm = snd_teleport_out;
+sound_move = snd_x_shot;
+sound_bgm = -1;
 bgm_handle = noone;
 
 play_title_sound = function(_asset, _loop = false) {
@@ -92,6 +69,9 @@ enter_title_state = function(_state) {
             flash_alpha = 1.0;
             impact_scale = 1.0;
             play_title_sound(sound_impact);
+            break;
+        case TITLE_INTRO_STATE.BACKGROUND:
+            bg_alpha = 0.0;
             break;
         case TITLE_INTRO_STATE.MENU:
             bg_alpha = 1.0;

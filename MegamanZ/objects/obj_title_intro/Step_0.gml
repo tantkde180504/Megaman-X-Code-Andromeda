@@ -1,18 +1,21 @@
-/// @desc Timeline và điều khiển menu Title Screen
-var _confirm = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space);
+/// @desc Timeline va dieu khien menu Title Screen
+var _confirm = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space) || keyboard_check_pressed(ord("Z"));
+var _cancel = keyboard_check_pressed(ord("X")) || keyboard_check_pressed(vk_escape);
 var _up = keyboard_check_pressed(vk_up) || keyboard_check_pressed(ord("W"));
 var _down = keyboard_check_pressed(vk_down) || keyboard_check_pressed(ord("S"));
+
 for (var _pad = 0; _pad < 4; _pad++) {
     if (gamepad_is_connected(_pad)) {
         _confirm = _confirm || gamepad_button_check_pressed(_pad, gp_start)
             || gamepad_button_check_pressed(_pad, gp_face1);
+        _cancel = _cancel || gamepad_button_check_pressed(_pad, gp_face2);
         _up = _up || gamepad_button_check_pressed(_pad, gp_padu);
         _down = _down || gamepad_button_check_pressed(_pad, gp_padd);
     }
 }
 
-// Bấm Enter/Space/Start bất kỳ lúc nào để Skip ngay vào màn hình Press Start
-if (state != TITLE_INTRO_STATE.MENU && _confirm) {
+// Bam Enter/Space/Z bat ky luc nao trong intro de Skip ngay vao man hinh Press Start
+if (state != TITLE_INTRO_STATE.MENU && (_confirm || _cancel)) {
     enter_title_state(TITLE_INTRO_STATE.MENU);
     exit;
 }
@@ -22,7 +25,7 @@ state_frame++;
 menu_blink++;
 if (menu_notice_timer > 0) menu_notice_timer--;
 
-// Hiệu ứng viền sáng 11 frame chạy ping-pong (0 -> 10 -> 0)
+// Hieu ung vien sang 11 frame chay ping-pong (0 -> 10 -> 0)
 if (state >= TITLE_INTRO_STATE.LOGO) {
     logo_frame += logo_direction * 0.35;
     if (logo_frame >= 10) { logo_frame = 10; logo_direction = -1; }
@@ -31,7 +34,7 @@ if (state >= TITLE_INTRO_STATE.LOGO) {
 
 switch (state) {
     case TITLE_INTRO_STATE.BEAM:
-        // Tia sáng dãn ngang thành chữ MEGAMAN (~0.5s)
+        // Tia sang dan ngang thanh chu MEGAMAN (~0.5s)
         var _t = clamp(state_frame / 29, 0, 1);
         var _ease = 1 - power(1 - _t, 3);
         megaman_xscale = lerp(3, 1, _ease);
@@ -40,25 +43,25 @@ switch (state) {
         break;
 
     case TITLE_INTRO_STATE.TEXT:
-        // Giữ chữ MEGAMAN (~0.5s)
+        // Giu chu MEGAMAN (~0.5s)
         if (state_frame >= 30) enter_title_state(TITLE_INTRO_STATE.IMPACT);
         break;
 
     case TITLE_INTRO_STATE.IMPACT:
-        // Chữ X phóng to thu nhanh vào tâm (~0.33s)
+        // Chu X phong to thu nhanh vao tam (~0.33s)
         var _t = clamp(state_frame / 12, 0, 1);
         impact_scale = lerp(4.5, 1, 1 - power(1 - _t, 3));
         if (state_frame >= 20) enter_title_state(TITLE_INTRO_STATE.LOGO);
         break;
 
     case TITLE_INTRO_STATE.LOGO:
-        // Ghép logo và chạy sáng viền (~0.66s)
+        // Ghep logo va chay sang vien (~0.66s)
         if (state_frame == 10) play_title_sound(sound_voice);
         if (state_frame >= 40) enter_title_state(TITLE_INTRO_STATE.BACKGROUND);
         break;
 
     case TITLE_INTRO_STATE.BACKGROUND:
-        // Nền vũ trụ hiện dần lên (~0.5s)
+        // Nen vu tru hien dan len (~0.5s)
         bg_alpha = clamp(state_frame / 30, 0, 1);
         if (state_frame >= 30) enter_title_state(TITLE_INTRO_STATE.MENU);
         break;
@@ -71,6 +74,10 @@ switch (state) {
                 exit;
             }
         } else {
+            if (_cancel) {
+                menu_state = TITLE_MENU_STATE.PRESS_START;
+                exit;
+            }
             var _move = _down - _up;
             if (_move != 0) {
                 menu_index = (menu_index + _move + 3) mod 3;
@@ -82,12 +89,12 @@ switch (state) {
                     case 0: start_new_game(); break;
                     case 1:
                         global.title_menu_action = "continue";
-                        menu_notice = "CONTINUE: CHƯA CÓ DỮ LIỆU SAVE";
+                        menu_notice = "CONTINUE: CHUA CO DU LIEU SAVE";
                         menu_notice_timer = 180;
                         break;
                     case 2:
                         global.title_menu_action = "option";
-                        menu_notice = "OPTION: CHƯA KẾT NỐI CÀI ĐẶT";
+                        menu_notice = "OPTION: CHUA KET NOI CAI DAT";
                         menu_notice_timer = 180;
                         break;
                 }

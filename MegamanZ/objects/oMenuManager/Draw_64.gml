@@ -1,4 +1,9 @@
 if (instance_exists(obj_title_intro)) return;
+if (state < MENU_STATE.CHAR_SELECT) {
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, VIEW_WIDTH, VIEW_HEIGHT, false);
+    return;
+}
 // -------------------------------------------------------------
 // 1. BACKGROUND: Deep Space & Cyber Grid
 // -------------------------------------------------------------

@@ -10,7 +10,7 @@ enum MENU_STATE {
     TRANSITION_OUT  // Fade out into rStage_Intro
 }
 
-state = MENU_STATE.SPLASH;
+state = MENU_STATE.TITLE;
 state_timer = 0;
 fade_alpha = 1.0;
 flash_alpha = 0.0;
