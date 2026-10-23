@@ -21,6 +21,7 @@ menu_index = 0;
 menu_blink = 0;
 logo_frame = 0;
 logo_direction = 1;
+logo_animating = false;
 
 megaman_xscale = 2.5;
 megaman_yscale = 0.2;
@@ -41,7 +42,7 @@ sound_impact = snd_x_charge_shot_full;
 sound_voice = snd_x_shot_lv3;
 sound_confirm = snd_teleport_out;
 sound_move = snd_x_shot;
-sound_bgm = -1;
+sound_bgm = snd_bgm_title;
 bgm_handle = noone;
 
 play_title_sound = function(_asset, _loop = false) {
@@ -68,6 +69,9 @@ enter_title_state = function(_state) {
         case TITLE_INTRO_STATE.LOGO:
             flash_alpha = 0.9;
             impact_scale = 1.0;
+            logo_frame = 0;
+            logo_direction = 1;
+            logo_animating = true;
             play_title_sound(sound_impact);
             break;
         case TITLE_INTRO_STATE.BACKGROUND:
@@ -76,6 +80,8 @@ enter_title_state = function(_state) {
         case TITLE_INTRO_STATE.MENU:
             bg_alpha = 1.0;
             flash_alpha = 0.0;
+            logo_frame = 0;
+            logo_animating = false;
             menu_blink = 0;
             global.title_intro_done = true;
             if (bgm_handle == noone) bgm_handle = play_title_sound(sound_bgm, true);
@@ -85,6 +91,11 @@ enter_title_state = function(_state) {
 
 start_new_game = function() {
     global.title_menu_action = "game_start";
+    if (bgm_handle != noone && audio_is_playing(bgm_handle)) {
+        audio_stop_sound(bgm_handle);
+        bgm_handle = noone;
+    }
+    music_play_player_select();
     if (instance_exists(oMenuManager)) {
         with (oMenuManager) {
             state = MENU_STATE.CHAR_SELECT;
@@ -96,7 +107,6 @@ start_new_game = function() {
             title_intro_input_cooldown = 2;
         }
     }
-    if (bgm_handle != noone && audio_is_playing(bgm_handle)) audio_stop_sound(bgm_handle);
     instance_destroy();
 };
 

@@ -54,7 +54,7 @@ if (state < TITLE_INTRO_STATE.LOGO) {
         }
     }
 } else {
-    // 3. Logo MEGAMAN X ANDROMEDA chay 11 frame vien sang ping-pong
+    // 3. Sang vien mot vong trong intro; Menu giu co dinh frame 0.
     if (sprite_exists(logo_andromeda)) {
         draw_sprite_ext(logo_andromeda, floor(logo_frame), _cx, _cy,
             1, 1, 0, c_white, 1.0);

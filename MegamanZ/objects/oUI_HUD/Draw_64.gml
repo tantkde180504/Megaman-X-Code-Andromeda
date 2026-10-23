@@ -1,87 +1,41 @@
 if (!instance_exists(oPlayer)) return;
 var _p = instance_find(oPlayer, 0);
-
 var _hx = 16;
-var _hy = 16;
+var _hy = 20;
 var _bar_h = 64;
 var _bar_w = 8;
-
-// Outer bracket
+draw_set_alpha(1);
 draw_set_color(c_black);
 draw_rectangle(_hx - 2, _hy - 2, _hx + _bar_w + 1, _hy + _bar_h + 1, false);
 draw_set_color(make_color_rgb(140, 160, 190));
 draw_rectangle(_hx - 2, _hy - 2, _hx + _bar_w + 1, _hy + _bar_h + 1, true);
-
-// HP bars
-var _ticks = _p.hp_max;
-var _tick_h = (_bar_h - 2) / max(1, _ticks);
-for (var _i = 0; _i < _ticks; _i++) {
-    var _by = _hy + _bar_h - 2 - ((_i + 1) * _tick_h);
+var _tick_h = (_bar_h - 2) / max(1, _p.hp_max);
+for (var _i = 0; _i < _p.hp_max; _i++) {
+    var _y = _hy + _bar_h - 2 - (_i + 1) * _tick_h;
+    var _colour = make_color_rgb(40, 40, 50);
     if (_i < _p.hp_current) {
-        if (_p.hp_current <= 4) {
-            draw_set_color(make_color_rgb(255, 60, 60));
-        } else if (_p.hp_current <= 8) {
-            draw_set_color(make_color_rgb(255, 210, 40));
-        } else {
-            draw_set_color(make_color_rgb(40, 240, 120));
-        }
-    } else {
-        draw_set_color(make_color_rgb(40, 40, 50));
+        _colour = _p.hp_current <= 4 ? c_red : (_p.hp_current <= 8 ? c_yellow : c_lime);
     }
-    draw_rectangle(_hx, _by, _hx + _bar_w - 1, _by + _tick_h - 1, false);
+    draw_set_color(_colour);
+    draw_rectangle(_hx, _y, _hx + _bar_w - 1, _y + _tick_h - 1, false);
 }
-
-// Icon & Label
-if (global.current_char == CHAR_TYPE.X) {
-    draw_set_color(make_color_rgb(60, 170, 255));
-    draw_circle(_hx + 3, _hy - 8, 6, false);
-    draw_set_color(c_white);
-    draw_text(_hx - 1, _hy - 14, "X");
-} else {
-    draw_set_color(make_color_rgb(255, 50, 50));
-    draw_circle(_hx + 3, _hy - 8, 6, false);
-    draw_set_color(c_white);
-    draw_text(_hx - 1, _hy - 14, "Z");
-}
-
-// Stage Title Banner (top center)
-var _st_name = "TEST PLAYGROUND";
-if (room_get_name(room) == "rStage_Intro") _st_name = "INTRO STAGE: RUINED HIGHWAY";
-else if (room_get_name(room) == "rStage_WebSpider") _st_name = "STAGE 1: WEB SPIDER JUNGLE";
-else if (room_get_name(room) == "rBoss_NightmareZero") _st_name = "NIGHTMARE AREA: BOSS BATTLE";
-
+ps1_draw_text(16, 2, global.current_char == CHAR_TYPE.X ? "X" : "Z", 16, 16);
+var _title = "TRAINING";
+if (room == rStage_Intro) _title = "RUINED HIGHWAY";
+else if (room == rStage_WebSpider) _title = "DEEP JUNGLE";
+else if (room == rBoss_NightmareZero) _title = "NIGHTMARE AREA";
+// Reserve both screen edges for the player and boss health bars.
+ps1_draw_centered(160, 2, _title, 240, c_yellow);
+var _air_dash = _p.has_air_dash || global.has_air_dash;
+var _double_jump = _p.has_double_jump;
+var _ability = _air_dash && _double_jump ? "AIR DASH / D-JUMP"
+    : (_air_dash ? "AIR DASH" : (_double_jump ? "DOUBLE JUMP" : ""));
+ps1_draw_text(40, 22, _ability, 236, 16, c_aqua);
+draw_set_alpha(0.7);
 draw_set_color(c_black);
-draw_set_alpha(0.6);
-draw_rectangle(VIEW_WIDTH * 0.5 - 90, 4, VIEW_WIDTH * 0.5 + 90, 18, false);
-draw_set_alpha(1.0);
-draw_set_color(make_color_rgb(255, 220, 100));
-draw_set_halign(fa_center);
-draw_text(VIEW_WIDTH * 0.5, 5, _st_name);
+draw_rectangle(0, VIEW_HEIGHT - 18, VIEW_WIDTH, VIEW_HEIGHT, false);
+draw_set_alpha(1);
+ps1_draw_centered(160, VIEW_HEIGHT - 17, "Z:JUMP X:ATK C:DASH TAB:SWITCH", 312, c_white);
 draw_set_halign(fa_left);
-
-// Movement abilities indicator
-var _ind_text = "";
-var _has_ad = (_p.has_air_dash || (variable_global_exists("has_air_dash") && global.has_air_dash));
-var _has_dj = (variable_instance_exists(_p, "has_double_jump") && _p.has_double_jump);
-
-if (_has_ad && _has_dj) {
-    _ind_text = "AIR DASH + D-JUMP [ON]";
-} else if (_has_ad) {
-    _ind_text = "AIR DASH [ON]";
-} else if (_has_dj) {
-    _ind_text = "DOUBLE JUMP [ON]";
-}
-
-if (_ind_text != "") {
-    draw_set_color(make_color_rgb(80, 220, 255));
-    draw_text(_hx + 14, _hy + 4, _ind_text);
-}
-
-// Help banner (bottom)
-draw_set_color(c_black);
-draw_set_alpha(0.65);
-draw_rectangle(0, VIEW_HEIGHT - 13, VIEW_WIDTH, VIEW_HEIGHT, false);
-draw_set_alpha(1.0);
-draw_set_color(make_color_rgb(200, 220, 240));
-draw_text(4, VIEW_HEIGHT - 12, "Z:Jump X:Atk C:Dash 4:Arena B:Boss TAB:Char");
+draw_set_valign(fa_top);
 

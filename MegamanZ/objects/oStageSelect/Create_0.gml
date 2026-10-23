@@ -1,5 +1,6 @@
 // Stage Select Controller - Mega Man X Style
 display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);
+music_play_player_select();
 
 enum STAGE_SELECT_STATE {
     ELEVATOR_SCROLL,
@@ -15,15 +16,14 @@ flash_alpha = 0.0;
 
 // Background elevator scroll
 // Texture is 320x512 (within 5..325, 5..517)
-// Viewport height in texture coords: 180 (scaled by 1.5 = 270)
-// scroll_y moves from 5 to (512 - 180 + 5) = 337
+// Native viewport uses 240 of the 512 source rows, without stretching.
 scroll_y = 5.0;
-scroll_max = 337.0;
+scroll_max = 5 + 512 - VIEW_HEIGHT;
 scroll_spd = 2.2;
 
 // Model LargeX data
-x_pos = 36;
-y_base = 175;
+x_pos = 12;
+y_base = 145;
 x_anim_state = "idle"; // "idle", "normal", "boss_map", "launch"
 x_frame_idx = 0.0;
 x_frame_spd = 0.12;

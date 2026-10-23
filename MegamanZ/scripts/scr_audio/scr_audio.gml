@@ -1,27 +1,29 @@
 /// @desc Megaman X / Megaman Z Audio & BGM Manager
 
 global.current_bgm = noone;
+global.current_bgm_asset = noone;
 global.current_bgm_buffer = noone;
 global.current_bgm_buffer_sound = noone;
 global.current_bgm_stream = noone;
 
-/// @desc Play Nightmare Zero Boss Battle Theme (Looping)
-function music_play_boss_nightmare_zero() {
-    // If music is already playing, do not interrupt
-    if (global.current_bgm != noone) {
-        if (audio_is_playing(global.current_bgm)) return;
+/// @desc Universal BGM playback with fail-safes (Asset -> Dynamic -> Datafile Stream)
+function music_play_track(_asset_id, _datafile_name = "") {
+    // If this specific music is already playing, do not interrupt
+    if (global.current_bgm != noone && audio_is_playing(global.current_bgm)) {
+        if (variable_global_exists("current_bgm_asset") && global.current_bgm_asset == _asset_id) {
+            return;
+        }
     }
     
-    // Stop any existing tracks
+    // Stop previous tracks safely
     music_stop_all();
     audio_master_gain(1.0);
+    global.current_bgm_asset = _asset_id;
     
     // Tier 1: Direct GameMaker Sound Asset identifier reference
-    // Writing `snd_boss_nightmare_zero` directly guarantees GameMaker's compiler
-    // will link and NEVER strip this asset from the final build!
     try {
-        if (audio_exists(snd_boss_nightmare_zero)) {
-            global.current_bgm = audio_play_sound(snd_boss_nightmare_zero, 100, true);
+        if (_asset_id != -1 && audio_exists(_asset_id)) {
+            global.current_bgm = audio_play_sound(_asset_id, 100, true);
             if (global.current_bgm != -1 && audio_is_playing(global.current_bgm)) {
                 audio_sound_gain(global.current_bgm, 1.0, 0);
                 return;
@@ -31,44 +33,57 @@ function music_play_boss_nightmare_zero() {
         // Fall through to Tier 2
     }
     
-    // Tier 2: Dynamic lookup via asset_get_index
+    // Tier 2: Dynamic lookup via asset_get_index if given as string
     try {
-        var _snd_asset = asset_get_index("snd_boss_nightmare_zero");
-        if (_snd_asset != -1 && audio_exists(_snd_asset)) {
-            global.current_bgm = audio_play_sound(_snd_asset, 100, true);
-            if (global.current_bgm != -1 && audio_is_playing(global.current_bgm)) {
-                audio_sound_gain(global.current_bgm, 1.0, 0);
-                return;
+        if (is_string(_asset_id)) {
+            var _snd = asset_get_index(_asset_id);
+            if (_snd != -1 && audio_exists(_snd)) {
+                global.current_bgm = audio_play_sound(_snd, 100, true);
+                if (global.current_bgm != -1 && audio_is_playing(global.current_bgm)) {
+                    audio_sound_gain(global.current_bgm, 1.0, 0);
+                    return;
+                }
             }
         }
     } catch (_ex2) {
         // Fall through to Tier 3
     }
     
-    // Tier 3: Direct WAV buffer playback from Included Files (datafiles)
-    // 100% engine-native, loads raw PCM samples without requiring asset compilation
-    var _wav_file = "snd_boss_nightmare_zero.wav";
-    if (file_exists(_wav_file)) {
+    // Tier 3: Direct Included File (datafiles) audio stream
+    if (_datafile_name != "" && file_exists(_datafile_name)) {
         try {
-            var _buff = buffer_load(_wav_file);
-            if (_buff != -1) {
-                var _buf_size = buffer_get_size(_buff);
-                // Standard WAV header is 44 bytes, 16-bit stereo = 4 bytes per sample
-                var _pcm_offset = 44;
-                var _samples = max(0, (_buf_size - _pcm_offset) div 4);
-                var _snd_buf = audio_create_buffer_sound(_buff, buffer_s16, 44100, _pcm_offset, _samples, audio_stereo);
-                if (_snd_buf != -1) {
-                    global.current_bgm_buffer = _buff;
-                    global.current_bgm_buffer_sound = _snd_buf;
-                    global.current_bgm = audio_play_sound(_snd_buf, 100, true);
+            global.current_bgm_stream = audio_create_stream(_datafile_name);
+            if (global.current_bgm_stream != -1) {
+                global.current_bgm = audio_play_sound(global.current_bgm_stream, 100, true);
+                if (global.current_bgm != -1) {
                     audio_sound_gain(global.current_bgm, 1.0, 0);
                     return;
                 }
             }
         } catch (_ex3) {
-            // Buffer creation failed
+            // Stream creation failed
         }
     }
+}
+
+/// @desc Play Title Screen Theme
+function music_play_title() {
+    music_play_track(snd_bgm_title, "snd_bgm_title.mp3");
+}
+
+/// @desc Play Player Select & Stage Select Theme
+function music_play_player_select() {
+    music_play_track(snd_bgm_player_select, "snd_bgm_player_select.mp3");
+}
+
+/// @desc Play Web Spider Stage Theme
+function music_play_web_spider() {
+    music_play_track(snd_bgm_web_spider, "snd_bgm_web_spider.mp3");
+}
+
+/// @desc Play Nightmare Zero Boss Battle Theme (Looping)
+function music_play_boss_nightmare_zero() {
+    music_play_track(snd_boss_nightmare_zero, "snd_boss_nightmare_zero.mp3");
 }
 
 /// @desc Stop Nightmare Zero Boss Battle Theme (Optional fade-out in ms)
@@ -80,6 +95,7 @@ function music_stop_boss_nightmare_zero(_fade_ms = 0) {
             } else {
                 audio_stop_sound(global.current_bgm);
                 global.current_bgm = noone;
+                global.current_bgm_asset = noone;
             }
         }
     }
@@ -110,4 +126,5 @@ function music_stop_all() {
         global.current_bgm_stream = noone;
     }
     global.current_bgm = noone;
+    global.current_bgm_asset = noone;
 }

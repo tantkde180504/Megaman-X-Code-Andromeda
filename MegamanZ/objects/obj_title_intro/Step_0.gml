@@ -25,11 +25,15 @@ state_frame++;
 menu_blink++;
 if (menu_notice_timer > 0) menu_notice_timer--;
 
-// Hieu ung vien sang 11 frame chay ping-pong (0 -> 10 -> 0)
-if (state >= TITLE_INTRO_STATE.LOGO) {
+// Chay mot vong sang vien 0 -> 10 -> 0, roi giu logo tinh trong Menu.
+if (logo_animating && (state == TITLE_INTRO_STATE.LOGO || state == TITLE_INTRO_STATE.BACKGROUND)) {
     logo_frame += logo_direction * 0.35;
     if (logo_frame >= 10) { logo_frame = 10; logo_direction = -1; }
-    else if (logo_frame <= 0) { logo_frame = 0; logo_direction = 1; }
+    else if (logo_frame <= 0) {
+        logo_frame = 0;
+        logo_direction = 1;
+        logo_animating = false;
+    }
 }
 
 switch (state) {

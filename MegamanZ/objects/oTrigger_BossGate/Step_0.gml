@@ -17,6 +17,7 @@ switch (gate_state) {
             if (_touching) {
                 gate_state = GATE_STATE.OPENING;
                 anim_frame = 0.0;
+                if (audio_exists(snd_boss_door_open)) audio_play_sound(snd_boss_door_open, 80, false);
                 global.input_locked = true;
                 _p.hsp = 0;
                 _p.facing = 1;
@@ -106,6 +107,7 @@ switch (gate_state) {
             close_wait_timer--;
         } else {
             gate_state = GATE_STATE.CLOSING;
+            if (audio_exists(snd_boss_door_close)) audio_play_sound(snd_boss_door_close, 80, false);
         }
         break;
         
@@ -137,6 +139,7 @@ switch (gate_state) {
             
             // Cửa 2 (Cửa trong vào đấu trường): Bắt đầu màn đấu trùm!
             if (is_arena_door) {
+                if (audio_exists(snd_boss_warning)) audio_play_sound(snd_boss_warning, 90, false);
                 music_play_boss_nightmare_zero();
                 if (room_get_name(room) == "rStage_WebSpider") {
                     if (instance_exists(obj_nightmare_zero)) {

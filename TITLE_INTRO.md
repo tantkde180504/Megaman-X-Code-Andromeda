@@ -56,3 +56,17 @@ Object `obj_title_intro` được tạo tự động bởi `oMenuManager` khi v�
 - Preview animation im lặng: `artifacts/title_import/title_intro_preview.gif`; dựng bằng Python theo timeline, không phải capture từ runner.
 - Hủy màn chọn nhân vật quay lại menu Andromeda, không chạy lại intro. Press Start hiện ngay khi vào menu.
 - Cần mở lại/reload dự án nếu IDE đang mở trước khi import; thử Enter/Space, Up/Down, Game Start và hủy chọn nhân vật.
+
+## 4. Logo đã làm sạch viền hồng
+
+Đã xử lý phần màu magenta còn đục dính sát vùng trong suốt ở cả 11 frame,
+cập nhật đồng thời PNG frame và PNG layer. Pixel ngoài vùng viền được giữ
+nguyên; canvas 220×78 và origin (110,39) không đổi. RGB ẩn dưới alpha 0 cũng
+được đưa về 0 để tránh lem màu khi lọc texture.
+
+- Script: `tools/clean_title_logo_alpha.py`.
+- Bản trước xử lý: `artifacts/title_logo_cleanup/before/`.
+- Đối chiếu: `artifacts/title_logo_cleanup/logo_before_after.png`.
+- ZIP mới để import lại: `artifacts/title_logo_cleanup/MMX_Andromeda_Sprites.zip`.
+  Bản ZIP ở `title_import` vẫn là bộ nguồn trước khi sửa viền.
+- Đã kiểm tra PNG layer, số frame/origin và compile VM thành công; chưa chạy runner.

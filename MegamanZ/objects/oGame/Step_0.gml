@@ -4,13 +4,7 @@ if (variable_instance_exists(id, "window_centered_timer") && window_centered_tim
     if (window_centered_timer == 0) window_center();
 }
 
-// 2. Retro Display Controls (F2: CRT Filter, F3: Window Scale, F4: Fullscreen)
-if (keyboard_check_pressed(vk_f2)) {
-    global.crt_filter = !global.crt_filter;
-    global.osd_message = global.crt_filter ? "CRT SCANLINES: ON" : "CRT SCANLINES: OFF";
-    global.osd_timer = 90;
-    if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
-}
+// 2. Display controls: clean fullscreen output, with optional window scaling.
 if (keyboard_check_pressed(vk_f3)) {
     var _scales = [2, 3, 4, 1];
     var _curr_idx = 0;
@@ -18,6 +12,7 @@ if (keyboard_check_pressed(vk_f3)) {
         if (_scales[_k] == window_scale) { _curr_idx = _k; break; }
     }
     window_scale = _scales[(_curr_idx + 1) % array_length(_scales)];
+    if (window_get_fullscreen()) window_set_fullscreen(false);
     window_set_size(VIEW_WIDTH * window_scale, VIEW_HEIGHT * window_scale);
     window_centered_timer = 2;
     global.osd_message = "WINDOW SCALE: " + string(window_scale) + "x (" + string(VIEW_WIDTH * window_scale) + "x" + string(VIEW_HEIGHT * window_scale) + ")";

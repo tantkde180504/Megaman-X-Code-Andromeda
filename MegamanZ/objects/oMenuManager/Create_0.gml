@@ -116,6 +116,26 @@ cutscene_script = [
     }
 ];
 cutscene_step_count = array_length(cutscene_script);
+cutscene_pages = [""];
+cutscene_page = 0;
+load_cutscene_page = function() {
+    cutscene_target_text = cutscene_pages[cutscene_page];
+    cutscene_char_idx = 0;
+    cutscene_text = "";
+    cutscene_is_typing = true;
+};
+load_cutscene_step = function() {
+    var _data = cutscene_script[cutscene_step];
+    var _name = selected_char == 0 ? "MEGA MAN X" : "ZERO";
+    var _text = string_replace_all(_data.text, "[HERO]", selected_char == 0 ? "X" : "Zero");
+    _text = string_replace_all(_text, "[CHAR_NAME]", _name);
+    cutscene_speaker_name = string_replace_all(_data.speaker_name, "[CHAR_NAME]", _name);
+    cutscene_speaker_key = _data.speaker_key;
+    // Native 16px bitmap lines: 3 per dialogue page, 8 per prologue page.
+    cutscene_pages = ps1_text_pages(_text, 288, _data.is_dialogue ? 3 : 8);
+    cutscene_page = 0;
+    load_cutscene_page();
+};
 title_intro_input_cooldown = 0;
 if (room == rTitle && !instance_exists(obj_title_intro)) {
     instance_create_layer(0, 0, "Instances", obj_title_intro);

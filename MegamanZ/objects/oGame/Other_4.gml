@@ -9,6 +9,10 @@ surface_resize(application_surface, VIEW_WIDTH, VIEW_HEIGHT);
 display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);
 if (view_enabled && view_visible[0]) {
     camera_set_view_size(view_camera[0], VIEW_WIDTH, VIEW_HEIGHT);
+    view_wport[0] = VIEW_WIDTH;
+    view_hport[0] = VIEW_HEIGHT;
+    view_xport[0] = 0;
+    view_yport[0] = 0;
 }
 
 if (_is_menu_room) {
@@ -37,6 +41,7 @@ if (room == Room1) {
     scr_build_stage_intro();
 } else if (room_get_name(room) == "rStage_WebSpider") {
     scr_build_stage_web_spider();
+    music_play_web_spider();
 } else if (room_get_name(room) == "rBoss_NightmareZero") {
     scr_build_boss_room_nightmare_zero();
     music_play_boss_nightmare_zero();

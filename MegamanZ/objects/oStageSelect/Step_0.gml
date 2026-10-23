@@ -1,4 +1,5 @@
 anim_timer++;
+x_frame_idx += x_frame_spd;
 flash_alpha = max(0.0, flash_alpha - 0.05);
 
 // Input checks
@@ -67,9 +68,11 @@ switch (state) {
         // Cycle stages
         if (_btn_left || _btn_up) {
             selected_stage = (selected_stage - 1 + stage_count) % stage_count;
+            if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 75, false);
         }
         if (_btn_right || _btn_down) {
             selected_stage = (selected_stage + 1) % stage_count;
+            if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 75, false);
         }
         
         // Update animation of LargeX based on highlighted stage/boss
@@ -81,6 +84,7 @@ switch (state) {
             x_anim_state = "launch";
             launch_timer = 0;
             flash_alpha = 1.0;
+            if (audio_exists(snd_teleport_out)) audio_play_sound(snd_teleport_out, 85, false);
         }
         break;
 

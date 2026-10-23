@@ -146,15 +146,22 @@ switch (state) {
         
         if (!char_confirmed) {
             if (_left) {
-                selected_char = 0; // X
-                flash_alpha = 0.25;
+                if (selected_char != 0) {
+                    selected_char = 0; // X
+                    flash_alpha = 0.25;
+                    if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 75, false);
+                }
             }
             if (_right) {
-                selected_char = 1; // Zero
-                flash_alpha = 0.25;
+                if (selected_char != 1) {
+                    selected_char = 1; // Zero
+                    flash_alpha = 0.25;
+                    if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 75, false);
+                }
             }
             if (_cancel) {
                 state = MENU_STATE.MAIN_MENU;
+                music_play_title();
                 // Trở lại menu sprite Andromeda, giữ fallback nếu thiếu asset.
                 if (!instance_exists(obj_title_intro)) {
                     instance_create_layer(0, 0, "Instances", obj_title_intro, {start_in_menu: true});
@@ -165,6 +172,7 @@ switch (state) {
                 char_confirmed = true;
                 char_confirm_timer = 55; // Hold celebratory ready animation
                 flash_alpha = 0.85;
+                if (audio_exists(snd_teleport_out)) audio_play_sound(snd_teleport_out, 85, false);
                 if (instance_exists(oCamera)) {
                     camera_shake(2, 8);
                 }
@@ -181,20 +189,14 @@ switch (state) {
                 cutscene_is_typing = true;
                 flash_alpha = 0.7;
                 
-                var _step_data = cutscene_script[0];
-                var _cname = (selected_char == 0) ? "MEGA MAN X" : "ZERO";
-                var _chero = (selected_char == 0) ? "X" : "Zero";
-                cutscene_target_text = string_replace_all(_step_data.text, "[HERO]", _chero);
-                cutscene_target_text = string_replace_all(cutscene_target_text, "[CHAR_NAME]", _cname);
-                cutscene_speaker_name = string_replace_all(_step_data.speaker_name, "[CHAR_NAME]", _cname);
-                cutscene_speaker_key = _step_data.speaker_key;
+                load_cutscene_step();
             }
         }
         break;
 
     case MENU_STATE.CUTSCENE:
         flash_alpha = max(0, flash_alpha - 0.05);
-        cutscene_scanline = (cutscene_scanline + 1) % 270;
+        cutscene_scanline = (cutscene_scanline + 1) % VIEW_HEIGHT;
         
         // Typewriter progression
         var _total_len = string_length(cutscene_target_text);
@@ -218,6 +220,12 @@ switch (state) {
                 cutscene_text = cutscene_target_text;
                 cutscene_is_typing = false;
             } else {
+                // Read every page before advancing the story step.
+                if (cutscene_page + 1 < array_length(cutscene_pages)) {
+                    cutscene_page++;
+                    load_cutscene_page();
+                    break;
+                }
                 // Advance to next cutscene step
                 cutscene_step++;
                 if (cutscene_step < cutscene_step_count) {
@@ -225,13 +233,7 @@ switch (state) {
                     cutscene_text = "";
                     cutscene_is_typing = true;
                     
-                    var _step_data = cutscene_script[cutscene_step];
-                    var _cname = (selected_char == 0) ? "MEGA MAN X" : "ZERO";
-                    var _chero = (selected_char == 0) ? "X" : "Zero";
-                    cutscene_target_text = string_replace_all(_step_data.text, "[HERO]", _chero);
-                    cutscene_target_text = string_replace_all(cutscene_target_text, "[CHAR_NAME]", _cname);
-                    cutscene_speaker_name = string_replace_all(_step_data.speaker_name, "[CHAR_NAME]", _cname);
-                    cutscene_speaker_key = _step_data.speaker_key;
+                    load_cutscene_step();
                 } else {
                     // All cutscene steps complete! Transition to Stage Intro
                     state = MENU_STATE.TRANSITION_OUT;

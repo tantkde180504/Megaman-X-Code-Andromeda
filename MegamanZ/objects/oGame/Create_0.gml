@@ -11,8 +11,7 @@ display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);
 gpu_set_texfilter(false);
 
 window_centered_timer = 2;
-global.crt_filter = true; // CRT scanlines on by default (F2 to toggle)
-global.osd_message = "PS1 MODE (4:3) | F2: CRT SCANLINES | F3: WINDOW SCALE | F4: FULLSCREEN";
+global.osd_message = "FULLSCREEN (4:3) | F3: WINDOW SCALE | F4: FULLSCREEN";
 global.osd_timer = 180;
 
 global.current_char = CHAR_TYPE.X;

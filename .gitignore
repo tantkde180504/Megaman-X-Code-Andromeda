@@ -1,4 +1,5 @@
 # GameMaker Build and Cache directories
+artifacts/ps1_layout_build/
 **/cache/
 **/output/
 **/Build/

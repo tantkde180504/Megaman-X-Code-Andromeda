@@ -361,3 +361,77 @@ function draw_mmx_dialogue_line(_x, _y, _text, _char_count, _font = MMX_FONT.SMA
     var _sub = string_copy(_clean, 1, _char_count);
     return draw_mmx_text(_x, _y, _sub, _font, _xscale, _yscale, _col, _alpha);
 }
+
+/// @desc Word wrap measured with the actual small bitmap font at native scale.
+function ps1_text_lines(_text, _width) {
+    var _lines = [];
+    var _paragraphs = string_split(string_mmx_clean(_text), "\n");
+    for (var _p = 0; _p < array_length(_paragraphs); _p++) {
+        var _words = string_split(_paragraphs[_p], " ");
+        var _line = "";
+        for (var _w = 0; _w < array_length(_words); _w++) {
+            var _word = _words[_w];
+            var _candidate = (_line == "") ? _word : _line + " " + _word;
+            if (_line != "" && string_mmx_width(_candidate) > _width) {
+                array_push(_lines, _line);
+                _line = "";
+            }
+            // Split an oversized token too, so labels cannot escape the panel.
+            for (var _c = 1; _c <= string_length(_word); _c++) {
+                if (_c == 1 && _line != "") _line += " ";
+                var _char = string_char_at(_word, _c);
+                if (_line != "" && string_mmx_width(_line + _char) > _width) {
+                    array_push(_lines, _line);
+                    _line = "";
+                }
+                _line += _char;
+            }
+        }
+        array_push(_lines, _line);
+    }
+    return _lines;
+}
+
+function ps1_text_pages(_text, _width, _rows) {
+    var _lines = ps1_text_lines(_text, _width);
+    var _pages = [];
+    for (var _i = 0; _i < array_length(_lines); _i += _rows) {
+        var _page = "";
+        for (var _r = 0; _r < _rows && _i + _r < array_length(_lines); _r++) {
+            if (_r > 0) _page += "\n";
+            _page += _lines[_i + _r];
+        }
+        array_push(_pages, _page);
+    }
+    return _pages;
+}
+
+/// @desc Draw inside a native-pixel text box; wrap the full text before revealing.
+function ps1_draw_text(_x, _y, _text, _width, _height, _colour = c_white, _visible = -1, _alpha = 1) {
+    var _lines = ps1_text_lines(_text, _width);
+    var _remaining = (_visible < 0) ? string_length(_text) + 1000 : _visible;
+    var _rows = min(array_length(_lines), floor(_height / 16));
+    for (var _r = 0; _r < _rows; _r++) {
+        var _line = _lines[_r];
+        draw_mmx_text(round(_x), round(_y + _r * 16),
+            string_copy(_line, 1, max(0, _remaining)), MMX_FONT.SMALL, 1, 1, _colour, _alpha);
+        _remaining -= string_length(_line) + 1;
+    }
+}
+
+function ps1_draw_centered(_cx, _y, _text, _width, _colour = c_white) {
+    var _lines = ps1_text_lines(_text, _width);
+    for (var _r = 0; _r < array_length(_lines); _r++) {
+        var _line = _lines[_r];
+        draw_mmx_text(round(_cx - string_mmx_width(_line) * 0.5), round(_y + _r * 16),
+            _line, MMX_FONT.SMALL, 1, 1, _colour);
+    }
+}
+
+function ps1_draw_panel(_x, _y, _width, _height, _border = c_aqua) {
+    draw_set_alpha(1);
+    draw_set_color(make_color_rgb(6, 18, 42));
+    draw_rectangle(_x, _y, _x + _width - 1, _y + _height - 1, false);
+    draw_set_color(_border);
+    draw_rectangle(_x, _y, _x + _width - 1, _y + _height - 1, true);
+}
