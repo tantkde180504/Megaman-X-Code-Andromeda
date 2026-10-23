@@ -4,6 +4,13 @@ global.stage_clear_complete = false;
 global.boss_defeated = false;
 global.input_locked = false;
 
+// Ensure authentic 320x240 PS1 render target across rooms
+surface_resize(application_surface, VIEW_WIDTH, VIEW_HEIGHT);
+display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);
+if (view_enabled && view_visible[0]) {
+    camera_set_view_size(view_camera[0], VIEW_WIDTH, VIEW_HEIGHT);
+}
+
 if (_is_menu_room) {
     music_stop_all();
     if (instance_exists(oPlayer)) {

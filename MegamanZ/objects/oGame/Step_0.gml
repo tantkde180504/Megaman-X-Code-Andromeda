@@ -1,3 +1,39 @@
+// 1. Center window after creation
+if (variable_instance_exists(id, "window_centered_timer") && window_centered_timer > 0) {
+    window_centered_timer--;
+    if (window_centered_timer == 0) window_center();
+}
+
+// 2. Retro Display Controls (F2: CRT Filter, F3: Window Scale, F4: Fullscreen)
+if (keyboard_check_pressed(vk_f2)) {
+    global.crt_filter = !global.crt_filter;
+    global.osd_message = global.crt_filter ? "CRT SCANLINES: ON" : "CRT SCANLINES: OFF";
+    global.osd_timer = 90;
+    if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
+}
+if (keyboard_check_pressed(vk_f3)) {
+    var _scales = [2, 3, 4, 1];
+    var _curr_idx = 0;
+    for (var _k = 0; _k < array_length(_scales); _k++) {
+        if (_scales[_k] == window_scale) { _curr_idx = _k; break; }
+    }
+    window_scale = _scales[(_curr_idx + 1) % array_length(_scales)];
+    window_set_size(VIEW_WIDTH * window_scale, VIEW_HEIGHT * window_scale);
+    window_centered_timer = 2;
+    global.osd_message = "WINDOW SCALE: " + string(window_scale) + "x (" + string(VIEW_WIDTH * window_scale) + "x" + string(VIEW_HEIGHT * window_scale) + ")";
+    global.osd_timer = 90;
+    if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
+}
+if (keyboard_check_pressed(vk_f4)) {
+    window_set_fullscreen(!window_get_fullscreen());
+    global.osd_message = window_get_fullscreen() ? "FULLSCREEN: ON (4:3)" : "FULLSCREEN: OFF";
+    global.osd_timer = 90;
+    if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
+}
+if (variable_global_exists("osd_timer") && global.osd_timer > 0) {
+    global.osd_timer--;
+}
+
 if (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect") return;
 
 // Boss defeat and the preview key share the actual stage-clear sequence.

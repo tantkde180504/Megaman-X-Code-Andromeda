@@ -3,7 +3,9 @@ display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);
 // 1. Draw Elevator Shaft / Command Room Background
 var _sy = clamp(scroll_y, 5, scroll_max);
 if (sprite_exists(StageSelectBkGrd)) {
-    draw_sprite_part_ext(StageSelectBkGrd, 0, 5, _sy, 320, 180, 0, 0, 1.5, 1.5, c_white, 1.0);
+    var _scale_x = VIEW_WIDTH / 320.0;
+    var _scale_y = VIEW_HEIGHT / 240.0;
+    draw_sprite_part_ext(StageSelectBkGrd, 0, 5, _sy, 320, 180, 0, 0, _scale_x, _scale_y, c_white, 1.0);
 }
 
 // 2. Elevator Scroll State Overlay

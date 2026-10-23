@@ -4,13 +4,13 @@ if (state < MENU_STATE.CHAR_SELECT) {
         instance_create_layer(0, 0, "Instances", obj_title_intro);
     }
     if (sprite_exists(spr_title_bg)) {
-        draw_sprite(spr_title_bg, 0, 80, 15);
+        draw_sprite(spr_title_bg, 0, 0, 0);
     }
     if (sprite_exists(spr_logo_andromeda)) {
-        draw_sprite(spr_logo_andromeda, 0, 240, 90);
+        draw_sprite(spr_logo_andromeda, 0, 160, 75);
     }
     if (sprite_exists(spr_menu_press_start)) {
-        draw_sprite(spr_menu_press_start, 0, 240, 200);
+        draw_sprite(spr_menu_press_start, 0, 160, 185);
     }
     return;
 }
@@ -274,7 +274,7 @@ switch (state) {
         // =========================================================
         if (sprite_exists(PlayerSelect)) {
             // 1. Full Screen Green Tech Background (scaled from 320x240 to 480x270)
-            draw_sprite_part_ext(PlayerSelect, 0, 6, 5, 320, 240, 0, 0, 480 / 320, 270 / 240, c_white, 1.0);
+            draw_sprite_part_ext(PlayerSelect, 0, 6, 5, 320, 240, 0, 0, VIEW_WIDTH / 320, VIEW_HEIGHT / 240, c_white, 1.0);
             
             // 2. Dual Running "PLAYER SELECT" Banners
             // Top marquee (scrolls to the left)

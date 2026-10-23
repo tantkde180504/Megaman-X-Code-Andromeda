@@ -76,9 +76,9 @@ enum SPIDER_STATE {
     DEATH
 }
 
-// Target Resolution
-#macro VIEW_WIDTH 480
-#macro VIEW_HEIGHT 270
+// Target Resolution (Authentic PlayStation 1: 320x240 @ 4:3)
+#macro VIEW_WIDTH 320
+#macro VIEW_HEIGHT 240
 
 // Physics Constants (Original X4 Frame-Accurate Tuning)
 #macro GRAVITY 0.25

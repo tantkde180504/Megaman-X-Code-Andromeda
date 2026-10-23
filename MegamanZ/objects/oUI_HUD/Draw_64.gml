@@ -80,8 +80,8 @@ if (_ind_text != "") {
 // Help banner (bottom)
 draw_set_color(c_black);
 draw_set_alpha(0.65);
-draw_rectangle(0, VIEW_HEIGHT - 14, VIEW_WIDTH, VIEW_HEIGHT, false);
+draw_rectangle(0, VIEW_HEIGHT - 13, VIEW_WIDTH, VIEW_HEIGHT, false);
 draw_set_alpha(1.0);
 draw_set_color(make_color_rgb(200, 220, 240));
-draw_text(4, VIEW_HEIGHT - 13, "Arrows: Move | Z: Jump | X: Atk | C: Dash | 4: Boss Arena | B: Triệu hồi Boss | TAB: Char");
+draw_text(4, VIEW_HEIGHT - 12, "Z:Jump X:Atk C:Dash 4:Arena B:Boss TAB:Char");
 

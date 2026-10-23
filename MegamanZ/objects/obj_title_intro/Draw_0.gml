@@ -1,9 +1,7 @@
-/// @desc Draw Title Intro 320x240 inside 480x270 viewport
-var _left = 80;
-var _top = 15;
-var _cx = 240;
-var _cy = 90;
-var _menu_y = 200;
+/// @desc Draw Title Intro 320x240 inside native 320x240 PS1 screen
+var _cx = 160;
+var _cy = 75;
+var _menu_y = 185;
 
 var _colour = draw_get_colour();
 var _alpha = draw_get_alpha();
@@ -13,11 +11,11 @@ var _valign = draw_get_valign();
 // Nen den tong the
 draw_set_alpha(1.0);
 draw_set_colour(c_black);
-draw_rectangle(0, 0, 480, 270, false);
+draw_rectangle(0, 0, 320, 240, false);
 
-// 1. Nen vu tru + Trai Dat + Tram khong gian + Ban quyen
+// 1. Nen vu tru + Trai Dat + Tram khong gian + Ban quyen (phu kin 320x240)
 if (sprite_exists(title_bg) && bg_alpha > 0) {
-    draw_sprite_ext(title_bg, 0, _left, _top, 1, 1, 0, c_white, bg_alpha);
+    draw_sprite_ext(title_bg, 0, 0, 0, 1, 1, 0, c_white, bg_alpha);
 }
 
 // 2. Hieu ung dan tia sang chu MEGAMAN & Logo X thu vao tam
@@ -41,11 +39,11 @@ if (state < TITLE_INTRO_STATE.LOGO) {
             gpu_set_fog(false, c_white, 0, 0);
         }
 
-        // Tia laser trang phong ngang
+        // Tia laser trang phong ngang toan man hinh 320
         var _beam = 1 - clamp(state_frame / 15, 0, 1);
         if (_beam > 0) {
             draw_set_alpha(_beam);
-            draw_line_width_colour(_left, _cy, _left + 320, _cy, 2, c_white, c_white);
+            draw_line_width_colour(0, _cy, 320, _cy, 2, c_white, c_white);
             draw_set_alpha(1.0);
         }
     } else {
@@ -78,7 +76,7 @@ if (state == TITLE_INTRO_STATE.MENU) {
         draw_set_halign(fa_center);
         draw_set_valign(fa_middle);
         draw_set_colour(c_yellow);
-        draw_text(_cx, _top + 225, menu_notice);
+        draw_text(_cx, 225, menu_notice);
     }
 }
 
@@ -86,16 +84,8 @@ if (state == TITLE_INTRO_STATE.MENU) {
 if (flash_alpha > 0) {
     draw_set_colour(c_white);
     draw_set_alpha(flash_alpha);
-    draw_rectangle(_left, _top, _left + 320, _top + 240, false);
+    draw_rectangle(0, 0, 320, 240, false);
 }
-
-// 6. Letterbox den che vien ngoai vung 320x240
-draw_set_alpha(1.0);
-draw_set_colour(c_black);
-draw_rectangle(0, 0, _left - 1, 270, false);
-draw_rectangle(_left + 320, 0, 480, 270, false);
-draw_rectangle(0, 0, 480, _top - 1, false);
-draw_rectangle(0, _top + 240, 480, 270, false);
 
 // Khoi phuc GPU states
 gpu_set_fog(false, c_white, 0, 0);
