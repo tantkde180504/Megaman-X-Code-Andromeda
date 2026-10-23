@@ -25,6 +25,10 @@ teleport_sphere_frame = 1.0;
 intro_anim_frame = 0.0;
 intro_hold_timer = 0;
 teleport_out_frame = 0.0;
+teleport_out_sound_played = false;
+teleport_out_timer = 0;
+stage_clear_frame = 0.0;
+stage_clear_hold = 0;
 
 // Web binding debuff (from Lightning Web)
 is_web_bound = false;

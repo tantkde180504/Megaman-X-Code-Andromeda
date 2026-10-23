@@ -548,6 +548,7 @@ switch (state) {
         }
         
         if (death_timer == 90) {
+            global.boss_defeated = true;
             instance_create_layer(x, y - 16, "Instances", oFX_EnemyExplosion);
             camera_shake(6, 16);
             music_stop_boss_nightmare_zero(1500);

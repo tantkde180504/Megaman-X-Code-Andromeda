@@ -4,6 +4,7 @@ function player_take_damage(_amount, _knockback_dir) {
     if (!instance_exists(oPlayer)) return;
     var _p = instance_find(oPlayer, 0);
     if (_p == noone) return;
+    if (_p.state == PLAYER_STATE.STAGE_CLEAR || _p.state == PLAYER_STATE.TELEPORT_OUT) return;
     
     // Ignore damage during iframes, hurt state or death
     if (_p.iframes > 0 || _p.state == PLAYER_STATE.HURT || _p.state == PLAYER_STATE.DEATH) {

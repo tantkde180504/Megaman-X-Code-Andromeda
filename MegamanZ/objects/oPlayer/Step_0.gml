@@ -1,7 +1,13 @@
 anim_timer++;
 if (iframes > 0) iframes--;
 player_state_execute();
-player_handle_movement_and_collision();
+if (state == PLAYER_STATE.TELEPORT_OUT) {
+    // A teleport beam passes through stage ceilings; apply velocity only here.
+    y += vsp;
+} else {
+    player_handle_movement_and_collision();
+}
+if (state == PLAYER_STATE.STAGE_CLEAR || state == PLAYER_STATE.TELEPORT_OUT) return;
 
 // -------------------------------------------------------------------------
 // Dash Afterimage / Ghost Trail Spawner & Updater

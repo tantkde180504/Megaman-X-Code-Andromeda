@@ -16,6 +16,12 @@ if (state == PLAYER_STATE.DEATH) {
 // Iframes blinking (only after recovering from HURT state so damage animation remains visible)
 if (state != PLAYER_STATE.HURT && iframes > 0 && (iframes div 3) % 2 == 0) return;
 
+if (state == PLAYER_STATE.STAGE_CLEAR) {
+    var _victory = clamp(floor(stage_clear_frame), 0, 7);
+    _draw_player(sZero_Teleport_Out, _victory, x, y, facing, 1, 0, c_white, 1);
+    return;
+}
+
 // Shadow (hide during beam drop)
 if (state != PLAYER_STATE.INTRO || intro_phase > 0) {
     draw_set_color(c_black);

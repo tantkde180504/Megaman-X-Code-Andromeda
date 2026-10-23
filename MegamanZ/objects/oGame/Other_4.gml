@@ -1,4 +1,8 @@
 var _is_menu_room = (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect");
+global.stage_clear_active = false;
+global.stage_clear_complete = false;
+global.boss_defeated = false;
+global.input_locked = false;
 
 if (_is_menu_room) {
     music_stop_all();

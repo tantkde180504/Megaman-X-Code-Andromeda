@@ -116,3 +116,7 @@ cutscene_script = [
     }
 ];
 cutscene_step_count = array_length(cutscene_script);
+title_intro_input_cooldown = 0;
+if (room == rTitle && !instance_exists(obj_title_intro)) {
+    instance_create_layer(0, 0, "Instances", obj_title_intro);
+}

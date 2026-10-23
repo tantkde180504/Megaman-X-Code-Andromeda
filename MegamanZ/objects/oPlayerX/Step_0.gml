@@ -1,4 +1,5 @@
 event_inherited();
+if (state == PLAYER_STATE.STAGE_CLEAR || state == PLAYER_STATE.TELEPORT_OUT) return;
 
 // Buster Charging
 if (global.input.shoot && state != PLAYER_STATE.HURT && state != PLAYER_STATE.DEATH && state != PLAYER_STATE.INTRO && state != PLAYER_STATE.TELEPORT_OUT) {

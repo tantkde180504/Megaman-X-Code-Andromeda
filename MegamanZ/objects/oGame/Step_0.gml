@@ -1,5 +1,14 @@
 if (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect") return;
 
+// Boss defeat and the preview key share the actual stage-clear sequence.
+if (global.boss_defeated && !global.stage_clear_active) {
+    player_begin_stage_clear();
+}
+if (global.stage_clear_active) {
+    if (global.stage_clear_complete) room_goto(rStageSelect);
+    return;
+}
+
 // Return to Stage Select (Hunter Base)
 if (keyboard_check_pressed(ord("9"))) {
     if (instance_exists(oPlayer)) {
@@ -144,11 +153,8 @@ if (keyboard_check_pressed(ord("I"))) {
     }
 }
 if (keyboard_check_pressed(ord("O"))) {
-    if (instance_exists(oPlayer)) {
-        var _p = instance_find(oPlayer, 0);
-        _p.state = PLAYER_STATE.TELEPORT_OUT;
-        _p.teleport_out_frame = 0.0;
-    }
+    player_begin_stage_clear();
+    return;
 }
 
 // Debug Shortcut: [K] Trigger Mega Man X4 Player Death Effect

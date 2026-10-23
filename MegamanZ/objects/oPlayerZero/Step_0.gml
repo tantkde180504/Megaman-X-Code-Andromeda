@@ -34,6 +34,7 @@ if (technique_state == TECHNIQUE.RAIJINGEKI) {
 }
 
 event_inherited();
+if (state == PLAYER_STATE.STAGE_CLEAR || state == PLAYER_STATE.TELEPORT_OUT) return;
 
 // Restore inputs
 global.input.left = _orig_left;

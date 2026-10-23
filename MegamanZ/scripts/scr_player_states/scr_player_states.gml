@@ -49,6 +49,9 @@ function player_state_execute() {
         case PLAYER_STATE.TELEPORT_OUT:
             player_state_teleport_out();
             break;
+        case PLAYER_STATE.STAGE_CLEAR:
+            player_state_stage_clear();
+            break;
     }
 }
 
@@ -829,6 +832,73 @@ function player_state_intro() {
 // -------------------------------------------------------------------------
 // TELEPORT OUT STATE (Stage Clear / Warp Away)
 // -------------------------------------------------------------------------
+/// @desc Start once, from a boss completion or an end-of-stage trigger.
+function player_begin_stage_clear() {
+    if (!instance_exists(oPlayer)) return;
+    var _p = instance_find(oPlayer, 0);
+    if (_p.state == PLAYER_STATE.DEATH || _p.hp_current <= 0) return;
+    if (_p.state == PLAYER_STATE.STAGE_CLEAR || _p.state == PLAYER_STATE.TELEPORT_OUT) return;
+
+    global.stage_clear_active = true;
+    global.stage_clear_complete = false;
+    global.input_locked = true;
+    with (_p) {
+        state = PLAYER_STATE.STAGE_CLEAR;
+        stage_clear_frame = 0;
+        stage_clear_hold = 0;
+        teleport_out_frame = 0;
+        teleport_out_timer = 0;
+        teleport_out_sound_played = false;
+        hsp = 0;
+        vsp = 0;
+        x_subpixel = 0;
+        y_subpixel = 0;
+        iframes = 0;
+        afterimages = [];
+        is_auto_walking = false;
+        is_web_bound = false;
+        web_bound_timer = 0;
+        web_bound_damage_timer = 0;
+        if (object_index == oPlayerX) {
+            charge_timer = 0;
+            charge_level = 0;
+            shoot_anim_timer = 0;
+            muzzle_flash_sprite = noone;
+            if (charge_sound != noone && audio_is_playing(charge_sound)) audio_stop_sound(charge_sound);
+            charge_sound = noone;
+        } else {
+            technique_state = TECHNIQUE.NONE;
+            slash_anim_timer = 0;
+            combo_step = 0;
+            if (instance_exists(current_saber_hitbox)) instance_destroy(current_saber_hitbox);
+            current_saber_hitbox = noone;
+        }
+    }
+}
+
+function player_state_stage_clear() {
+    hsp = 0;
+    // Settle safely onto the floor before showing the victory pose.
+    if (!grounded) {
+        vsp = min(vsp + GRAVITY, MAX_FALL_SPEED);
+        return;
+    }
+    vsp = 0;
+    var _last = (object_index == oPlayerZero) ? 7 : sprite_get_number(sX_Victory) - 1;
+    if (stage_clear_frame < _last) {
+        stage_clear_frame = min(stage_clear_frame + 0.18, _last);
+    } else {
+        stage_clear_hold++;
+        if (stage_clear_hold >= 60) {
+            state = PLAYER_STATE.TELEPORT_OUT;
+            // Zero's first eight frames are the stage-clear pose, already played.
+            teleport_out_frame = (object_index == oPlayerZero) ? 8.0 : 0.0;
+            teleport_out_timer = 0;
+            teleport_out_sound_played = false;
+        }
+    }
+}
+
 function player_state_teleport_out() {
     hsp = 0;
 
@@ -843,7 +913,7 @@ function player_state_teleport_out() {
         return;
     }
 
-    if (global.current_char == CHAR_TYPE.ZERO) {
+    if (object_index == oPlayerZero) {
         if (teleport_out_frame < 12.0) {
             teleport_out_frame += 0.20;
             vsp = 0;
@@ -852,7 +922,6 @@ function player_state_teleport_out() {
             teleport_out_frame += 0.30;
             if (teleport_out_frame >= 14.0) teleport_out_frame = 12.0;
             vsp = -14;
-            y += vsp;
         }
     } else {
         if (teleport_out_frame < 4.0) {
@@ -862,7 +931,16 @@ function player_state_teleport_out() {
             // Frame 4: vertical beam shooting into the sky
             teleport_out_frame = 4.0;
             vsp = -14;
-            y += vsp;
+        }
+    }
+    // Movement is applied once by the teleport branch in oPlayer Step.
+    if (vsp < 0) {
+        teleport_out_timer++;
+        var _screen_top = camera_get_view_y(view_camera[0]);
+        if (y < _screen_top - 96 || teleport_out_timer >= 90) {
+            vsp = 0;
+            visible = false;
+            global.stage_clear_complete = true;
         }
     }
 }

@@ -18,6 +18,12 @@ if (state != PLAYER_STATE.HURT && iframes > 0 && (iframes div 3) % 2 == 0) retur
 
 var _is_shooting = (shoot_anim_timer > 0);
 
+if (state == PLAYER_STATE.STAGE_CLEAR) {
+    var _victory = clamp(floor(stage_clear_frame), 0, sprite_get_number(sX_Victory) - 1);
+    _draw_player(sX_Victory, _victory, x, y, facing, 1, 0, c_white, 1);
+    return;
+}
+
 // Real extracted sprites from Mega Man X spritesheet:
 if (state == PLAYER_STATE.HURT && sprite_exists(sX_Hurt)) {
     var _hurt_f = 0;

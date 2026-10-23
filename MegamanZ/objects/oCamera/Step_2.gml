@@ -1,8 +1,11 @@
 ﻿if (instance_exists(oPlayer)) {
     var _p = instance_find(oPlayer, 0);
-    var _pos = camera_update_follow(view_camera[0], _p.x, _p.y);
-    cam_x = lerp(cam_x, _pos[0], 0.15);
-    cam_y = lerp(cam_y, _pos[1], 0.15);
+    // Keep the stage in frame while the teleport beam exits upward.
+    if (_p.state != PLAYER_STATE.TELEPORT_OUT) {
+        var _pos = camera_update_follow(view_camera[0], _p.x, _p.y);
+        cam_x = lerp(cam_x, _pos[0], 0.15);
+        cam_y = lerp(cam_y, _pos[1], 0.15);
+    }
 }
 
 var _shk_x = 0;

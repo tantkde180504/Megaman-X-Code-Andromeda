@@ -1,0 +1,128 @@
+/// @desc Khởi tạo Title Intro & Menu logic 320x240
+enum TITLE_INTRO_STATE { BEAM, TEXT, IMPACT, LOGO, BACKGROUND, MENU }
+enum TITLE_MENU_STATE { PRESS_START, OPTIONS }
+
+if (instance_number(obj_title_intro) > 1) {
+    instance_destroy();
+    exit;
+}
+
+// Nạp resource sprite (hỗ trợ cả tên chuẩn và có hậu tố strip)
+title_bg = asset_get_index("spr_title_bg");
+megaman_text = asset_get_index("spr_megaman_text");
+
+logo_andromeda = asset_get_index("spr_logo_andromeda");
+if (!sprite_exists(logo_andromeda)) logo_andromeda = asset_get_index("spr_logo_andromeda_strip11");
+
+press_start = asset_get_index("spr_menu_press_start");
+
+menu_options = asset_get_index("spr_menu_options");
+if (!sprite_exists(menu_options)) menu_options = asset_get_index("spr_menu_options_strip3");
+
+if (!sprite_exists(title_bg) || !sprite_exists(megaman_text)
+    || !sprite_exists(logo_andromeda) || !sprite_exists(press_start)
+    || !sprite_exists(menu_options)) {
+    show_debug_message("Title: Vui lòng kiểm tra lại 5 sprite (spr_title_bg, spr_megaman_text, spr_logo_andromeda, spr_menu_press_start, spr_menu_options).");
+    instance_destroy();
+    exit;
+}
+
+state = TITLE_INTRO_STATE.BEAM;
+state_frame = -1;
+menu_state = TITLE_MENU_STATE.PRESS_START;
+menu_index = 0;
+menu_blink = 0;
+logo_frame = 0;
+logo_direction = 1;
+
+megaman_xscale = 3.0;
+megaman_yscale = 0.05;
+impact_scale = 4.5;
+flash_alpha = 0.0;
+bg_alpha = 0.0;
+
+menu_notice = "";
+menu_notice_timer = 0;
+depth = -20000;
+global.title_intro_done = false;
+global.title_menu_action = "";
+
+// Âm thanh chính thống của Mega Man X4
+sound_beam = asset_get_index("snd_teleport_in");
+if (sound_beam == -1) sound_beam = asset_get_index("snd_title_beam");
+
+sound_slash = asset_get_index("snd_zero_slash");
+if (sound_slash == -1) sound_slash = asset_get_index("snd_slash");
+
+sound_impact = asset_get_index("snd_x_charge_shot_full");
+if (sound_impact == -1) sound_impact = asset_get_index("snd_title_logo_impact");
+
+sound_voice = asset_get_index("snd_x_shot_lv3");
+if (sound_voice == -1) sound_voice = asset_get_index("snd_voice_mmx4");
+
+sound_confirm = asset_get_index("snd_teleport_out");
+if (sound_confirm == -1) sound_confirm = asset_get_index("snd_menu_confirm");
+
+sound_bgm = asset_get_index("snd_intro_bgm");
+sound_move = asset_get_index("snd_menu_move");
+bgm_handle = noone;
+
+play_title_sound = function(_asset, _loop = false) {
+    if (_asset != -1 && audio_exists(_asset)) {
+        return audio_play_sound(_asset, 90, _loop);
+    }
+    return noone;
+};
+
+enter_title_state = function(_state) {
+    state = _state;
+    state_frame = 0;
+    switch (_state) {
+        case TITLE_INTRO_STATE.TEXT:
+            flash_alpha = 1.0;
+            megaman_xscale = 1.0;
+            megaman_yscale = 1.0;
+            if (bgm_handle == noone) bgm_handle = play_title_sound(sound_bgm, true);
+            break;
+        case TITLE_INTRO_STATE.IMPACT:
+            impact_scale = 4.5;
+            play_title_sound(sound_slash);
+            break;
+        case TITLE_INTRO_STATE.LOGO:
+            flash_alpha = 1.0;
+            impact_scale = 1.0;
+            play_title_sound(sound_impact);
+            break;
+        case TITLE_INTRO_STATE.MENU:
+            bg_alpha = 1.0;
+            flash_alpha = 0.0;
+            menu_blink = 0;
+            global.title_intro_done = true;
+            if (bgm_handle == noone) bgm_handle = play_title_sound(sound_bgm, true);
+            break;
+    }
+};
+
+start_new_game = function() {
+    global.title_menu_action = "game_start";
+    if (instance_exists(oMenuManager)) {
+        with (oMenuManager) {
+            state = MENU_STATE.CHAR_SELECT;
+            state_timer = 0;
+            fade_alpha = 0;
+            flash_alpha = 0;
+            char_confirmed = false;
+            selected_char = 0;
+            title_intro_input_cooldown = 2;
+        }
+    }
+    if (bgm_handle != noone && audio_is_playing(bgm_handle)) audio_stop_sound(bgm_handle);
+    instance_destroy();
+};
+
+if (variable_instance_exists(id, "start_in_menu") && start_in_menu) {
+    enter_title_state(TITLE_INTRO_STATE.MENU);
+    menu_state = TITLE_MENU_STATE.OPTIONS;
+} else {
+    play_title_sound(sound_beam);
+}

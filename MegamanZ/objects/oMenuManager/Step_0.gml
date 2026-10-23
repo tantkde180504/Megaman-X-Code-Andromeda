@@ -1,3 +1,8 @@
+if (instance_exists(obj_title_intro)) return;
+if (title_intro_input_cooldown > 0) {
+    title_intro_input_cooldown--;
+    return;
+}
 anim_timer++;
 grid_offset = (grid_offset + 0.6) % 24;
 
@@ -138,6 +143,11 @@ switch (state) {
             }
             if (_cancel) {
                 state = MENU_STATE.MAIN_MENU;
+                // Trở lại menu sprite Andromeda, giữ fallback nếu thiếu asset.
+                if (!instance_exists(obj_title_intro)) {
+                    instance_create_layer(0, 0, "Instances", obj_title_intro, {start_in_menu: true});
+                }
+                return;
             }
             if (_confirm) {
                 char_confirmed = true;

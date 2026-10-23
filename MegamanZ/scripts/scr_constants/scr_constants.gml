@@ -19,7 +19,8 @@ enum PLAYER_STATE {
     HURT,
     DEATH,
     INTRO,
-    TELEPORT_OUT
+    TELEPORT_OUT,
+    STAGE_CLEAR
 }
 
 // Zero special techniques

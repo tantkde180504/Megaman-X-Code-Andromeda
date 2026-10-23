@@ -11,7 +11,7 @@ if (global.debug_overlay) {
     draw_text(VIEW_WIDTH - 146, 34, "Char: " + _c_name + " [TAB]");
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
-        var _state_names = ["IDLE", "RUN", "JUMP", "FALL", "DASH", "WALL_SLIDE", "WALL_JUMP", "LADDER", "HURT", "DEATH"];
+        var _state_names = ["IDLE", "RUN", "JUMP", "FALL", "DASH", "WALL_SLIDE", "WALL_JUMP", "LADDER", "HURT", "DEATH", "INTRO", "TELEPORT_OUT", "STAGE_CLEAR"];
         var _s_str = (_p.state < array_length(_state_names)) ? _state_names[_p.state] : string(_p.state);
         draw_text(VIEW_WIDTH - 146, 48, "State: " + _s_str);
         draw_text(VIEW_WIDTH - 146, 62, "Pos: " + string(round(_p.x)) + ", " + string(round(_p.y)));
