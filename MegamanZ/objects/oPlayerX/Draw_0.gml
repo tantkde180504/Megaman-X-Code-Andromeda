@@ -108,7 +108,7 @@ if (state == PLAYER_STATE.HURT && sprite_exists(sX_Hurt)) {
         } else {
             _shoot_f = 0; // Frame 13: prep / recovery
         }
-        
+
         if (sprite_exists(sX_Ladder_Shoot)) {
             _draw_player(sX_Ladder_Shoot, _shoot_f, x, y, facing, 1, 0, c_white, 1);
         } else {
@@ -130,8 +130,15 @@ if (state == PLAYER_STATE.HURT && sprite_exists(sX_Hurt)) {
     }
 } else if (state == PLAYER_STATE.INTRO) {
     if (intro_phase == 0 && sprite_exists(sX_Teleport_In)) {
-        // Phase 0: Vertical beam descending
+        // Phase 0: Vertical beam descending from sky to ground
         _draw_player(sX_Teleport_In, 0, x, teleport_beam_y, 1, 1, 0, c_white, 1);
+
+        // Connect beam to the top of the view for an authentic continuous laser pillar
+        var _cam_y = (view_enabled && view_visible[0]) ? camera_get_view_y(view_camera[0]) : 0;
+        var _beam_top = teleport_beam_y - 80;
+        if (_beam_top > _cam_y) {
+            draw_sprite_part_ext(sX_Teleport_In, 0, 37, 25, 6, 20, x - 3, _cam_y, 1, (_beam_top - _cam_y + 1) / 20, c_white, 1);
+        }
     } else if (intro_phase == 1 && sprite_exists(sX_Teleport_In)) {
         // Phase 1: Energy sphere impact & burst
         var _sph_idx = clamp(floor(teleport_sphere_frame), 1, 7);
@@ -194,7 +201,7 @@ if (charge_timer >= 15 && sprite_exists(sFX_X_Charge)) {
     var _cf = clamp(floor(charge_anim_frame), 0, 12);
     var _cx = x;
     var _cy = y - 18;
-    
+
     // 1. Charge flash on X's body (matching upload1.webp & original MMX)
     if (charge_level == 2) {
         if (((anim_timer div 3) % 4) == 0 && sprite_exists(current_sprite)) {
@@ -213,7 +220,7 @@ if (charge_timer >= 15 && sprite_exists(sFX_X_Charge)) {
             gpu_set_fog(false, c_white, 0, 0);
         }
     }
-    
+
     // 2. 13-Frame Energy Particles & Flare Pulses in ONE clean continuous direction
     gpu_set_blendmode(bm_add);
     if (charge_level == 2) {
@@ -235,7 +242,7 @@ if (charge_timer >= 15 && sprite_exists(sFX_X_Charge)) {
 if (muzzle_flash_sprite != noone && sprite_exists(muzzle_flash_sprite)) {
     var _dx = 31;
     var _dy = -31;
-    
+
     if (is_dash_recovering) {
         _dx = 22;
         _dy = -30;
@@ -248,7 +255,7 @@ if (muzzle_flash_sprite != noone && sprite_exists(muzzle_flash_sprite)) {
                 _dx = 31;
                 _dy = -31;
                 break;
-                
+
             case PLAYER_STATE.RUN:
                 var _rf = floor((anim_timer * 0.3) % 16);
                 if (_rf >= 6 && _rf <= 11) {
@@ -262,34 +269,34 @@ if (muzzle_flash_sprite != noone && sprite_exists(muzzle_flash_sprite)) {
                 }
                 _dy = -31;
                 break;
-                
+
             case PLAYER_STATE.JUMP:
             case PLAYER_STATE.FALL:
             case PLAYER_STATE.WALL_JUMP:
                 _dx = 17;
                 _dy = -40;
                 break;
-                
+
             case PLAYER_STATE.DASH:
                 _dx = 32;
                 _dy = -17;
                 break;
-                
+
             case PLAYER_STATE.WALL_SLIDE:
                 _dx = 32;
                 _dy = -39;
                 break;
-                
+
             case PLAYER_STATE.LADDER:
                 _dx = 28;
                 _dy = -40;
                 break;
         }
     }
-    
+
     var _bx = x + (facing * _dx);
     var _by = y + _dy;
-    
+
     var _mf = clamp(floor(muzzle_flash_frame), 0, sprite_get_number(muzzle_flash_sprite) - 1);
     gpu_set_blendmode(bm_add);
     draw_sprite_ext(muzzle_flash_sprite, _mf, _bx, _by, facing, 1, 0, c_white, 1.0);

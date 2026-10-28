@@ -46,6 +46,32 @@ function player_is_solid_at(_check_x, _check_y) {
     return false;
 }
 
+/// @desc Automatically snap player downward to rest directly on solid ground or platform
+function player_snap_to_ground() {
+    // If inside a solid for any reason, push up to safety
+    while (player_is_solid_at(x, y) && y > 0) {
+        y--;
+    }
+    // Search downwards up to 600 pixels to find solid ground or one-way platform
+    for (var _dy = 0; _dy < 600; _dy++) {
+        if (player_is_solid_at(x, y + 1)) {
+            grounded = true;
+            vsp = 0;
+            y_subpixel = 0;
+            return true;
+        }
+        var _plat = instance_place(x, y + 1, oOneWayPlatform);
+        if (_plat != noone && bbox_bottom <= _plat.bbox_top + 1) {
+            grounded = true;
+            vsp = 0;
+            y_subpixel = 0;
+            return true;
+        }
+        y++;
+    }
+    return false;
+}
+
 function player_handle_movement_and_collision() {
     // ----------------------------------------------------
     // 1. Environmental Gimmick Checks

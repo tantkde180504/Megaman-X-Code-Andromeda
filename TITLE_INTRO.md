@@ -26,15 +26,19 @@ Tất cả đã được đóng gói thành file ZIP:
 
 ## 2. Mã nguồn GML (`obj_title_intro`)
 
-Object `obj_title_intro` được tạo tự động bởi `oMenuManager` khi vào `rTitle`, với depth `-20000`:
+Object `obj_title_intro` được tạo tự động bởi `oMenuManager` khi vào `rTitle`:
 - **Tỷ lệ hiển thị**: Chuẩn pixel art 320×240 (tự động căn giữa màn hình và letterbox đen khi phóng to trên bất kỳ độ phân giải GUI nào).
 - **Giai đoạn hiệu ứng Intro (60 FPS)**:
-  1. `BEAM` (0 - 60 frame): Tia sáng trắng dãn ngang thành chữ MEGAMAN (scale 3x -> 1x theo chiều ngang, 0.05x -> 1x theo chiều dọc).
-  2. `TEXT` (60 - 210 frame): Màn hình chớp trắng, chữ MEGAMAN xuất hiện rõ nét.
-  3. `IMPACT` (210 - 300 frame): Chữ X / bóng logo thu nhanh từ 4.5x về 1x theo hiệu ứng quán tính (ease out cubic).
-  4. `LOGO` (300 - 420 frame): Chớp trắng màn hình, logo `spr_logo_andromeda` hiện lên và chạy hiệu ứng sáng viền 11 frames theo dạng ping-pong (0 -> 10 -> 0).
-  5. `BACKGROUND` (420 - 570 frame): Nền vũ trụ `spr_title_bg` tăng alpha dần (fade in), phía sau logo.
-  6. `MENU` (570+ frame): Hiện chữ `PRESS START or ENTER` nhấp nháy chu kỳ 0.5 giây. Bấm Enter/Space/Start sẽ chuyển sang cụm 3 menu `GAME START / CONTINUE / OPTION`.
+  1. `BEAM`: tia sáng và chữ MEGAMAN xuất hiện trong 30 frame đầu.
+  2. `TEXT`: giữ chữ xanh trong lúc track intro `snd_bgm_title` phát một lần.
+  3. `IMPACT`: bóng logo thu từ 3.5x về 1x từ giây 6,7 của nhạc Title.
+  4. `LOGO`: logo hoàn chỉnh hiện khi nhạc Title đến giây 7, kèm flash và
+     một vòng sáng viền 0 -> 10 -> 0. Nhạc tiếp tục phát khi vào menu.
+  5. `BACKGROUND`: tăng alpha nền trong 25 frame, sau 35 frame ghép logo.
+  6. `MENU`: giữ logo tĩnh và hiện Press Start; Enter/Space/Start mở menu ba mục.
+  Track bắt đầu ở Step đầu tiên sau Room Start để không bị lệnh dừng nhạc
+  phòng trước cắt mất. Nếu âm thanh không phát được thì dùng đồng hồ 60 FPS
+  với cùng mốc 7 giây, tránh intro bị treo.
 - **Điều khiển & Tương tác**:
   - Hỗ trợ cả bàn phím (Enter, Space, W/S, Up/Down) và Gamepad (Start, A, D-Pad Up/Down).
   - Phím Enter/Space/Start trong lúc Intro đang chạy sẽ bỏ qua (Skip) ngay đến màn hình Press Start.

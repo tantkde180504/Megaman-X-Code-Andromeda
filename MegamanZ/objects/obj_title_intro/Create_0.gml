@@ -44,6 +44,10 @@ sound_confirm = snd_teleport_out;
 sound_move = snd_x_shot;
 sound_bgm = snd_bgm_title;
 bgm_handle = noone;
+intro_audio_started = false;
+intro_audio_pending = false;
+logo_reveal_time = 7.0;
+intro_elapsed_frames = -1;
 
 play_title_sound = function(_asset, _loop = false) {
     if (_asset != -1 && audio_exists(_asset)) {
@@ -60,7 +64,6 @@ enter_title_state = function(_state) {
             flash_alpha = 0.9;
             megaman_xscale = 1.0;
             megaman_yscale = 1.0;
-            if (bgm_handle == noone) bgm_handle = play_title_sound(sound_bgm, true);
             break;
         case TITLE_INTRO_STATE.IMPACT:
             impact_scale = 3.5;
@@ -82,9 +85,10 @@ enter_title_state = function(_state) {
             flash_alpha = 0.0;
             logo_frame = 0;
             logo_animating = false;
+            intro_audio_pending = false;
             menu_blink = 0;
             global.title_intro_done = true;
-            if (bgm_handle == noone) bgm_handle = play_title_sound(sound_bgm, true);
+            // The Title track continues after the logo reveal and into the menu.
             break;
     }
 };
@@ -114,5 +118,6 @@ if (variable_instance_exists(id, "start_in_menu") && start_in_menu) {
     enter_title_state(TITLE_INTRO_STATE.MENU);
     menu_state = TITLE_MENU_STATE.OPTIONS;
 } else {
-    play_title_sound(sound_beam);
+    // Room Start stops previous-room audio; start this track on the first Step.
+    intro_audio_pending = true;
 }

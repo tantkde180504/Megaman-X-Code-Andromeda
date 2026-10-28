@@ -182,30 +182,12 @@ else if (timer <= 140) {
             }
         }
         
-        // Di chuyển người chơi về điểm Checkpoint
+        // Rebuild the room at the saved checkpoint: music, gates, enemies and
+        // boss state must pass through the same Room Start path as stage entry.
         if (instance_exists(player_id)) {
-            if (variable_global_exists("checkpoint_x") && variable_global_exists("checkpoint_y")) {
-                player_id.x = global.checkpoint_x;
-                player_id.y = global.checkpoint_y;
-            }
-            player_id.hp_current = player_id.hp_max;
-            player_id.facing = 1;
-            player_id.grounded = true;
-            player_id.is_dash_jumping = false;
-            player_id.hsp = 0;
-            player_id.vsp = 0;
-            player_id.visible = false; // Giữ ẩn trong lúc màn hình đang fade-in từ màu đen
-        }
-        
-        // Căn tâm Camera vào vị trí hồi sinh
-        if (instance_exists(oCamera) && instance_exists(player_id)) {
-            oCamera.x = player_id.x;
-            oCamera.y = player_id.y - 16;
-        }
-        
-        // Khôi phục phòng Boss, cửa và bẫy
-        if (script_exists(asset_get_index("scr_reset_boss_room"))) {
-            scr_reset_boss_room();
+            global.pending_respawn = checkpoint_capture_player(player_id);
+            persistent = true;
+            room_restart();
         }
     }
 }
@@ -225,6 +207,9 @@ else if (timer <= 170) {
         
         // Kích hoạt lại hiệu ứng Teleport Beam & READY Intro khi hồi sinh tại checkpoint
         if (instance_exists(player_id)) {
+            with (player_id) {
+                player_snap_to_ground();
+            }
             player_id.state = PLAYER_STATE.INTRO;
             player_id.intro_phase = 0;
             player_id.teleport_beam_y = player_id.y - 240;

@@ -61,28 +61,28 @@ if (keyboard_check_pressed(ord("0"))) {
 // Stage quick selection keys (1: Playground, 2: Intro Stage, 3: Web Spider Stage)
 if (keyboard_check_pressed(ord("1"))) {
     global.checkpoint_x = 64;
-    global.checkpoint_y = 440;
+    global.checkpoint_y = 508;
     room_goto(Room1);
 }
 if (keyboard_check_pressed(ord("2"))) {
     global.checkpoint_x = 64;
-    global.checkpoint_y = 480;
+    global.checkpoint_y = 508;
     room_goto(rStage_Intro);
 }
 if (keyboard_check_pressed(ord("3"))) {
     global.checkpoint_x = 64;
-    global.checkpoint_y = 352;
+    global.checkpoint_y = 368;
     room_goto(rStage_WebSpider);
 }
 if (keyboard_check_pressed(ord("4"))) {
-    // Jump directly to Jungle Stage Boss Arena
-    global.checkpoint_x = 4820;
-    global.checkpoint_y = 1984;
+    // Jump directly to Jungle Stage Boss Corridor / Arena
+    global.checkpoint_x = 4950;
+    global.checkpoint_y = 2032;
     if (room_get_name(room) == "rStage_WebSpider") {
         if (instance_exists(oPlayer)) {
             var _p = instance_find(oPlayer, 0);
-            _p.x = 4820;
-            _p.y = 1984;
+            _p.x = 4950;
+            _p.y = 2032;
             _p.hsp = 0;
             _p.vsp = 0;
             _p.state = PLAYER_STATE.IDLE;
@@ -175,6 +175,9 @@ if (global.input.debug_pressed) {
 if (keyboard_check_pressed(ord("I"))) {
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
+        with (_p) {
+            player_snap_to_ground();
+        }
         _p.state = PLAYER_STATE.INTRO;
         _p.intro_phase = 0;
         _p.teleport_beam_y = _p.y - 240;

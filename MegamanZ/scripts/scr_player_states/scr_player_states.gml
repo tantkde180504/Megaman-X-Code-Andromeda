@@ -795,6 +795,10 @@ function player_state_intro() {
     }
 
     if (intro_phase == 0) {
+        // Ensure player is firmly resting on the solid ground before beam touches down
+        if (!grounded || !player_is_solid_at(x, y + 1)) {
+            player_snap_to_ground();
+        }
         // Phase 0: Beam descending from above
         teleport_beam_y += 18;
         if (teleport_beam_y >= y) {

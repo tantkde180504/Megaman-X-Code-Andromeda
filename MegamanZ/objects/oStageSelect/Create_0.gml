@@ -93,7 +93,7 @@ stages = [
         desc: "DEEP FOREST RUINS OVERRUN BY ROGUE REPLOIDS. VIRAL PHANTOM DETECTED.",
         room_id: rStage_WebSpider,
         spawn_x: 64,
-        spawn_y: 352,
+        spawn_y: 368,
         anim: "boss_map"
     },
     {
@@ -104,7 +104,7 @@ stages = [
         desc: "COLLAPSED HIGHWAY INFRASTRUCTURE. ELIMINATE RECON PATROLS.",
         room_id: rStage_Intro,
         spawn_x: 64,
-        spawn_y: 480,
+        spawn_y: 508,
         anim: "normal"
     },
     {
@@ -115,7 +115,7 @@ stages = [
         desc: "WEAPONS TESTING GROUND. PRACTICE COMBAT MANEUVERS AND TECHNIQUES.",
         room_id: Room1,
         spawn_x: 64,
-        spawn_y: 440,
+        spawn_y: 508,
         anim: "normal"
     },
     {

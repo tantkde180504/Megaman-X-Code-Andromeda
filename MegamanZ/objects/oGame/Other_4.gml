@@ -1,4 +1,11 @@
 var _is_menu_room = (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect");
+var _respawning = variable_global_exists("pending_respawn")
+    && is_struct(global.pending_respawn) && global.pending_respawn.room_id == room;
+if (_respawning) {
+    global.current_char = global.pending_respawn.character;
+    global.checkpoint_x = global.pending_respawn.checkpoint_x;
+    global.checkpoint_y = global.pending_respawn.checkpoint_y;
+}
 global.stage_clear_active = false;
 global.stage_clear_complete = false;
 global.boss_defeated = false;
@@ -46,6 +53,12 @@ if (room == Room1) {
     scr_build_boss_room_nightmare_zero();
     music_play_boss_nightmare_zero();
 }
+// Rooms without their own theme retain the track they used before death.
+if (_respawning && room != rStage_WebSpider && room != rBoss_NightmareZero) {
+    if (global.pending_respawn.bgm_asset != noone && global.pending_respawn.bgm_asset != -1) {
+        music_play_track(global.pending_respawn.bgm_asset);
+    }
+}
 
 // Ensure boss and boss gates exist in Web Spider stage
 if (room_get_name(room) == "rStage_WebSpider") {
@@ -90,19 +103,36 @@ with (oIceSurface) visible = false;
 if (!instance_exists(oPlayer)) {
     var _spawn_x = global.checkpoint_x;
     var _spawn_y = global.checkpoint_y;
-    if (room_get_name(room) == "rBoss_NightmareZero") {
+    if (room_get_name(room) == "rBoss_NightmareZero" && !_respawning) {
         _spawn_x = 80;
         _spawn_y = 240;
     } else if (room_get_name(room) == "rStage_WebSpider") {
-        if (_spawn_y == 440 || _spawn_y == 750 || _spawn_y == 480) {
+        if (!_respawning && (_spawn_y == 440 || _spawn_y == 750 || _spawn_y == 480 || _spawn_y == 352)) {
             _spawn_x = 64;
-            _spawn_y = 352;
+            _spawn_y = 368;
+            global.checkpoint_x = _spawn_x;
+            global.checkpoint_y = _spawn_y;
+        }
+    } else if (room_get_name(room) == "rStage_Intro") {
+        if (!_respawning && (_spawn_y == 440 || _spawn_y == 480)) {
+            _spawn_x = 64;
+            _spawn_y = 508;
+            global.checkpoint_x = _spawn_x;
+            global.checkpoint_y = _spawn_y;
+        }
+    } else if (room == Room1) {
+        if (!_respawning && (_spawn_y == 440 || _spawn_y == 480)) {
+            _spawn_x = 64;
+            _spawn_y = 508;
             global.checkpoint_x = _spawn_x;
             global.checkpoint_y = _spawn_y;
         }
     }
     var _obj = (global.current_char == CHAR_TYPE.X) ? oPlayerX : oPlayerZero;
     var _p = instance_create_layer(_spawn_x, _spawn_y, "Instances", _obj);
+    with (_p) {
+        player_snap_to_ground();
+    }
     _p.has_air_dash = (global.current_char == CHAR_TYPE.ZERO) ? true : global.has_air_dash;
     _p.has_double_jump = (global.current_char == CHAR_TYPE.ZERO) ? true : false;
     _p.state = PLAYER_STATE.INTRO;
@@ -111,11 +141,30 @@ if (!instance_exists(oPlayer)) {
     _p.teleport_sphere_frame = 1.0;
     _p.intro_anim_frame = 0.0;
     _p.intro_hold_timer = 25;
+    if (_respawning) {
+        checkpoint_restore_player(_p, global.pending_respawn);
+        // Keep the existing death effect through Room Restart and let it finish
+        // its fade-in before starting the new player's teleport/READY sequence.
+        if (instance_exists(obj_x_death_effect)) {
+            var _death_fx = instance_find(obj_x_death_effect, 0);
+            _death_fx.player_id = _p;
+            _p.visible = false;
+            _p.state = PLAYER_STATE.DEATH;
+        }
+    }
+    if (instance_exists(oCamera)) {
+        var _camera_pos = camera_update_follow(view_camera[0], _p.x, _p.y);
+        oCamera.cam_x = _camera_pos[0];
+        oCamera.cam_y = _camera_pos[1];
+        oCamera.shake_timer = 0;
+        camera_set_view_pos(view_camera[0], _camera_pos[0], _camera_pos[1]);
+    }
 }
+global.pending_respawn = noone;
 
 // Play READY on stage entry alongside the player's teleport-in.
 // Menu rooms return above, and the overlay is non-persistent.
-if (!instance_exists(obj_ready_intro)) {
+if (!_respawning && !instance_exists(obj_ready_intro)) {
     var _lay = layer_get_id("Instances");
     if (_lay != -1) instance_create_layer(0, 0, _lay, obj_ready_intro);
     else instance_create_depth(0, 0, -10000, obj_ready_intro);

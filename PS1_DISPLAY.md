@@ -26,3 +26,11 @@ Script: `tools/preview_ps1_layouts.py`; có kiểm tra giới hạn panel/chữ 
 Kiểm tra tương tác trong GameMaker: Title → chọn X/Zero → thoại dài nhiều trang
 → gameplay; Stage Select qua phím 9; vào boss để xem thoại/HP. Thử F3 đổi tỷ lệ
 cửa sổ và F4 fullscreen. Chưa xác nhận các bước tương tác này trong runner.
+
+Hồi sinh checkpoint dùng Room Restart ở frame đen của hiệu ứng chết. Effect
+tạm persistent để hoàn tất fade-in, sau đó mới phát teleport/READY trên player
+mới. Room Start chạy lại nhạc, dựng lại enemy/boss/cửa và đưa camera tới checkpoint.
+Máu tối đa/kỹ năng và trạng thái đã nhận Heart Tank/Sub-Tank/Capsule được giữ.
+Cửa ngoài đã đi qua vẫn khóa; cửa vào arena được tạo lại ở trạng thái CLOSED.
+Kiểm tra cả X/Zero: chết trước cửa 1, chết trong arena sau checkpoint hành lang,
+và chết lặp lại; xác nhận nhạc stage phát lại, cửa 2 mở và boss kích hoạt lại.

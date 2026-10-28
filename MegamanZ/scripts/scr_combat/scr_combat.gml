@@ -75,7 +75,64 @@ function deal_damage_to_target(_target, _damage, _hit_x = x, _hit_y = y, _is_wea
     }
 }
 
-/// @desc Reset Boss Room and Doors upon player death & respawn
+/// @desc State carried across a checkpoint room restart; transient combat is recreated.
+function checkpoint_capture_player(_player) {
+    var _saved = {
+        room_id: room,
+        checkpoint_x: global.checkpoint_x,
+        checkpoint_y: global.checkpoint_y,
+        character: global.current_char,
+        bgm_asset: variable_global_exists("current_bgm_asset") ? global.current_bgm_asset : noone,
+        max_hp: _player.hp_max,
+        air_dash: _player.has_air_dash,
+        double_jump: _player.has_double_jump,
+        hearts: [],
+        subtanks: [],
+        capsules: []
+    };
+    // Preserve collected permanent upgrades, while enemies/hazards restart normally.
+    with (oPickup_HeartTank) array_push(_saved.hearts, [x, y]);
+    with (oPickup_SubTank) array_push(_saved.subtanks, [x, y]);
+    with (oCapsule_Light) array_push(_saved.capsules, {x: x, y: y, activated: activated});
+    return _saved;
+}
+
+function checkpoint_restore_player(_player, _saved) {
+    _player.hp_max = _saved.max_hp;
+    _player.hp_current = _saved.max_hp;
+    _player.has_air_dash = _saved.air_dash;
+    _player.has_double_jump = _saved.double_jump;
+    var _restore_pickups = function(_object, _positions) {
+        with (_object) {
+            var _keep = false;
+            for (var _i = 0; _i < array_length(_positions); _i++) {
+                if (x == _positions[_i][0] && y == _positions[_i][1]) {
+                    _keep = true;
+                    break;
+                }
+            }
+            if (!_keep) instance_destroy();
+        }
+    };
+    _restore_pickups(oPickup_HeartTank, _saved.hearts);
+    _restore_pickups(oPickup_SubTank, _saved.subtanks);
+    with (oCapsule_Light) {
+        for (var _i = 0; _i < array_length(_saved.capsules); _i++) {
+            var _capsule = _saved.capsules[_i];
+            if (x == _capsule.x && y == _capsule.y) {
+                activated = _capsule.activated;
+                break;
+            }
+        }
+    }
+    // Doors ahead of the checkpoint are fresh CLOSED instances. Only doors
+    // already crossed remain locked, so the arena entrance can trigger again.
+    with (oTrigger_BossGate) {
+        if (!is_arena_door && _player.x > bbox_right) gate_state = GATE_STATE.LOCKED;
+    }
+}
+
+/// @desc Legacy in-place boss reset; checkpoint respawn now restarts the room.
 function scr_reset_boss_room() {
     // 1. Reset Door 2 (inner arena door) so it can be approached and entered again
     with (oTrigger_BossGate) {

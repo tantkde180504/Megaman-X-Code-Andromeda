@@ -33,8 +33,15 @@ if (state != PLAYER_STATE.INTRO || intro_phase > 0) {
 // 0. INTRO & TELEPORT (Stage Enter & Stage Clear)
 if (state == PLAYER_STATE.INTRO) {
     if (intro_phase == 0 && sprite_exists(sZero_Teleport_In)) {
-        // Phase 0: Vertical red beam descending from ceiling
+        // Phase 0: Vertical red beam descending from ceiling to ground
         _draw_player(sZero_Teleport_In, 0, x, teleport_beam_y, 1, 1, 0, c_white, 1);
+
+        // Connect beam to the top of the view for an authentic continuous laser pillar
+        var _cam_y = (view_enabled && view_visible[0]) ? camera_get_view_y(view_camera[0]) : 0;
+        var _beam_top = teleport_beam_y - 80;
+        if (_beam_top > _cam_y) {
+            draw_sprite_part_ext(sZero_Teleport_In, 0, 37, 25, 6, 20, x - 3, _cam_y, 1, (_beam_top - _cam_y + 1) / 20, c_white, 1);
+        }
     } else if (intro_phase == 1 && sprite_exists(sZero_Teleport_In)) {
         // Phase 1: Red energy dome impact burst & expanding sphere (frames 1..7)
         var _sph_idx = clamp(floor(teleport_sphere_frame), 1, 7);

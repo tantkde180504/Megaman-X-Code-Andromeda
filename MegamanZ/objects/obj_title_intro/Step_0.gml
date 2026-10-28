@@ -20,10 +20,25 @@ if (state != TITLE_INTRO_STATE.MENU && (_confirm || _cancel)) {
     exit;
 }
 
+if (intro_audio_pending) {
+    intro_audio_pending = false;
+    play_title_sound(sound_beam);
+    bgm_handle = play_title_sound(sound_bgm, false);
+    intro_audio_started = bgm_handle != noone && bgm_handle != -1;
+}
+
 flash_alpha = max(0, flash_alpha - 0.08);
 state_frame++;
 menu_blink++;
 if (menu_notice_timer > 0) menu_notice_timer--;
+
+// Sync to second 7 of the Title track; use the frame clock if audio is unavailable.
+intro_elapsed_frames++;
+var _intro_playing = intro_audio_started && audio_is_playing(bgm_handle);
+var _intro_position = _intro_playing ? audio_sound_get_track_position(bgm_handle) : intro_elapsed_frames / 60;
+if (_intro_position >= logo_reveal_time && state < TITLE_INTRO_STATE.LOGO) {
+    enter_title_state(TITLE_INTRO_STATE.LOGO);
+}
 
 // Chay mot vong sang vien 0 -> 10 -> 0, roi giu logo tinh trong Menu.
 if (logo_animating && (state == TITLE_INTRO_STATE.LOGO || state == TITLE_INTRO_STATE.BACKGROUND)) {
@@ -47,15 +62,16 @@ switch (state) {
         break;
 
     case TITLE_INTRO_STATE.TEXT:
-        // Giu chu MEGAMAN (~0.4s)
-        if (state_frame >= 25) enter_title_state(TITLE_INTRO_STATE.IMPACT);
+        // Start the approaching X at 6.7s, then reveal the complete logo at 7s.
+        if (_intro_position >= logo_reveal_time - 18 / 60) {
+            enter_title_state(TITLE_INTRO_STATE.IMPACT);
+        }
         break;
 
     case TITLE_INTRO_STATE.IMPACT:
         // Chu X phong to thu nhanh vao tam (~0.33s)
         var _t = clamp(state_frame / 15, 0, 1);
         impact_scale = lerp(3.5, 1, 1 - power(1 - _t, 3));
-        if (state_frame >= 18) enter_title_state(TITLE_INTRO_STATE.LOGO);
         break;
 
     case TITLE_INTRO_STATE.LOGO:
