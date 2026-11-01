@@ -1,6 +1,6 @@
 /// @desc Khoi tao Title Intro & Menu logic 320x240 (MMX4 Authentic)
 enum TITLE_INTRO_STATE { BEAM, TEXT, IMPACT, LOGO, BACKGROUND, MENU }
-enum TITLE_MENU_STATE { PRESS_START, OPTIONS }
+enum TITLE_MENU_STATE { PRESS_START, OPTIONS, CONTROLS, SETTINGS }
 
 if (instance_number(obj_title_intro) > 1) {
     instance_destroy();
@@ -31,6 +31,13 @@ bg_alpha = 0.4; // Nen vu tru sang nhe ngay tu frame 0 de khong bao gio bi man h
 
 menu_notice = "";
 menu_notice_timer = 0;
+settings_row = 0;
+input_bindings_init();
+controls_row = 0;
+controls_slot = 0;
+controls_capturing = false;
+controls_capture_armed = false;
+controls_message = "ARROWS: SELECT  ENTER: EDIT  ESC: BACK";
 depth = -100;
 global.title_intro_done = false;
 global.title_menu_action = "";

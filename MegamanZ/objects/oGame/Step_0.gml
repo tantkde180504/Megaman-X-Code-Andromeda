@@ -6,21 +6,13 @@ if (variable_instance_exists(id, "window_centered_timer") && window_centered_tim
 
 // 2. Display controls: clean fullscreen output, with optional window scaling.
 if (keyboard_check_pressed(vk_f3)) {
-    var _scales = [2, 3, 4, 1];
-    var _curr_idx = 0;
-    for (var _k = 0; _k < array_length(_scales); _k++) {
-        if (_scales[_k] == window_scale) { _curr_idx = _k; break; }
-    }
-    window_scale = _scales[(_curr_idx + 1) % array_length(_scales)];
-    if (window_get_fullscreen()) window_set_fullscreen(false);
-    window_set_size(VIEW_WIDTH * window_scale, VIEW_HEIGHT * window_scale);
-    window_centered_timer = 2;
-    global.osd_message = "WINDOW SCALE: " + string(window_scale) + "x (" + string(VIEW_WIDTH * window_scale) + "x" + string(VIEW_HEIGHT * window_scale) + ")";
+    display_settings_cycle_size();
+    global.osd_message = "WINDOW SIZE: " + display_settings_size_label();
     global.osd_timer = 90;
     if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
 }
 if (keyboard_check_pressed(vk_f4)) {
-    window_set_fullscreen(!window_get_fullscreen());
+    display_settings_toggle_fullscreen();
     global.osd_message = window_get_fullscreen() ? "FULLSCREEN: ON (4:3)" : "FULLSCREEN: OFF";
     global.osd_timer = 90;
     if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
@@ -41,7 +33,7 @@ if (global.stage_clear_active) {
 }
 
 // Return to Stage Select (Hunter Base)
-if (keyboard_check_pressed(ord("9"))) {
+if (input_debug_key_pressed(ord("9"))) {
     if (instance_exists(oPlayer)) {
         with (oPlayer) instance_destroy();
     }
@@ -50,7 +42,7 @@ if (keyboard_check_pressed(ord("9"))) {
 }
 
 // Return to Title Screen
-if (keyboard_check_pressed(ord("0"))) {
+if (input_debug_key_pressed(ord("0"))) {
     if (instance_exists(oPlayer)) {
         with (oPlayer) instance_destroy();
     }
@@ -59,22 +51,22 @@ if (keyboard_check_pressed(ord("0"))) {
 }
 
 // Stage quick selection keys (1: Playground, 2: Intro Stage, 3: Web Spider Stage)
-if (keyboard_check_pressed(ord("1"))) {
+if (input_debug_key_pressed(ord("1"))) {
     global.checkpoint_x = 64;
     global.checkpoint_y = 508;
     room_goto(Room1);
 }
-if (keyboard_check_pressed(ord("2"))) {
+if (input_debug_key_pressed(ord("2"))) {
     global.checkpoint_x = 64;
     global.checkpoint_y = 508;
     room_goto(rStage_Intro);
 }
-if (keyboard_check_pressed(ord("3"))) {
+if (input_debug_key_pressed(ord("3"))) {
     global.checkpoint_x = 64;
     global.checkpoint_y = 368;
     room_goto(rStage_WebSpider);
 }
-if (keyboard_check_pressed(ord("4"))) {
+if (input_debug_key_pressed(ord("4"))) {
     // Jump directly to Jungle Stage Boss Corridor / Arena
     global.checkpoint_x = 4950;
     global.checkpoint_y = 2032;
@@ -91,14 +83,14 @@ if (keyboard_check_pressed(ord("4"))) {
         room_goto(rStage_WebSpider);
     }
 }
-if (keyboard_check_pressed(ord("5"))) {
+if (input_debug_key_pressed(ord("5"))) {
     global.checkpoint_x = 80;
     global.checkpoint_y = 240;
     room_goto(rBoss_NightmareZero);
 }
 
 // Phím B: Triệu hồi Boss Nightmare Zero ngay tại vị trí người chơi
-if (keyboard_check_pressed(ord("B"))) {
+if (input_debug_key_pressed(ord("B"))) {
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
         if (instance_exists(obj_nightmare_zero)) {
@@ -171,7 +163,7 @@ if (global.input.debug_pressed) {
 }
 
 // Debug Shortcuts: [I] trigger Intro Teleport-In, [O] trigger Teleport-Out
-if (keyboard_check_pressed(ord("I"))) {
+if (input_debug_key_pressed(ord("I"))) {
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
         with (_p) {
@@ -185,20 +177,20 @@ if (keyboard_check_pressed(ord("I"))) {
         _p.intro_hold_timer = 25;
     }
 }
-if (keyboard_check_pressed(ord("O"))) {
+if (input_debug_key_pressed(ord("O"))) {
     player_begin_stage_clear();
     return;
 }
 
 // Debug Shortcut: [K] Trigger Mega Man X4 Player Death Effect
-if (keyboard_check_pressed(ord("K"))) {
+if (input_debug_key_pressed(ord("K"))) {
     if (instance_exists(oPlayer)) {
         player_trigger_death();
     }
 }
 
 // Boss Shortcut: [B] Summon / Reset Nightmare Zero Boss
-if (keyboard_check_pressed(ord("B"))) {
+if (input_debug_key_pressed(ord("B"))) {
     if (instance_exists(oPlayer)) {
         var _p = instance_find(oPlayer, 0);
         if (instance_exists(obj_nightmare_zero)) {

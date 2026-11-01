@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_display_settings",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_display_settings",
+  "parent":{"name":"Scripts","path":"folders/Scripts.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

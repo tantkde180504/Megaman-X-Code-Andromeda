@@ -128,6 +128,7 @@
     {"id":{"name":"scr_build_test_room","path":"scripts/scr_build_test_room/scr_build_test_room.yy",},},
     {"id":{"name":"scr_camera","path":"scripts/scr_camera/scr_camera.yy",},},
     {"id":{"name":"scr_combat","path":"scripts/scr_combat/scr_combat.yy",},},
+    {"id":{"name":"scr_display_settings","path":"scripts/scr_display_settings/scr_display_settings.yy",},},
     {"id":{"name":"scr_constants","path":"scripts/scr_constants/scr_constants.yy",},},
     {"id":{"name":"scr_enemy_core","path":"scripts/scr_enemy_core/scr_enemy_core.yy",},},
     {"id":{"name":"scr_input","path":"scripts/scr_input/scr_input.yy",},},

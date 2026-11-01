@@ -1,7 +1,120 @@
 /// @desc Input Management & Buffering System
 
+// Three keyboard slots per action preserve the original alternate controls.
+function input_bindings_defaults() {
+    return [
+        [vk_left, ord("A"), 0], [vk_right, ord("D"), 0],
+        [vk_up, ord("W"), 0], [vk_down, ord("S"), 0],
+        [ord("Z"), vk_space, 0], [ord("C"), vk_lshift, ord("K")],
+        [ord("X"), ord("J"), 0], [ord("V"), ord("L"), 0],
+        [vk_tab, 0, 0]
+    ];
+}
+
+function input_binding_key_valid(_key) {
+    // Enter/Escape always remain available for menu navigation; F-keys are debug/display.
+    return is_real(_key) && _key == floor(_key) && _key > 7 && _key <= 255
+        && _key != vk_enter && _key != vk_escape
+        && !(_key >= vk_f1 && _key <= vk_f12);
+}
+
+function input_bindings_init() {
+    if (variable_global_exists("key_bindings")) return;
+    global.key_actions = ["left", "right", "up", "down", "jump", "dash", "shoot", "special", "switch"];
+    global.key_labels = ["LEFT", "RIGHT", "UP", "DOWN", "JUMP", "DASH", "ATTACK", "SPECIAL", "SWITCH"];
+    global.key_bindings = input_bindings_defaults();
+    if (!file_exists("controls.ini")) return;
+
+    var _loaded = input_bindings_defaults();
+    var _seen = [];
+    var _valid = true;
+    ini_open("controls.ini");
+    for (var _a = 0; _a < array_length(_loaded); _a++) {
+        var _has_key = false;
+        for (var _s = 0; _s < 3; _s++) {
+            var _key = ini_read_real(global.key_actions[_a], string(_s), _loaded[_a][_s]);
+            _loaded[_a][_s] = _key;
+            if (_key == 0) continue;
+            if (!input_binding_key_valid(_key) || array_contains(_seen, _key)) _valid = false;
+            array_push(_seen, _key);
+            _has_key = true;
+        }
+        if (!_has_key) _valid = false;
+    }
+    ini_close();
+    // A damaged/incompatible config cannot leave an action unreachable.
+    if (_valid) global.key_bindings = _loaded;
+}
+
+function input_bindings_save() {
+    ini_open("controls.ini");
+    for (var _a = 0; _a < array_length(global.key_actions); _a++) {
+        for (var _s = 0; _s < 3; _s++) {
+            ini_write_real(global.key_actions[_a], string(_s), global.key_bindings[_a][_s]);
+        }
+    }
+    ini_close();
+}
+
+// mode: 0 = held, 1 = pressed, 2 = released.
+function input_keyboard_action(_action, _mode = 0) {
+    var _keys = global.key_bindings[_action];
+    for (var _s = 0; _s < 3; _s++) {
+        var _key = _keys[_s];
+        if (_key == 0) continue;
+        if (_mode == 0 && keyboard_check(_key)) return true;
+        if (_mode == 1 && keyboard_check_pressed(_key)) return true;
+        if (_mode == 2 && keyboard_check_released(_key)) return true;
+    }
+    return false;
+}
+
+function input_key_is_bound(_key) {
+    input_bindings_init();
+    for (var _a = 0; _a < array_length(global.key_bindings); _a++) {
+        if (array_contains(global.key_bindings[_a], _key)) return true;
+    }
+    return false;
+}
+
+function input_debug_key_pressed(_key) {
+    return keyboard_check_pressed(_key) && !input_key_is_bound(_key);
+}
+
+function input_key_name(_key) {
+    switch (_key) {
+        case 0: return "-";
+        case vk_left: return "LEFT";
+        case vk_right: return "RIGHT";
+        case vk_up: return "UP";
+        case vk_down: return "DOWN";
+        case vk_space: return "SPACE";
+        case vk_tab: return "TAB";
+        case vk_shift: return "SHIFT";
+        case vk_lshift: return "LSHIFT";
+        case vk_rshift: return "RSHIFT";
+        case vk_control: return "CTRL";
+        case vk_lcontrol: return "LCTRL";
+        case vk_rcontrol: return "RCTRL";
+        case vk_alt: return "ALT";
+        case vk_lalt: return "LALT";
+        case vk_ralt: return "RALT";
+        case vk_backspace: return "BKSP";
+        case vk_delete: return "DEL";
+        case vk_insert: return "INS";
+        case vk_home: return "HOME";
+        case vk_end: return "END";
+        case vk_pageup: return "PGUP";
+        case vk_pagedown: return "PGDN";
+    }
+    if (_key >= ord("A") && _key <= ord("Z")) return chr(_key);
+    if (_key >= ord("0") && _key <= ord("9")) return chr(_key);
+    return "KEY " + string(_key);
+}
+
 // Initialize global input state
 function input_init() {
+    input_bindings_init();
     global.input = {
         left: false,
         right: false,
@@ -44,29 +157,29 @@ function input_update() {
     }
     
     // Keyboard inputs
-    var _k_left  = keyboard_check(vk_left)  || keyboard_check(ord("A"));
-    var _k_right = keyboard_check(vk_right) || keyboard_check(ord("D"));
-    var _k_up    = keyboard_check(vk_up)    || keyboard_check(ord("W"));
-    var _k_down  = keyboard_check(vk_down)  || keyboard_check(ord("S"));
+    var _k_left  = input_keyboard_action(0);
+    var _k_right = input_keyboard_action(1);
+    var _k_up    = input_keyboard_action(2);
+    var _k_down  = input_keyboard_action(3);
     
-    var _k_left_pressed  = keyboard_check_pressed(vk_left)  || keyboard_check_pressed(ord("A"));
-    var _k_right_pressed = keyboard_check_pressed(vk_right) || keyboard_check_pressed(ord("D"));
-    var _k_up_pressed    = keyboard_check_pressed(vk_up)    || keyboard_check_pressed(ord("W"));
-    var _k_down_pressed  = keyboard_check_pressed(vk_down)  || keyboard_check_pressed(ord("S"));
+    var _k_left_pressed  = input_keyboard_action(0, 1);
+    var _k_right_pressed = input_keyboard_action(1, 1);
+    var _k_up_pressed    = input_keyboard_action(2, 1);
+    var _k_down_pressed  = input_keyboard_action(3, 1);
     
-    var _k_jump          = keyboard_check(ord("Z")) || keyboard_check(vk_space);
-    var _k_jump_pressed  = keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(vk_space);
-    var _k_jump_released = keyboard_check_released(ord("Z")) || keyboard_check_released(vk_space);
+    var _k_jump          = input_keyboard_action(4);
+    var _k_jump_pressed  = input_keyboard_action(4, 1);
+    var _k_jump_released = input_keyboard_action(4, 2);
     
-    var _k_dash         = keyboard_check(ord("C")) || keyboard_check(vk_lshift) || keyboard_check(ord("K"));
-    var _k_dash_pressed = keyboard_check_pressed(ord("C")) || keyboard_check_pressed(vk_lshift) || keyboard_check_pressed(ord("K"));
+    var _k_dash         = input_keyboard_action(5);
+    var _k_dash_pressed = input_keyboard_action(5, 1);
     
-    var _k_shoot          = keyboard_check(ord("X")) || keyboard_check(ord("J"));
-    var _k_shoot_pressed  = keyboard_check_pressed(ord("X")) || keyboard_check_pressed(ord("J"));
-    var _k_shoot_released = keyboard_check_released(ord("X")) || keyboard_check_released(ord("J"));
+    var _k_shoot          = input_keyboard_action(6);
+    var _k_shoot_pressed  = input_keyboard_action(6, 1);
+    var _k_shoot_released = input_keyboard_action(6, 2);
     
-    var _k_special         = keyboard_check(ord("V")) || keyboard_check(ord("L"));
-    var _k_special_pressed = keyboard_check_pressed(ord("V")) || keyboard_check_pressed(ord("L"));
+    var _k_special         = input_keyboard_action(7);
+    var _k_special_pressed = input_keyboard_action(7, 1);
     
     // Gamepad (controller 0) support
     var _pad = 0;
@@ -147,9 +260,9 @@ function input_update() {
     global.input.special         = _k_special         || _gp_special;
     global.input.special_pressed = _k_special_pressed || _gp_special_pressed;
     
-    global.input.tab_pressed     = keyboard_check_pressed(vk_tab) || _gp_tab;
+    global.input.tab_pressed     = input_keyboard_action(8, 1) || _gp_tab;
     global.input.debug_pressed   = keyboard_check_pressed(vk_f1);
-    global.input.restart_pressed = keyboard_check_pressed(ord("R"));
+    global.input.restart_pressed = input_debug_key_pressed(ord("R"));
     
     // Update input buffers
     if (global.input.jump_pressed) {

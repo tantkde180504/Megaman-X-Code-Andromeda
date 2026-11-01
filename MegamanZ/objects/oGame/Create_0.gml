@@ -4,14 +4,13 @@ if (instance_number(oGame) > 1) {
 }
 
 // Authentic PlayStation 1 Display (320x240 native @ 4:3)
-window_scale = 3; // 3x scale: 960x720 (4:3)
-window_set_size(VIEW_WIDTH * window_scale, VIEW_HEIGHT * window_scale);
+display_settings_init();
 surface_resize(application_surface, VIEW_WIDTH, VIEW_HEIGHT);
 display_set_gui_size(VIEW_WIDTH, VIEW_HEIGHT);
 gpu_set_texfilter(false);
 
 window_centered_timer = 2;
-global.osd_message = "FULLSCREEN (4:3) | F3: WINDOW SCALE | F4: FULLSCREEN";
+global.osd_message = "WINDOWED | OPTIONS: DISPLAY | F3: SIZE | F4: FULLSCREEN";
 global.osd_timer = 180;
 
 global.current_char = CHAR_TYPE.X;

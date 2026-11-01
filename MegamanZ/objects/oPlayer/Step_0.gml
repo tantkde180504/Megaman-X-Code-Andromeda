@@ -54,7 +54,7 @@ for (var i = array_length(afterimages) - 1; i >= 0; i--) {
 
 // Debug shortcuts:
 // 'B' or 'F8': Teleport directly in front of Door 1 (Note 1 - Entrance to Save Corridor)
-if (keyboard_check_pressed(ord("B")) || keyboard_check_pressed(vk_f8)) {
+if (input_debug_key_pressed(ord("B")) || keyboard_check_pressed(vk_f8)) {
     if (room_get_name(room) == "rStage_WebSpider") {
         x = 4760;
         y = 2000;
@@ -63,7 +63,7 @@ if (keyboard_check_pressed(ord("B")) || keyboard_check_pressed(vk_f8)) {
     }
 }
 // 'N' or 'F9': Teleport in save corridor in front of Door 2 (Note 2 - Entrance to Boss Cave)
-if (keyboard_check_pressed(ord("N")) || keyboard_check_pressed(vk_f9)) {
+if (input_debug_key_pressed(ord("N")) || keyboard_check_pressed(vk_f9)) {
     if (room_get_name(room) == "rStage_WebSpider") {
         x = 5040;
         y = 2048;
@@ -92,7 +92,7 @@ if (variable_instance_exists(id, "is_web_bound") && is_web_bound) {
 }
 
 // 'K' or 'F10': Spawn Web Spider boss for testing
-if (keyboard_check_pressed(ord("K")) || keyboard_check_pressed(vk_f10)) {
+if (input_debug_key_pressed(ord("K")) || keyboard_check_pressed(vk_f10)) {
     if (!instance_exists(obj_boss_web_spider) && !instance_exists(oBoss_WebSpider)) {
         if (instance_exists(obj_nightmare_zero)) with (obj_nightmare_zero) instance_destroy();
         var _spawn_x = (room_get_name(room) == "rStage_WebSpider") ? 5250 : x + (facing * 120);
