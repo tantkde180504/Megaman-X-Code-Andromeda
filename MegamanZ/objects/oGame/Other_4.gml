@@ -166,3 +166,8 @@ if (!_respawning && !instance_exists(obj_ready_intro)) {
     else instance_create_depth(0, 0, -10000, obj_ready_intro);
 }
 
+// Queue X's city briefing on fresh Sky entry, never on checkpoint respawn.
+if (!_respawning && room_get_name(room) == "rStage_Sky"
+    && global.current_char == CHAR_TYPE.X && !instance_exists(obj_stage_briefing)) {
+    instance_create_layer(0, 0, "Instances", obj_stage_briefing);
+}

@@ -53,6 +53,7 @@
     {"id":{"name":"obj_nz_skull_wave","path":"objects/obj_nz_skull_wave/obj_nz_skull_wave.yy",},},
     {"id":{"name":"obj_nz_slash_hitbox","path":"objects/obj_nz_slash_hitbox/obj_nz_slash_hitbox.yy",},},
     {"id":{"name":"obj_nz_spike","path":"objects/obj_nz_spike/obj_nz_spike.yy",},},
+    {"id":{"name":"obj_stage_briefing","path":"objects/obj_stage_briefing/obj_stage_briefing.yy",},},
     {"id":{"name":"obj_ready_intro","path":"objects/obj_ready_intro/obj_ready_intro.yy",},},
     {"id":{"name":"obj_title_intro","path":"objects/obj_title_intro/obj_title_intro.yy",},},
     {"id":{"name":"obj_web_leaf_telegraph","path":"objects/obj_web_leaf_telegraph/obj_web_leaf_telegraph.yy",},},

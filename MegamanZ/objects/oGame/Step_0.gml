@@ -22,6 +22,7 @@ if (variable_global_exists("osd_timer") && global.osd_timer > 0) {
 }
 
 if (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect") return;
+if (instance_exists(obj_stage_briefing)) return;
 
 // Boss defeat and the preview key share the actual stage-clear sequence.
 if (global.boss_defeated && !global.stage_clear_active) {

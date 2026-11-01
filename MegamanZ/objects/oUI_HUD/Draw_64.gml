@@ -1,5 +1,6 @@
 // The boss WARNING owns the whole screen until the spawn sequence begins.
 if (boss_warning_is_active()) return;
+if (instance_exists(obj_stage_briefing) && obj_stage_briefing.active) return;
 if (!instance_exists(oPlayer)) return;
 var _p = instance_find(oPlayer, 0);
 var _hx = 16;

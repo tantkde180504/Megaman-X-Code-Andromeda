@@ -78,6 +78,7 @@ function input_key_is_bound(_key) {
 }
 
 function input_debug_key_pressed(_key) {
+    if (instance_exists(obj_stage_briefing)) return false;
     return keyboard_check_pressed(_key) && !input_key_is_bound(_key);
 }
 
@@ -307,7 +308,7 @@ function input_update() {
         global.input.shoot_buffer = 0;
         global.input.special = false;
         global.input.special_pressed = false;
-        if (_boss_warning) {
+        if (_boss_warning || instance_exists(obj_stage_briefing)) {
             global.input.tab_pressed = false;
             global.input.restart_pressed = false;
         }
