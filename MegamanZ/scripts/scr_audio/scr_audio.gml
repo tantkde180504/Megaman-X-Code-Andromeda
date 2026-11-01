@@ -81,6 +81,13 @@ function music_play_web_spider() {
     music_play_track(snd_bgm_web_spider, "snd_bgm_web_spider.mp3");
 }
 
+/// @desc Stage opening theme follows the character chosen before entering the room.
+function music_play_character_opening() {
+    var _track = (global.current_char == CHAR_TYPE.ZERO)
+        ? snd_bgm_opening_zero : snd_bgm_opening_x;
+    music_play_track(_track);
+}
+
 /// @desc Play Nightmare Zero Boss Battle Theme (Looping)
 function music_play_boss_nightmare_zero() {
     music_play_track(snd_boss_nightmare_zero, "snd_boss_nightmare_zero.mp3");

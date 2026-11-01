@@ -136,6 +136,8 @@
     {"id":{"name":"scr_player_physics","path":"scripts/scr_player_physics/scr_player_physics.yy",},},
     {"id":{"name":"scr_player_states","path":"scripts/scr_player_states/scr_player_states.yy",},},
     {"id":{"name":"scr_web_spider_draw","path":"scripts/scr_web_spider_draw/scr_web_spider_draw.yy",},},
+    {"id":{"name":"snd_bgm_opening_x","path":"sounds/snd_bgm_opening_x/snd_bgm_opening_x.yy",},},
+    {"id":{"name":"snd_bgm_opening_zero","path":"sounds/snd_bgm_opening_zero/snd_bgm_opening_zero.yy",},},
     {"id":{"name":"snd_bgm_player_select","path":"sounds/snd_bgm_player_select/snd_bgm_player_select.yy",},},
     {"id":{"name":"snd_bgm_title","path":"sounds/snd_bgm_title/snd_bgm_title.yy",},},
     {"id":{"name":"snd_bgm_web_spider","path":"sounds/snd_bgm_web_spider/snd_bgm_web_spider.yy",},},

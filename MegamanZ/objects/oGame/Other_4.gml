@@ -48,17 +48,13 @@ if (room == Room1) {
     scr_build_stage_intro();
 } else if (room_get_name(room) == "rStage_WebSpider") {
     scr_build_stage_web_spider();
-    music_play_web_spider();
 } else if (room_get_name(room) == "rBoss_NightmareZero") {
     scr_build_boss_room_nightmare_zero();
     music_play_boss_nightmare_zero();
 }
-// Rooms without their own theme retain the track they used before death.
-if (_respawning && room != rStage_WebSpider && room != rBoss_NightmareZero) {
-    if (global.pending_respawn.bgm_asset != noone && global.pending_respawn.bgm_asset != -1) {
-        music_play_track(global.pending_respawn.bgm_asset);
-    }
-}
+// Ordinary stages and checkpoint restarts use the selected character's opening.
+// The boss room keeps the battle theme selected above.
+if (room != rBoss_NightmareZero) music_play_character_opening();
 
 // Ensure boss and boss gates exist in Web Spider stage
 if (room_get_name(room) == "rStage_WebSpider") {
