@@ -160,7 +160,7 @@ function scr_reset_boss_room() {
             hp_display = 0;
             intro_done = false;
             messenkou_done = false;
-            warning_timer = 90;
+            warning_timer = BOSS_WARNING_FRAMES;
             x = 5250;
             y = 2096;
             facing = -1;
@@ -207,7 +207,7 @@ function scr_reset_boss_room() {
             hp_display = 0;
             state = WS_STATE.INTRO;
             state_timer = 0;
-            warning_timer = 90;
+            warning_timer = BOSS_WARNING_FRAMES;
             intro_done = false;
             phase = 1;
             flash_timer = 0;
@@ -231,7 +231,7 @@ function scr_reset_boss_room() {
             hp_display = 0;
             state = SPIDER_STATE.INTRO;
             state_timer = 0;
-            warning_timer = 90;
+            warning_timer = BOSS_WARNING_FRAMES;
             intro_done = false;
             phase = 1;
             flash_timer = 0;

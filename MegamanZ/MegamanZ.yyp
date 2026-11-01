@@ -120,6 +120,7 @@
     {"id":{"name":"rStage_WebSpider","path":"rooms/rStage_WebSpider/rStage_WebSpider.yy",},},
     {"id":{"name":"rStageSelect","path":"rooms/rStageSelect/rStageSelect.yy",},},
     {"id":{"name":"rTitle","path":"rooms/rTitle/rTitle.yy",},},
+    {"id":{"name":"scr_boss_warning","path":"scripts/scr_boss_warning/scr_boss_warning.yy",},},
     {"id":{"name":"scr_audio","path":"scripts/scr_audio/scr_audio.yy",},},
     {"id":{"name":"scr_build_boss_room_nightmare_zero","path":"scripts/scr_build_boss_room_nightmare_zero/scr_build_boss_room_nightmare_zero.yy",},},
     {"id":{"name":"scr_build_stage_intro","path":"scripts/scr_build_stage_intro/scr_build_stage_intro.yy",},},

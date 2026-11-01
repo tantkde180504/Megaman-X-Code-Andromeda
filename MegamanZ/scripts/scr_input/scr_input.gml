@@ -171,7 +171,8 @@ function input_update() {
     }
     
     // Suppress action inputs when global.input_locked is active (dialogue, cutscenes)
-    if (variable_global_exists("input_locked") && global.input_locked) {
+    var _boss_warning = boss_warning_is_active();
+    if ((variable_global_exists("input_locked") && global.input_locked) || _boss_warning) {
         global.input.left = false;
         global.input.right = false;
         global.input.up = false;
@@ -193,6 +194,10 @@ function input_update() {
         global.input.shoot_buffer = 0;
         global.input.special = false;
         global.input.special_pressed = false;
+        if (_boss_warning) {
+            global.input.tab_pressed = false;
+            global.input.restart_pressed = false;
+        }
     }
     
     // Web Bound Debuff (Section 4): Movement locked, button mashing breaks free faster

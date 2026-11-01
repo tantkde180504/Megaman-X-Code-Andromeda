@@ -129,7 +129,7 @@ switch (state) {
         vsp = 0;
         is_invulnerable = true;
         if (warning_timer > 0) {
-            warning_timer--;
+            warning_timer = boss_warning_tick(warning_timer);
             image_alpha = 0;
             anim_frame = 0;
             anim_timer = 0;

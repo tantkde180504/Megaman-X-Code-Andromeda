@@ -114,7 +114,6 @@ if (keyboard_check_pressed(ord("B"))) {
             _b.arena_center = (_b.arena_left + _b.arena_right) * 0.5;
             with (_b) {
                 nz_change_state(NZ_STATE.INTRO);
-                warning_timer = 60;
             }
         } else {
             var _bx = clamp(_p.x + _p.facing * 160, 64, room_width - 64);

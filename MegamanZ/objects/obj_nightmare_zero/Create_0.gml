@@ -85,7 +85,7 @@ if (state == NZ_STATE.INTRO) {
     music_play_boss_nightmare_zero();
 }
 state_timer = 0;
-warning_timer = 90;
+warning_timer = BOSS_WARNING_FRAMES;
 
 // Cử động 1 counters:
 act1_loop_count = 0;            // Đếm số lần lặp Cử động 1 (cần lặp 2 lần: 0 và 1)
@@ -162,7 +162,7 @@ nz_change_state = function(_new_state) {
         case NZ_STATE.INTRO:
             anim_sprite = spr_nz_spawn; // Hàng 1, 2 (15 frames)
             anim_delay = 6;
-            warning_timer = 90;
+            warning_timer = BOSS_WARNING_FRAMES;
             intro_done = false;
             is_invulnerable = true;
             music_play_boss_nightmare_zero();

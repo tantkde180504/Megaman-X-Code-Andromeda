@@ -11,29 +11,10 @@ if (state == WS_STATE.DEATH) {
     if (death_timer < 30) return;
 }
 
-// 1. WARNING Screen at Start
-if (warning_timer > 0) {
-    var _cx = VIEW_WIDTH * 0.5;
-    var _cy = VIEW_HEIGHT * 0.5;
-    var _flash = (warning_timer % 14 < 7);
-    
-    draw_set_color(c_black);
-    draw_set_alpha(0.6);
-    draw_rectangle(_cx - 140, _cy - 24, _cx + 140, _cy + 24, false);
-    draw_set_alpha(1.0);
-    
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    
-    if (_flash) {
-        draw_set_color(make_color_rgb(255, 40, 40));
-    } else {
-        draw_set_color(make_color_rgb(255, 230, 40));
-    }
-    
-    draw_text_transformed(_cx, _cy, "WARNING !!", 2.0, 2.0, 0);
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
+// Shared red WARNING sequence before the health fill.
+if (state == WS_STATE.INTRO && warning_timer > 0) {
+    boss_warning_draw(warning_timer);
+    return;
 }
 
 // 2. Vertical Boss Health Bar (48 HP Mega Man X Style)

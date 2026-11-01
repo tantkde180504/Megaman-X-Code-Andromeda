@@ -69,7 +69,7 @@ web_network_inst = noone;
 // 4. State Machine & Attack Variables
 state = WS_STATE.INTRO;
 state_timer = 0;
-warning_timer = 90;
+warning_timer = BOSS_WARNING_FRAMES;
 anim_timer = 0;
 anim_frame = 0.0;
 

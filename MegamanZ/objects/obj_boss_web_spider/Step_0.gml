@@ -103,7 +103,7 @@ switch (state) {
         anim_frame = floor(anim_timer) % 4; // Row 1 intro salute
         
         if (warning_timer > 0) {
-            warning_timer--;
+            warning_timer = boss_warning_tick(warning_timer);
         } else {
             // Fill health bar
             if (hp_display < hp) {

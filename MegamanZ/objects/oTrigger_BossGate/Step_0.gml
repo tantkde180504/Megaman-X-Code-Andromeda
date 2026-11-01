@@ -139,7 +139,6 @@ switch (gate_state) {
             
             // Cửa 2 (Cửa trong vào đấu trường): Bắt đầu màn đấu trùm!
             if (is_arena_door) {
-                if (audio_exists(snd_boss_warning)) audio_play_sound(snd_boss_warning, 90, false);
                 music_play_boss_nightmare_zero();
                 if (room_get_name(room) == "rStage_WebSpider") {
                     if (instance_exists(obj_nightmare_zero)) {
