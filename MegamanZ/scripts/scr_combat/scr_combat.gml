@@ -1,6 +1,8 @@
 /// @desc Combat & Damage System
 
 function player_take_damage(_amount, _knockback_dir) {
+    // Dialogue protection must not use blinking damage iframes on X's sprite.
+    if (instance_exists(obj_stage_briefing) && obj_stage_briefing.active) return;
     if (!instance_exists(oPlayer)) return;
     var _p = instance_find(oPlayer, 0);
     if (_p == noone) return;

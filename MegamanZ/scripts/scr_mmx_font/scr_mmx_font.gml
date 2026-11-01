@@ -363,7 +363,7 @@ function draw_mmx_dialogue_line(_x, _y, _text, _char_count, _font = MMX_FONT.SMA
 }
 
 /// @desc Word wrap measured with the actual small bitmap font at native scale.
-function ps1_text_lines(_text, _width) {
+function ps1_text_lines(_text, _width, _font = MMX_FONT.SMALL) {
     var _lines = [];
     var _paragraphs = string_split(string_mmx_clean(_text), "\n");
     for (var _p = 0; _p < array_length(_paragraphs); _p++) {
@@ -372,7 +372,7 @@ function ps1_text_lines(_text, _width) {
         for (var _w = 0; _w < array_length(_words); _w++) {
             var _word = _words[_w];
             var _candidate = (_line == "") ? _word : _line + " " + _word;
-            if (_line != "" && string_mmx_width(_candidate) > _width) {
+            if (_line != "" && string_mmx_width(_candidate, _font) > _width) {
                 array_push(_lines, _line);
                 _line = "";
             }
@@ -380,7 +380,7 @@ function ps1_text_lines(_text, _width) {
             for (var _c = 1; _c <= string_length(_word); _c++) {
                 if (_c == 1 && _line != "") _line += " ";
                 var _char = string_char_at(_word, _c);
-                if (_line != "" && string_mmx_width(_line + _char) > _width) {
+                if (_line != "" && string_mmx_width(_line + _char, _font) > _width) {
                     array_push(_lines, _line);
                     _line = "";
                 }
@@ -392,8 +392,8 @@ function ps1_text_lines(_text, _width) {
     return _lines;
 }
 
-function ps1_text_pages(_text, _width, _rows) {
-    var _lines = ps1_text_lines(_text, _width);
+function ps1_text_pages(_text, _width, _rows, _font = MMX_FONT.SMALL) {
+    var _lines = ps1_text_lines(_text, _width, _font);
     var _pages = [];
     for (var _i = 0; _i < array_length(_lines); _i += _rows) {
         var _page = "";
@@ -407,14 +407,14 @@ function ps1_text_pages(_text, _width, _rows) {
 }
 
 /// @desc Draw inside a native-pixel text box; wrap the full text before revealing.
-function ps1_draw_text(_x, _y, _text, _width, _height, _colour = c_white, _visible = -1, _alpha = 1) {
-    var _lines = ps1_text_lines(_text, _width);
+function ps1_draw_text(_x, _y, _text, _width, _height, _colour = c_white, _visible = -1, _alpha = 1, _font = MMX_FONT.SMALL) {
+    var _lines = ps1_text_lines(_text, _width, _font);
     var _remaining = (_visible < 0) ? string_length(_text) + 1000 : _visible;
     var _rows = min(array_length(_lines), floor(_height / 16));
     for (var _r = 0; _r < _rows; _r++) {
         var _line = _lines[_r];
         draw_mmx_text(round(_x), round(_y + _r * 16),
-            string_copy(_line, 1, max(0, _remaining)), MMX_FONT.SMALL, 1, 1, _colour, _alpha);
+            string_copy(_line, 1, max(0, _remaining)), _font, 1, 1, _colour, _alpha);
         _remaining -= string_length(_line) + 1;
     }
 }

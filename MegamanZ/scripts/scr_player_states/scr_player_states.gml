@@ -780,6 +780,10 @@ function player_state_intro() {
     hsp = 0;
     vsp = 0;
 
+    // Match the stage intro: READY appears first, then the teleport beam enters.
+    if (instance_exists(obj_ready_intro)
+        && obj_ready_intro.ready_frame < obj_ready_intro.teleport_start_frame) return;
+
     // Play Teleport In SFX at the start of beam descent
     if (!variable_instance_exists(id, "intro_sound_played") || !intro_sound_played) {
         intro_sound_played = true;

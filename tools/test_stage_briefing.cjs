@@ -46,10 +46,12 @@ assert.equal(s.c.active, false, 'Briefing also waits for teleport-in');
 s.player.state = 2;s.press([]);s.tick();
 assert.equal(s.c.active, true);
 assert.equal(s.c.global.stage_ready, false, 'Enemies pause during dialogue');
+assert.equal(s.c.visible_chars,0,'Text waits for the frame to unfold');
+assert.equal(s.player.iframes,0,'Dialogue must not make X blink or disappear');
 for (const page of s.c.pages) {
-    const lines = s.c.ps1_text_lines(page, 194);
-    assert.ok(lines.length <= 4);
-    for (const line of lines) assert.ok(s.c.string_mmx_width(line) <= 194);
+    const lines = s.c.ps1_text_lines(page, 240, 1);
+    assert.ok(lines.length <= 2);
+    for (const line of lines) assert.ok(s.c.string_mmx_width(line, 1) <= 240);
 }
 let count = 0;
 while (!s.destroyed() && count++ < 1000) {s.press([90]);s.tick();}
@@ -57,9 +59,12 @@ assert.ok(s.destroyed(), 'Configured jump button can finish all dialogue pages')
 assert.equal(s.c.global.input_locked, false);
 assert.equal(s.c.global.stage_ready, true);
 s = scenario();s.readyDone();s.player.state=2;
-for (let i=0;i<10;i++) s.tick();
+for (let i=0;i<24;i++) s.tick();
 s.press([27]);s.tick();
-assert.ok(s.destroyed(), 'Escape skips and releases the dialogue locks');
+assert.equal(s.c.closing,true,'Escape starts the closing animation');
+assert.equal(s.c.global.input_locked,true,'Input remains locked through the close animation');
+for(let i=0;i<10;i++)s.tick();
+assert.ok(s.destroyed(), 'Closing completes and releases the dialogue locks');
 assert.equal(s.c.global.stage_ready,true);
 s = scenario();s.removePlayer();s.tick();
 assert.ok(s.destroyed());

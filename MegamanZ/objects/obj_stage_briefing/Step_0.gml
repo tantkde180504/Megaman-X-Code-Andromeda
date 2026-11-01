@@ -20,10 +20,18 @@ if (!active) {
 _player.hsp = 0;
 _player.vsp = 0;
 _player.state = PLAYER_STATE.IDLE;
-_player.iframes = max(_player.iframes, 2);
 anim_timer++;
+if (closing) {
+    close_frame++;
+    if (close_frame >= 10) instance_destroy();
+    exit;
+}
+if (panel_frame < 12) {
+    panel_frame++;
+    exit;
+}
 var _text = pages[page_index];
-visible_chars = min(string_length(_text), visible_chars + 0.8);
+visible_chars = min(string_length(_text), visible_chars + 0.5);
 if (advance_cooldown > 0) {
     advance_cooldown--;
     exit;
@@ -37,7 +45,7 @@ for (var _pad = 0; _pad < 4; _pad++) {
     }
 }
 if (_skip) {
-    instance_destroy();
+    closing = true;
     exit;
 }
 if (_advance) {
@@ -47,7 +55,7 @@ if (_advance) {
         page_index++;
         visible_chars = 0;
     } else {
-        instance_destroy();
+        closing = true;
         exit;
     }
     advance_cooldown = 8;

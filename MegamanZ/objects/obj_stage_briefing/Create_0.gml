@@ -12,6 +12,9 @@ anim_timer = 0;
 page_index = 0;
 visible_chars = 0;
 advance_cooldown = 8;
+panel_frame = 0;
+closing = false;
+close_frame = 0;
 pages = [];
 var _lines = [
     "Mavericks are attacking the city!",
@@ -19,7 +22,7 @@ var _lines = [
     "Zero is investigating the forest. I'll handle things here in the city."
 ];
 for (var _line = 0; _line < array_length(_lines); _line++) {
-    var _wrapped = ps1_text_pages(_lines[_line], 194, 4);
+    var _wrapped = ps1_text_pages(_lines[_line], 240, 2, MMX_FONT.MEDIUM);
     for (var _page = 0; _page < array_length(_wrapped); _page++) {
         array_push(pages, _wrapped[_page]);
     }
