@@ -1,8 +1,14 @@
 /// @desc X4/X5-inspired red WARNING title over the stage before boss intros.
 #macro BOSS_WARNING_FRAMES 360
 
+// READY owns the intro until its instance is gone and its completion flag agrees.
+function boss_warning_can_start() {
+    if (instance_exists(obj_ready_intro)) return false;
+    return !variable_global_exists("stage_ready") || global.stage_ready;
+}
+
 function boss_warning_is_active() {
-    if (variable_global_exists("stage_ready") && !global.stage_ready) return false;
+    if (!boss_warning_can_start()) return false;
     var _active = false;
     with (obj_nightmare_zero) {
         if (state == NZ_STATE.INTRO && warning_timer > 0) _active = true;
@@ -16,6 +22,7 @@ function boss_warning_is_active() {
 
 // Called from Step, never Draw: sound and timing do not depend on rendering.
 function boss_warning_tick(_remaining) {
+    if (!boss_warning_can_start()) return _remaining;
     var _elapsed = BOSS_WARNING_FRAMES - _remaining;
     if (_elapsed >= 0 && _elapsed < 300 && _elapsed mod 60 == 0) {
         if (audio_exists(snd_boss_warning)) audio_play_sound(snd_boss_warning, 90, false);
@@ -78,7 +85,7 @@ function boss_warning_glyphs() {
 }
 
 function boss_warning_draw(_remaining) {
-    if (_remaining <= 0) return;
+    if (_remaining <= 0 || !boss_warning_can_start()) return;
     var _old_colour = draw_get_colour();
     var _old_alpha = draw_get_alpha();
     var _w = display_get_gui_width();

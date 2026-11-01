@@ -1,4 +1,4 @@
-if (variable_global_exists("stage_ready") && !global.stage_ready) return;
+if (!boss_warning_can_start()) return;
 
 // 0. TRẠNG THÁI SLEEP: Chờ người chơi qua Cửa 2 và cửa đã đóng khóa hoàn tất
 if (state == NZ_STATE.SLEEP) {

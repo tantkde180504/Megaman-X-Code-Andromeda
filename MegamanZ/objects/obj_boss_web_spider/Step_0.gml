@@ -1,4 +1,4 @@
-if (variable_global_exists("stage_ready") && !global.stage_ready) return;
+if (!boss_warning_can_start()) return;
 
 /// @desc Web Spider Boss Step Event (Master Finite State Machine)
 
