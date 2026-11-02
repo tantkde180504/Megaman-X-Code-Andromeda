@@ -35,21 +35,8 @@ function scr_build_stage_intro() {
     }
     instance_create_layer(420, room_height - 144, "Instances", oPickup_SubTank);
     
-    // --- SECTION 1 ENEMIES (All available right from start!) ---
-    // 1. Mettaur D2: Hard hat guard, peeking, 3-spread shot, walking
-    instance_create_layer(180, room_height - 32, "Instances", oEnemy_MettaurD2);
-    
-    // 2. Batton Bone B81: Hanging under overhead girder, swoops & drops bomb
-    instance_create_layer(260, room_height - 96, "Instances", oEnemy_Batton);
-    
-    // 3. Knot Beret G: Standing on girder, firing rifle bursts
-    instance_create_layer(310, room_height - 96, "Instances", oEnemy_KnotBeretG);
-    
-    // 4. Knot Beret B: Standing on highway floor, lobbing bouncing grenades
-    instance_create_layer(360, room_height - 32, "Instances", oEnemy_KnotBeretB);
-    
-    // 5. Spiky Mk-II: Rolling patrol & high-speed spike charge
-    instance_create_layer(480, room_height - 32, "Instances", oEnemy_SpikyMKII);
+    // Empty first screen; the first encounter teaches one grounded enemy.
+    instance_create_layer(480, room_height - 32, "Instances", oEnemy_MettaurD2);
     
     // -----------------------------------------------------------------
     // Section 2: Collapsed Highway Gap & Falling Platforms (x: 600 .. 1500)
@@ -73,8 +60,7 @@ function scr_build_stage_intro() {
     // 6. Fly Gunner: Hovering over the collapsed gap, aimed cannon
     instance_create_layer(780, room_height - 120, "Instances", oEnemy_FlyGunner);
     
-    // 7. Tonboroid S: Mechanical dragonfly hovering & dropping bombs
-    instance_create_layer(920, room_height - 130, "Instances", oEnemy_TonboroidS);
+    // Leave the landing ahead of the mid-stage checkpoint free of air attacks.
     
     // Solid ground resumes
     for (var _x = 1020; _x < 1500; _x += _bs) {
@@ -86,12 +72,8 @@ function scr_build_stage_intro() {
     // Mid-Stage Checkpoint
     instance_create_layer(1100, room_height - 48, "Instances", oTrigger_Checkpoint);
     
-    // 8. Tentoroid RS: Jet Mechaniloid hovering above highway, rocket boost charge
-    instance_create_layer(1180, room_height - 70, "Instances", oEnemy_TentoroidRS);
-    
-    // Knot Beret B & Spiky Mk-II after checkpoint
-    instance_create_layer(1320, room_height - 32, "Instances", oEnemy_KnotBeretB);
-    instance_create_layer(1420, room_height - 32, "Instances", oEnemy_SpikyMKII);
+    // Resume combat beyond the checkpoint's resting screen.
+    instance_create_layer(1420, room_height - 32, "Instances", oEnemy_KnotBeretB);
     
     // -----------------------------------------------------------------
     // Section 3: Water Reservoir Drainage & Ice Pipe (x: 1500 .. 1900)
@@ -138,8 +120,5 @@ function scr_build_stage_intro() {
     // Boss Gate Door!
     instance_create_layer(2060, room_height - 80, "Instances", oTrigger_BossGate);
     
-    // Arena Testing Sandbox (after passing gate):
-    instance_create_layer(2200, room_height - 32, "Instances", oTargetDummy);
-    instance_create_layer(2260, room_height - 90, "Instances", oEnemy_Guardian);
-    instance_create_layer(2320, room_height - 32, "Instances", oTargetDummy);
+    // The arena has no boss yet; leave it empty instead of spawning test enemies.
 }

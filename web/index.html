@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MegamanZ — Chơi thử</title>
+  <link rel="icon" href="game/favicon.ico">
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #090f1d; color: #e8f0ff; }
+    body { margin: 0; padding: 24px 16px; }
+    main { max-width: 960px; margin: auto; }
+    h1 { font-size: 24px; margin: 0 0 8px; }
+    p { line-height: 1.6; color: #bdcbe4; }
+    #screen { width: 100%; aspect-ratio: 4 / 3; background: black; }
+    #screen:fullscreen { width: 100vw; height: 100vh; display: grid; place-items: center; }
+    iframe { display: block; width: 100%; height: 100%; border: 0; }
+    #screen:fullscreen iframe { width: min(100vw, 133.333vh); height: min(100vh, 75vw); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+    button { padding: 10px 16px; border: 1px solid #7faee9; border-radius: 6px; background: #17365d; color: white; font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid #f9d76b; outline-offset: 3px; }
+    #status { min-height: 1.6em; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>MegamanZ</h1>
+  <p>Nhấp vào màn hình game để bắt đầu và bật âm thanh. Bản chơi thử dành cho máy tính có bàn phím.</p>
+  <div id="screen">
+    <iframe id="game" src="game/index.html" title="MegamanZ — màn hình game" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+  </div>
+  <div class="actions">
+    <button id="focus" type="button">Vào game</button>
+    <button id="fullscreen" type="button">Toàn màn hình</button>
+  </div>
+  <p>Di chuyển: ← → hoặc A/D · Nhảy: Z/Space · Dash: C/Shift · Đánh: X/J · Đặc biệt: V/L · Đổi X/Zero: Tab.<br>Enter: xác nhận · Esc: quay lại · Shift+Tab: rời màn hình game.</p>
+  <p id="status" role="status" aria-live="polite"></p>
+</main>
+<script>
+  const frame = document.getElementById('game');
+  const screen = document.getElementById('screen');
+  const status = document.getElementById('status');
+  const focusButton = document.getElementById('focus');
+  function focusGame() {
+    const canvas = frame.contentDocument?.querySelector('canvas');
+    frame.contentWindow?.focus();
+    canvas?.focus();
+  }
+  focusButton.addEventListener('click', () => {
+    focusGame();
+    status.textContent = 'Nhấp trực tiếp vào màn hình game nếu chưa có âm thanh.';
+  });
+  document.getElementById('fullscreen').addEventListener('click', async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await screen.requestFullscreen();
+      focusGame();
+    } catch {
+      status.textContent = 'Trình duyệt chưa cho phép toàn màn hình. Bạn vẫn có thể chơi trong trang này.';
+    }
+  });
+  frame.addEventListener('load', () => {
+    const doc = frame.contentDocument;
+    const canvas = doc?.querySelector('canvas');
+    if (!canvas) {
+      status.textContent = 'Không tải được game. Hãy kiểm tra bản xuất và tải lại trang.';
+      return;
+    }
+    // Keep the native 320x240 canvas sharp; CSS scales it within a 4:3 frame.
+    doc.body.style.cssText = 'margin:0;background:#000;overflow:hidden';
+    canvas.style.cssText = 'position:fixed;inset:0;margin:0;width:100%;height:100%;image-rendering:pixelated;outline:none';
+    canvas.tabIndex = 0;
+    canvas.addEventListener('pointerdown', () => canvas.focus());
+    frame.contentWindow.addEventListener('keydown', event => {
+      if (event.key === 'Tab' && event.shiftKey) {
+        event.preventDefault();
+        focusButton.focus();
+      } else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Tab'].includes(event.key)) {
+        event.preventDefault();
+      }
+    });
+  });
+  if (location.protocol === 'file:') {
+    status.textContent = 'Hãy mở bản chơi thử qua máy chủ web thay vì mở trực tiếp file HTML.';
+  }
+</script>
+</body>
+</html>

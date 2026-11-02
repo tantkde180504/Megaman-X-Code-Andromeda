@@ -1,12 +1,13 @@
 // Runs the actual GML event bodies with mocked engine I/O and the real bitmap-font wrapping.
 const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict');
 const read = name => fs.readFileSync(`MegamanZ/objects/obj_stage_briefing/${name}.gml`, 'utf8');
-function scenario() {
+function scenario(character = 0) {
     let ready = true, playerExists = true, pressed = new Set(), destroyed = false;
     const player = {state: 1, hp_current: 16, hsp: 2, vsp: 0, iframes: 0};
     const c = {
-        global: {stage_ready: false, input_locked: false}, id: 10,
-        obj_stage_briefing: 10, obj_ready_intro: 11, oPlayerX: 12,
+        global: {stage_ready: false, input_locked: false, current_char: character}, id: 10,
+        CHAR_TYPE: {X: 0, ZERO: 1},
+        obj_stage_briefing: 10, obj_ready_intro: 11, oPlayerX: 12, oPlayerZero: 14,
         PLAYER_STATE: {INTRO: 1, IDLE: 2, DEATH: 3},
         vk_enter: 13, vk_escape: 27,
         max: Math.max, min: Math.min,
@@ -73,18 +74,43 @@ assert.equal(s.c.global.stage_ready,false, 'Pending cleanup must not end READY e
 const roomStart = fs.readFileSync('MegamanZ/objects/oGame/Other_4.gml', 'utf8');
 const spawnHook = roomStart.slice(roomStart.indexOf('// Queue X\'s city briefing'));
 assert.ok(spawnHook.startsWith('// Queue'), 'Room entry must contain the briefing hook');
-for (const [room, character, respawn, exists, expected] of [
-    ['rStage_Sky', 0, false, false, 1],
-    ['rStage_Sky', 0, true, false, 0],
-    ['rStage_Sky', 1, false, false, 0],
-    ['rStage_WebSpider', 0, false, false, 0],
-    ['rStage_Sky', 0, false, true, 0],
+for (const [room, character, respawn, exists, pending, expected] of [
+    ['rStage_Sky', 0, false, false, false, 1],
+    ['rStage_Sky', 0, true, false, false, 0],
+    ['rStage_Sky', 1, false, false, false, 0],
+    ['rStage_WebSpider', 0, false, false, false, 0],
+    ['rStage_Sky', 0, false, true, false, 0],
+    ['rStage_WebSpider', 1, false, false, true, 1],
+    ['rStage_WebSpider', 1, true, false, true, 0],
+    ['rStage_WebSpider', 1, false, false, false, 0],
+    ['rStage_WebSpider', 0, false, false, true, 0],
 ]) {
     let spawned = 0;
-    const entry = {room, _respawning:respawn, global:{current_char:character},
+    const entry = {room, rStage_WebSpider:'rStage_WebSpider', _respawning:respawn,
+        global:{current_char:character, sky_jungle_briefing_pending:pending},
         CHAR_TYPE:{X:0,ZERO:1}, obj_stage_briefing:10, room_get_name:r=>r,
         instance_exists:()=>exists, instance_create_layer:()=>spawned++};
     vm.runInNewContext(spawnHook, entry);
-    assert.equal(spawned, expected, 'Briefing is exclusive to fresh X entry in Sky');
+    assert.equal(spawned, expected, 'Briefing follows fresh Sky entry or the one-time Zero handoff');
+    assert.equal(entry.global.sky_jungle_briefing_pending, false);
+}
+s = scenario(1);
+assert.equal(s.c.speaker_name, 'ZERO');
+assert.equal(s.c.player_object, s.c.oPlayerZero);
+assert(s.c.pages.join(' ').includes('X...'));
+for (let i = 0; i < 160; i++) s.tick();
+assert.equal(s.c.active, false, 'Zero also waits for READY');
+s.readyDone(); s.tick();
+assert.equal(s.c.active, false, 'Zero also waits for teleport-in');
+s.player.state = 2;
+count = 0;
+while (!s.destroyed() && count++ < 1000) {s.press([90]);s.tick();}
+assert(s.destroyed(), 'Zero monologue ends and restores control');
+assert.equal(s.c.global.input_locked, false);
+assert.equal(s.c.global.stage_ready, true);
+for (const page of s.c.pages) {
+    const lines = s.c.ps1_text_lines(page, 240, 1);
+    assert(lines.length <= 2);
+    for (const line of lines) assert(s.c.string_mmx_width(line, 1) <= 240);
 }
 console.log('PASS: READY/teleport sequencing, real-font page bounds, remapped advance, skip, completion and lock cleanup.');

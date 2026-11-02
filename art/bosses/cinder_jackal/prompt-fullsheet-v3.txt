@@ -1,0 +1,5 @@
+Edit this complete sprite sheet ONLY to reframe it with safe empty space.
+Preserve every existing sprite, detached part, and effect. Do not redesign anything, remove any sprite, add any sprite, or change the order. Keep the current complete layout.
+Put the ENTIRE sheet into the CENTER of a LARGER TRANSPARENT PORTRAIT CANVAS. The artwork must occupy ONLY the middle 70% of the canvas width AND the middle 80% of the canvas height. Leave wide visibly empty fully transparent margins on ALL FOUR SIDES, especially the right and bottom.
+Complete any cropped tips of the rightmost flame arc and bottom crescent flames so their full outlines are visible well INSIDE the new margins. Keep the character designs and all poses identical.
+Every single pixel of the character sprites and effects must be comfortably inside the canvas. Do not zoom or fill the new margins with artwork. No black rectangle, no checkerboard, no text, no labels, no border. Preserve transparent alpha. This is the entire complete animation sheet with additional breathing room around the outside, not an enlarged close-up.

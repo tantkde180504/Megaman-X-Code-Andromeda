@@ -1,12 +1,27 @@
 anim_timer++;
 if (iframes > 0) iframes--;
+var _was_running = (state == PLAYER_STATE.RUN);
+var _was_dashing = (state == PLAYER_STATE.DASH);
 player_state_execute();
+if (state == PLAYER_STATE.DASH && !_was_dashing) player_spawn_x4_dash_flash();
 if (state == PLAYER_STATE.TELEPORT_OUT) {
     // A teleport beam passes through stage ceilings; apply velocity only here.
     y += vsp;
 } else {
     player_handle_movement_and_collision();
 }
+player_update_x4_wall_slide();
+
+// Play startup poses 0..1 once, then loop the running stride (2..15).
+// Integer ticks keep every pose on screen for exactly three game steps.
+if (state == PLAYER_STATE.RUN && _was_running) {
+    run_anim_tick++;
+    if (run_anim_tick >= 48) run_anim_tick = 6;
+} else {
+    run_anim_tick = 0;
+}
+run_frame = run_anim_tick div 3;
+
 if (state == PLAYER_STATE.STAGE_CLEAR || state == PLAYER_STATE.TELEPORT_OUT) return;
 
 // -------------------------------------------------------------------------

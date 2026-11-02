@@ -35,7 +35,6 @@ switch (state) {
         is_invulnerable = false;
         shield_direction = 1; // Frontal spikes deflect buster shots!
         hsp = facing * 4.0;
-        if (state_timer % 6 == 0) instance_create_layer(x, y, "Instances", oFX_DashDust);
         
         if (place_meeting(x + hsp, y, oSolid)) {
             // Impact with wall

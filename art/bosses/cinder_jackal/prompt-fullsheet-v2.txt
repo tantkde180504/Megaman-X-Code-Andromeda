@@ -1,0 +1,13 @@
+Use case: precise-object-edit.
+Edit the supplied full Cinder Jackal sprite sheet to fix spacing and clipping while preserving the existing character design, the exact count of character poses, their order, and all detached components. This is a complete animation atlas, not a concept picture.
+
+Keep ALL the existing character frames from the top idle/dash rows through the last crouch/recoil row; keep the flipped aerial poses and the intentionally detached body parts. Keep charcoal armor, copper panels, long jackal ears, orange chest furnace and silver claws. Do not redesign the character or add new poses.
+
+Required repairs:
+1. Add generous fully transparent outer margins on all four sides. The highest ear tips, rightmost raised-arm pose, rightmost slash arc, and lowest effect must be completely within the image with at least 24 transparent pixels around all outermost sprite pixels. No cropping.
+2. Increase transparent spacing between neighboring character frames, particularly the row of large flame claw slashes. Every separate full-body frame and its attached slash must have a clear transparent gutter, with no contact or overlap with its neighbors. Preserve row order and relative action progression; expanding the portrait canvas is allowed.
+3. At the bottom make THREE clearly separated effect rows: first row detached silver claw/hand components, second row orange impact-spark sequence, third row orange crescent-projectile sequence plus the horizontal flame projectile. Maintain all distinct source effects. Each effect must be an isolated object with clear transparent gutters on every side. Scale DOWN flame effects if necessary to separate them; never merge or omit frames.
+4. REMOVE the tiny palette strip at the very bottom; it is not an animation frame.
+5. Remove soft blurry outer glows and stray ember speckle between frames. Use hard-edged, compact stepped orange/amber pixel clusters for flame arcs and impacts. The spaces between sprites must be perfectly transparent.
+
+Keep the dense low-resolution PS1 pixel sprite appearance. Do not smooth the sprites, do not add outlines around entire cells, do not put it on a checkerboard or black background. No text, no labels, no numbers, no guide lines, no watermark. Entire tall complete sheet visible.

@@ -29,9 +29,17 @@ draw_set_alpha(_open);
 draw_rectangle_colour(104, _portrait_top, 216, _portrait_top + _portrait_h,
     make_colour_rgb(68, 24, 6), make_colour_rgb(116, 38, 0),
     make_colour_rgb(190, 70, 0), make_colour_rgb(96, 26, 0), false);
-draw_sprite_part_ext(Mugshots, 0, 136, 128, 98, 94,
-    104, _portrait_top, _face_sx, _face_sy, c_white, _open);
-if (_typing && (anim_timer div 6) mod 2 == 1) {
+if (speaker_is_zero) {
+    // Zero's two 94x112 portraits occupy the top row of the shared atlas.
+    var _zero_src = (_typing && (anim_timer div 6) mod 2 == 1) ? 490 : 392;
+    var _zero_scale = _portrait_h / 112;
+    draw_sprite_part_ext(Mugshots, 0, _zero_src, 0, 94, 112,
+        160 - 47 * _zero_scale, _portrait_top, _zero_scale, _zero_scale, c_white, _open);
+} else {
+    draw_sprite_part_ext(Mugshots, 0, 136, 128, 98, 94,
+        104, _portrait_top, _face_sx, _face_sy, c_white, _open);
+}
+if (!speaker_is_zero && _typing && (anim_timer div 6) mod 2 == 1) {
     // The separate open mouth aligns with the unchanged nose pixels at (180,171).
     draw_sprite_part_ext(Mugshots, 0, 168, 220, 43, 28,
         104 + 44 * _face_sx, _portrait_top + 43 * _face_sy,
@@ -40,7 +48,7 @@ if (_typing && (anim_timer div 6) mod 2 == 1) {
 draw_set_alpha(1);
 
 if (!closing && panel_frame >= 12) {
-    draw_mmx_text(40, 142, "X", MMX_FONT.MEDIUM);
+    draw_mmx_text(40, 142, speaker_name, MMX_FONT.MEDIUM);
     ps1_draw_text(40, 160, pages[page_index], 240, 32, c_white, floor(visible_chars), 1, MMX_FONT.MEDIUM);
     if (!_typing && anim_timer mod 40 < 24) {
         draw_set_colour(c_white);

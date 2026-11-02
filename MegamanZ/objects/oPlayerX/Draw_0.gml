@@ -80,8 +80,8 @@ if (state == PLAYER_STATE.HURT && sprite_exists(sX_Hurt)) {
     var _j_spr = (_is_shooting && sprite_exists(sX_Jump_Shoot)) ? sX_Jump_Shoot : sX_Jump;
     _draw_player(_j_spr, _jump_idx, x, y, facing, 1, 0, c_white, 1);
 } else if (state == PLAYER_STATE.RUN && sprite_exists(sX_Run)) {
-    // 16-frame authentic Run / Run-Shoot animation
-    var _run_frame = (anim_timer * 0.3) % 16;
+    // Share the stride phase with Run-Shoot and the buster muzzle.
+    var _run_frame = run_frame;
     var _r_spr = (_is_shooting && sprite_exists(sX_Run_Shoot)) ? sX_Run_Shoot : sX_Run;
     _draw_player(_r_spr, _run_frame, x, y, facing, 1, 0, c_white, 1);
 } else if (state == PLAYER_STATE.IDLE) {
@@ -89,6 +89,9 @@ if (state == PLAYER_STATE.HURT && sprite_exists(sX_Hurt)) {
         var _prog = (14 - shoot_anim_timer) / 14;
         var _idle_shoot_idx = clamp(floor(_prog * 8), 0, 7);
         _draw_player(sX_Idle_Shoot, _idle_shoot_idx, x, y, facing, 1, 0, c_white, 1);
+    } else if (hp_current > 0 && hp_current <= 4 && grounded && sprite_exists(sX_LowHealth)) {
+        var _low_health_idx = floor(low_health_frame);
+        _draw_player(sX_LowHealth, _low_health_idx, x, y, facing, 1, 0, c_white, 1);
     } else if (sprite_exists(sX_Idle)) {
         var _idle_frame = (anim_timer * 0.12) % 5;
         _draw_player(sX_Idle, _idle_frame, x, y, facing, 1, 0, c_white, 1);
@@ -257,7 +260,7 @@ if (muzzle_flash_sprite != noone && sprite_exists(muzzle_flash_sprite)) {
                 break;
 
             case PLAYER_STATE.RUN:
-                var _rf = floor((anim_timer * 0.3) % 16);
+                var _rf = run_frame;
                 if (_rf >= 6 && _rf <= 11) {
                     _dx = 35;
                 } else if (_rf >= 12 && _rf <= 13) {

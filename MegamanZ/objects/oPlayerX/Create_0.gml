@@ -14,6 +14,7 @@ is_landing = false;
 landing_frame = 8.0;
 was_airborne = false;
 prev_state = PLAYER_STATE.IDLE;
+low_health_frame = 0.0;
 
 // Dash animation
 dash_anim_frame = 0.0;

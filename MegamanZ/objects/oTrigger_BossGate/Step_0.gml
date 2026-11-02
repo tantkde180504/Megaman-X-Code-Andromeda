@@ -46,12 +46,14 @@ switch (gate_state) {
         if (anim_frame >= 13.0) {
             anim_frame = 13.0;
             gate_state = GATE_STATE.WALKING;
-            walk_target_x = x + 40;
+            // Arena entry leaves the player 64px inside the fixed 320px frame.
+            walk_target_x = is_arena_door ? x + 96 : x + 40;
             if (instance_exists(oPlayer)) {
                 var _p = instance_find(oPlayer, 0);
                 _p.is_auto_walking = true;
                 _p.facing = 1;
                 _p.state = PLAYER_STATE.RUN;
+                camera_begin_gate_pan(_p, is_arena_door);
             }
         }
         break;
@@ -66,7 +68,10 @@ switch (gate_state) {
             _p.is_auto_walking = true;
             _p.state = PLAYER_STATE.RUN;
             _p.hsp = walk_spd;
-            _p.x += walk_spd;
+            // Parent player physics applies hsp once, including collisions.
+            // RUN's auto-walk branch skips normal state gravity; descend from
+            // the entrance ledge onto the lower arena floor while walking.
+            if (!_p.grounded) _p.vsp = min(_p.vsp + GRAVITY, MAX_FALL_SPEED);
             
             // Allow floor snapping if floor drops slightly
             if (!place_meeting(_p.x, _p.y + 1, oSolid) && place_meeting(_p.x, _p.y + 4, oSolid)) {
@@ -105,7 +110,7 @@ switch (gate_state) {
         
         if (close_wait_timer > 0) {
             close_wait_timer--;
-        } else {
+        } else if (!camera_gate_pan_running()) {
             gate_state = GATE_STATE.CLOSING;
             if (audio_exists(snd_boss_door_close)) audio_play_sound(snd_boss_door_close, 80, false);
         }

@@ -362,9 +362,7 @@ function scr_build_stage_web_spider() {
     _make_solid(5120, 1840, 320, 64);
     _make_solid(5440, 1840, 32, 300);
     
-    // Bẫy tơ nhện trang trí/cản trở trong đấu trường trùm
-    instance_create_layer(5180, 2096 - 16, "Instances", oWebTrap);
-    instance_create_layer(5360, 2096 - 16, "Instances", oWebTrap);
+    // The arena is reserved for the boss; stage enemies and web traps stay outside.
     
     // Khởi tạo Boss Nightmare Zero trong đấu trường trùm (x: 5250, y: 2096)
     if (!instance_exists(obj_nightmare_zero)) {

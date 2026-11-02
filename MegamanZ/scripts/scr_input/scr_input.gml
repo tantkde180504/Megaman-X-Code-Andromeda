@@ -79,6 +79,7 @@ function input_key_is_bound(_key) {
 
 function input_debug_key_pressed(_key) {
     if (instance_exists(obj_stage_briefing)) return false;
+    if (instance_exists(obj_sky_jungle_transition)) return false;
     return keyboard_check_pressed(_key) && !input_key_is_bound(_key);
 }
 

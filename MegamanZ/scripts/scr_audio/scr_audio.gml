@@ -5,9 +5,23 @@ global.current_bgm_asset = noone;
 global.current_bgm_buffer = noone;
 global.current_bgm_buffer_sound = noone;
 global.current_bgm_stream = noone;
+global.pending_bgm = noone;
+
+/// @desc Retry the latest requested track after browser audio becomes available.
+function music_update_pending() {
+    if (is_struct(global.pending_bgm) && audio_system_is_available()) {
+        var _pending = global.pending_bgm;
+        music_play_track(_pending.asset_id, _pending.datafile_name);
+    }
+}
 
 /// @desc Universal BGM playback with fail-safes (Asset -> Dynamic -> Datafile Stream)
 function music_play_track(_asset_id, _datafile_name = "") {
+    if (display_settings_is_web() && !audio_system_is_available()) {
+        music_stop_all();
+        global.pending_bgm = { asset_id: _asset_id, datafile_name: _datafile_name };
+        return;
+    }
     // If this specific music is already playing, do not interrupt
     if (global.current_bgm != noone && audio_is_playing(global.current_bgm)) {
         if (variable_global_exists("current_bgm_asset") && global.current_bgm_asset == _asset_id) {
@@ -50,7 +64,9 @@ function music_play_track(_asset_id, _datafile_name = "") {
     }
     
     // Tier 3: Direct Included File (datafiles) audio stream
-    if (_datafile_name != "" && file_exists(_datafile_name)) {
+    // HTML5 uses packaged Sound Assets; external streams require OGG files.
+    if (!display_settings_is_web() && string_lower(filename_ext(_datafile_name)) == ".ogg"
+        && file_exists(_datafile_name)) {
         try {
             global.current_bgm_stream = audio_create_stream(_datafile_name);
             if (global.current_bgm_stream != -1) {
@@ -119,6 +135,7 @@ function music_stop_boss_nightmare_zero(_fade_ms = 0) {
 
 /// @desc Stop all active audio & cleanup memory buffers / streams
 function music_stop_all() {
+    global.pending_bgm = noone;
     audio_stop_all();
     if (global.current_bgm_buffer_sound != noone && global.current_bgm_buffer_sound != -1) {
         audio_free_buffer_sound(global.current_bgm_buffer_sound);

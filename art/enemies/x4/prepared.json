@@ -1,0 +1,2525 @@
+{
+  "actors": [
+    {
+      "key": "Bomb",
+      "sprite": "sX4_Bomb",
+      "sheet": "mmm-mmx4bomb.gif",
+      "source_rects": {
+        "idle": [
+          [
+            3,
+            4,
+            23,
+            31
+          ],
+          [
+            27,
+            4,
+            23,
+            31
+          ]
+        ]
+      },
+      "size": [
+        27,
+        35
+      ],
+      "origin": [
+        13,
+        17
+      ],
+      "mask": [
+        5,
+        6,
+        20,
+        28
+      ],
+      "clips": {
+        "idle": [
+          0,
+          2
+        ]
+      },
+      "frames": 2,
+      "object": "oEnemy_X4_Bomb",
+      "kind": "FALLING"
+    },
+    {
+      "key": "Buoy",
+      "sprite": "sX4_Buoy",
+      "sheet": "mmm-mmx4booy.gif",
+      "source_rects": {
+        "idle": [
+          [
+            3,
+            3,
+            28,
+            27
+          ],
+          [
+            33,
+            2,
+            28,
+            28
+          ],
+          [
+            62,
+            0,
+            28,
+            30
+          ],
+          [
+            91,
+            1,
+            31,
+            29
+          ],
+          [
+            125,
+            4,
+            29,
+            26
+          ]
+        ]
+      },
+      "size": [
+        35,
+        34
+      ],
+      "origin": [
+        17,
+        17
+      ],
+      "mask": [
+        8,
+        7,
+        26,
+        26
+      ],
+      "clips": {
+        "idle": [
+          0,
+          5
+        ]
+      },
+      "frames": 5,
+      "object": "oEnemy_X4_Buoy",
+      "kind": "ORBIT"
+    },
+    {
+      "key": "ElectricBall",
+      "sprite": "sX4_ElectricBall",
+      "sheet": "mmm-mmx4elecball.gif",
+      "source_rects": {
+        "idle": [
+          [
+            4,
+            13,
+            52,
+            46
+          ],
+          [
+            57,
+            13,
+            54,
+            46
+          ],
+          [
+            112,
+            13,
+            52,
+            46
+          ],
+          [
+            165,
+            13,
+            50,
+            46
+          ],
+          [
+            216,
+            13,
+            48,
+            46
+          ],
+          [
+            265,
+            13,
+            50,
+            51
+          ],
+          [
+            316,
+            4,
+            52,
+            55
+          ],
+          [
+            369,
+            13,
+            54,
+            46
+          ],
+          [
+            424,
+            13,
+            53,
+            46
+          ],
+          [
+            478,
+            13,
+            48,
+            46
+          ],
+          [
+            527,
+            4,
+            48,
+            55
+          ]
+        ]
+      },
+      "size": [
+        58,
+        59
+      ],
+      "origin": [
+        29,
+        29
+      ],
+      "mask": [
+        11,
+        12,
+        46,
+        45
+      ],
+      "clips": {
+        "idle": [
+          0,
+          11
+        ]
+      },
+      "frames": 11,
+      "object": "oEnemy_X4_ElectricBall",
+      "kind": "ORBIT"
+    },
+    {
+      "key": "MeteorVertical",
+      "sprite": "sX4_MeteorVertical",
+      "sheet": "mmm-mmx4meteor1.gif",
+      "source_rects": {
+        "idle": [
+          [
+            6,
+            46,
+            78,
+            72
+          ],
+          [
+            87,
+            31,
+            78,
+            87
+          ],
+          [
+            168,
+            23,
+            76,
+            95
+          ],
+          [
+            246,
+            23,
+            72,
+            95
+          ],
+          [
+            320,
+            31,
+            72,
+            87
+          ],
+          [
+            396,
+            9,
+            68,
+            109
+          ],
+          [
+            466,
+            46,
+            74,
+            72
+          ],
+          [
+            544,
+            23,
+            72,
+            95
+          ],
+          [
+            619,
+            31,
+            76,
+            87
+          ]
+        ]
+      },
+      "size": [
+        82,
+        113
+      ],
+      "origin": [
+        41,
+        56
+      ],
+      "mask": [
+        14,
+        29,
+        67,
+        82
+      ],
+      "clips": {
+        "idle": [
+          0,
+          9
+        ]
+      },
+      "frames": 9,
+      "object": "oEnemy_X4_MeteorVertical",
+      "kind": "FALLING"
+    },
+    {
+      "key": "MeteorDiagonal",
+      "sprite": "sX4_MeteorDiagonal",
+      "sheet": "mmm-mmx4meteor2.gif",
+      "source_rects": {
+        "idle": [
+          [
+            35,
+            14,
+            112,
+            90
+          ],
+          [
+            151,
+            21,
+            106,
+            88
+          ],
+          [
+            268,
+            24,
+            100,
+            85
+          ],
+          [
+            386,
+            19,
+            82,
+            89
+          ],
+          [
+            477,
+            23,
+            78,
+            83
+          ]
+        ]
+      },
+      "size": [
+        116,
+        94
+      ],
+      "origin": [
+        58,
+        47
+      ],
+      "mask": [
+        19,
+        14,
+        96,
+        80
+      ],
+      "clips": {
+        "idle": [
+          0,
+          5
+        ]
+      },
+      "frames": 5,
+      "object": "oEnemy_X4_MeteorDiagonal",
+      "kind": "FALLING"
+    },
+    {
+      "key": "MiniLaserCannon",
+      "sprite": "sX4_MiniLaserCannon",
+      "sheet": "mmm-mmx4minilasercannon.gif",
+      "source_rects": {
+        "idle": [
+          [
+            11,
+            10,
+            31,
+            40
+          ],
+          [
+            45,
+            10,
+            29,
+            41
+          ],
+          [
+            76,
+            10,
+            29,
+            45
+          ],
+          [
+            110,
+            10,
+            29,
+            38
+          ]
+        ],
+        "attack": [
+          [
+            157,
+            8,
+            52,
+            43
+          ],
+          [
+            210,
+            3,
+            53,
+            48
+          ],
+          [
+            266,
+            3,
+            53,
+            48
+          ]
+        ]
+      },
+      "size": [
+        57,
+        52
+      ],
+      "origin": [
+        28,
+        26
+      ],
+      "mask": [
+        18,
+        11,
+        38,
+        40
+      ],
+      "clips": {
+        "idle": [
+          0,
+          4
+        ],
+        "attack": [
+          4,
+          3
+        ]
+      },
+      "frames": 7,
+      "object": "oEnemy_X4_MiniLaserCannon",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "ReploidArmor",
+      "sprite": "sX4_ReploidArmor",
+      "sheet": "mmm-mmx4repliodarmor.gif",
+      "source_rects": {
+        "idle": [
+          [
+            9,
+            46,
+            58,
+            73
+          ]
+        ],
+        "move": [
+          [
+            9,
+            46,
+            58,
+            73
+          ],
+          [
+            72,
+            47,
+            58,
+            72
+          ],
+          [
+            134,
+            49,
+            58,
+            70
+          ]
+        ],
+        "attack": [
+          [
+            197,
+            35,
+            89,
+            84
+          ],
+          [
+            302,
+            28,
+            84,
+            91
+          ],
+          [
+            396,
+            11,
+            91,
+            108
+          ]
+        ]
+      },
+      "size": [
+        95,
+        112
+      ],
+      "origin": [
+        47,
+        110
+      ],
+      "mask": [
+        27,
+        56,
+        66,
+        109
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ],
+        "move": [
+          1,
+          3
+        ],
+        "attack": [
+          4,
+          3
+        ]
+      },
+      "frames": 7,
+      "object": "oEnemy_X4_ReploidArmor",
+      "kind": "CHARGER"
+    },
+    {
+      "key": "SpikeBall",
+      "sprite": "sX4_SpikeBall",
+      "sheet": "mmm-mmx4spikeball.gif",
+      "source_rects": {
+        "idle": [
+          [
+            18,
+            8,
+            41,
+            31
+          ],
+          [
+            60,
+            8,
+            41,
+            31
+          ],
+          [
+            102,
+            8,
+            41,
+            31
+          ],
+          [
+            146,
+            9,
+            37,
+            30
+          ],
+          [
+            185,
+            8,
+            36,
+            30
+          ],
+          [
+            222,
+            9,
+            37,
+            35
+          ],
+          [
+            260,
+            9,
+            32,
+            29
+          ]
+        ]
+      },
+      "size": [
+        45,
+        39
+      ],
+      "origin": [
+        22,
+        37
+      ],
+      "mask": [
+        8,
+        14,
+        35,
+        36
+      ],
+      "clips": {
+        "idle": [
+          0,
+          7
+        ]
+      },
+      "frames": 7,
+      "object": "oEnemy_X4_SpikeBall",
+      "kind": "PATROL"
+    },
+    {
+      "key": "SpringDude",
+      "sprite": "sX4_SpringDude",
+      "sheet": "mmm-mmx4springdude.gif",
+      "source_rects": {
+        "idle": [
+          [
+            4,
+            14,
+            43,
+            35
+          ]
+        ],
+        "move": [
+          [
+            4,
+            14,
+            44,
+            35
+          ],
+          [
+            49,
+            8,
+            41,
+            41
+          ],
+          [
+            91,
+            5,
+            39,
+            44
+          ],
+          [
+            131,
+            5,
+            35,
+            44
+          ],
+          [
+            167,
+            15,
+            45,
+            34
+          ],
+          [
+            213,
+            15,
+            45,
+            34
+          ],
+          [
+            259,
+            17,
+            46,
+            32
+          ],
+          [
+            306,
+            17,
+            44,
+            32
+          ]
+        ],
+        "attack": [
+          [
+            12,
+            50,
+            35,
+            36
+          ],
+          [
+            48,
+            50,
+            34,
+            36
+          ],
+          [
+            83,
+            50,
+            39,
+            36
+          ]
+        ]
+      },
+      "size": [
+        50,
+        48
+      ],
+      "origin": [
+        25,
+        46
+      ],
+      "mask": [
+        10,
+        20,
+        39,
+        45
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ],
+        "move": [
+          1,
+          8
+        ],
+        "attack": [
+          9,
+          3
+        ]
+      },
+      "frames": 12,
+      "object": "oEnemy_X4_SpringDude",
+      "kind": "HOPPER"
+    },
+    {
+      "key": "Surprise",
+      "sprite": "sX4_Surprise",
+      "sheet": "mmm-mmx4surpise.gif",
+      "source_rects": {
+        "idle": [
+          [
+            8,
+            9,
+            50,
+            48
+          ],
+          [
+            61,
+            9,
+            43,
+            48
+          ],
+          [
+            107,
+            9,
+            50,
+            48
+          ],
+          [
+            164,
+            9,
+            43,
+            49
+          ],
+          [
+            214,
+            9,
+            44,
+            51
+          ],
+          [
+            261,
+            9,
+            42,
+            51
+          ]
+        ],
+        "move": [
+          [
+            24,
+            71,
+            40,
+            54
+          ],
+          [
+            73,
+            71,
+            41,
+            56
+          ],
+          [
+            123,
+            71,
+            35,
+            61
+          ],
+          [
+            165,
+            71,
+            31,
+            55
+          ],
+          [
+            201,
+            71,
+            35,
+            61
+          ],
+          [
+            240,
+            71,
+            31,
+            55
+          ]
+        ]
+      },
+      "size": [
+        54,
+        65
+      ],
+      "origin": [
+        27,
+        63
+      ],
+      "mask": [
+        10,
+        27,
+        44,
+        62
+      ],
+      "clips": {
+        "idle": [
+          0,
+          6
+        ],
+        "move": [
+          6,
+          6
+        ]
+      },
+      "frames": 12,
+      "object": "oEnemy_X4_Surprise",
+      "kind": "HOPPER"
+    },
+    {
+      "key": "Triangle",
+      "sprite": "sX4_Triangle",
+      "sheet": "mmm-mmx4triangle.gif",
+      "source_rects": {
+        "idle": [
+          [
+            5,
+            13,
+            16,
+            15
+          ],
+          [
+            22,
+            12,
+            15,
+            16
+          ],
+          [
+            38,
+            12,
+            16,
+            16
+          ],
+          [
+            55,
+            11,
+            17,
+            17
+          ],
+          [
+            73,
+            11,
+            14,
+            17
+          ],
+          [
+            88,
+            10,
+            19,
+            18
+          ],
+          [
+            108,
+            7,
+            18,
+            21
+          ],
+          [
+            127,
+            7,
+            23,
+            21
+          ],
+          [
+            151,
+            6,
+            19,
+            22
+          ],
+          [
+            171,
+            8,
+            22,
+            20
+          ]
+        ]
+      },
+      "size": [
+        27,
+        26
+      ],
+      "origin": [
+        13,
+        13
+      ],
+      "mask": [
+        8,
+        8,
+        18,
+        18
+      ],
+      "clips": {
+        "idle": [
+          0,
+          10
+        ]
+      },
+      "frames": 10,
+      "object": "oEnemy_X4_Triangle",
+      "kind": "ORBIT"
+    },
+    {
+      "key": "WalkCannon",
+      "sprite": "sX4_WalkCannon",
+      "sheet": "mmm-mmx4walkcannon.gif",
+      "source_rects": {
+        "idle": [
+          [
+            6,
+            7,
+            34,
+            41
+          ],
+          [
+            44,
+            9,
+            37,
+            39
+          ],
+          [
+            83,
+            10,
+            34,
+            39
+          ],
+          [
+            120,
+            8,
+            34,
+            40
+          ],
+          [
+            156,
+            8,
+            34,
+            40
+          ],
+          [
+            196,
+            9,
+            34,
+            39
+          ]
+        ],
+        "move": [
+          [
+            21,
+            63,
+            34,
+            40
+          ],
+          [
+            61,
+            65,
+            34,
+            38
+          ],
+          [
+            100,
+            71,
+            34,
+            32
+          ],
+          [
+            139,
+            58,
+            34,
+            45
+          ],
+          [
+            178,
+            54,
+            34,
+            49
+          ]
+        ],
+        "attack": [
+          [
+            53,
+            117,
+            43,
+            43
+          ],
+          [
+            98,
+            112,
+            29,
+            50
+          ]
+        ]
+      },
+      "size": [
+        47,
+        54
+      ],
+      "origin": [
+        23,
+        52
+      ],
+      "mask": [
+        12,
+        22,
+        34,
+        51
+      ],
+      "clips": {
+        "idle": [
+          0,
+          6
+        ],
+        "move": [
+          6,
+          5
+        ],
+        "attack": [
+          11,
+          2
+        ]
+      },
+      "frames": 13,
+      "object": "oEnemy_X4_WalkCannon",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "UFO",
+      "sprite": "sX4_UFO",
+      "sheet": "mmx4-ufo.gif",
+      "source_rects": {
+        "idle": [
+          [
+            7,
+            5,
+            536,
+            57
+          ]
+        ]
+      },
+      "size": [
+        540,
+        61
+      ],
+      "origin": [
+        270,
+        30
+      ],
+      "mask": [
+        83,
+        9,
+        457,
+        50
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ]
+      },
+      "frames": 1,
+      "object": "oEnemy_X4_UFO",
+      "kind": "HOVER"
+    },
+    {
+      "key": "DeathGuardian",
+      "sprite": "sX4_DeathGuardian",
+      "sheet": "mmx4__death_guardian.gif",
+      "source_rects": {
+        "idle": [
+          [
+            103,
+            5,
+            29,
+            26
+          ],
+          [
+            151,
+            5,
+            29,
+            26
+          ],
+          [
+            199,
+            5,
+            29,
+            26
+          ]
+        ],
+        "attack": [
+          [
+            67,
+            54,
+            35,
+            87
+          ],
+          [
+            112,
+            52,
+            53,
+            86
+          ],
+          [
+            177,
+            51,
+            86,
+            53
+          ],
+          [
+            281,
+            42,
+            90,
+            32
+          ]
+        ]
+      },
+      "size": [
+        94,
+        91
+      ],
+      "origin": [
+        47,
+        45
+      ],
+      "mask": [
+        37,
+        36,
+        56,
+        54
+      ],
+      "clips": {
+        "idle": [
+          0,
+          3
+        ],
+        "attack": [
+          3,
+          4
+        ]
+      },
+      "frames": 7,
+      "object": "oEnemy_X4_DeathGuardian",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "Dejira",
+      "sprite": "sX4_Dejira",
+      "sheet": "mmx4__dejira.gif",
+      "source_rects": {
+        "idle": [
+          [
+            44,
+            4,
+            28,
+            28
+          ],
+          [
+            83,
+            6,
+            28,
+            21
+          ],
+          [
+            124,
+            7,
+            28,
+            19
+          ],
+          [
+            163,
+            7,
+            28,
+            19
+          ],
+          [
+            204,
+            4,
+            28,
+            28
+          ],
+          [
+            247,
+            4,
+            19,
+            28
+          ],
+          [
+            274,
+            4,
+            19,
+            28
+          ],
+          [
+            306,
+            4,
+            21,
+            28
+          ],
+          [
+            342,
+            4,
+            28,
+            28
+          ]
+        ]
+      },
+      "size": [
+        32,
+        32
+      ],
+      "origin": [
+        16,
+        16
+      ],
+      "mask": [
+        7,
+        6,
+        25,
+        26
+      ],
+      "clips": {
+        "idle": [
+          0,
+          9
+        ]
+      },
+      "frames": 9,
+      "object": "oEnemy_X4_Dejira",
+      "kind": "HOVER"
+    },
+    {
+      "key": "Gigadeath",
+      "sprite": "sX4_Gigadeath",
+      "sheet": "mmx4__gigadeath.gif",
+      "source_rects": {
+        "idle": [
+          [
+            118,
+            265,
+            84,
+            73
+          ]
+        ]
+      },
+      "size": [
+        88,
+        77
+      ],
+      "origin": [
+        44,
+        75
+      ],
+      "mask": [
+        15,
+        21,
+        72,
+        74
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ]
+      },
+      "frames": 1,
+      "object": "oEnemy_X4_Gigadeath",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "Hornet",
+      "sprite": "sX4_Hornet",
+      "sheet": "mmx4__hornet.gif",
+      "source_rects": {
+        "idle": [
+          [
+            3,
+            9,
+            73,
+            43
+          ],
+          [
+            81,
+            4,
+            67,
+            52
+          ],
+          [
+            153,
+            9,
+            79,
+            40
+          ],
+          [
+            234,
+            5,
+            78,
+            50
+          ]
+        ]
+      },
+      "size": [
+        83,
+        56
+      ],
+      "origin": [
+        41,
+        28
+      ],
+      "mask": [
+        16,
+        12,
+        66,
+        43
+      ],
+      "clips": {
+        "idle": [
+          0,
+          4
+        ]
+      },
+      "frames": 4,
+      "object": "oEnemy_X4_Hornet",
+      "kind": "HOVER"
+    },
+    {
+      "key": "HoverGunner",
+      "sprite": "sX4_HoverGunner",
+      "sheet": "mmx4__hover_gunner.gif",
+      "source_rects": {
+        "idle": [
+          [
+            4,
+            5,
+            25,
+            23
+          ],
+          [
+            32,
+            1,
+            24,
+            27
+          ],
+          [
+            59,
+            3,
+            24,
+            25
+          ],
+          [
+            86,
+            2,
+            24,
+            26
+          ],
+          [
+            113,
+            1,
+            24,
+            27
+          ]
+        ]
+      },
+      "size": [
+        29,
+        31
+      ],
+      "origin": [
+        14,
+        15
+      ],
+      "mask": [
+        6,
+        7,
+        22,
+        23
+      ],
+      "clips": {
+        "idle": [
+          0,
+          5
+        ]
+      },
+      "frames": 5,
+      "object": "oEnemy_X4_HoverGunner",
+      "kind": "HOVER"
+    },
+    {
+      "key": "KingPoseidon",
+      "sprite": "sX4_KingPoseidon",
+      "sheet": "mmx4__king_poseidon.gif",
+      "source_rects": {
+        "idle": [
+          [
+            8,
+            10,
+            59,
+            64
+          ]
+        ],
+        "move": [
+          [
+            144,
+            3,
+            56,
+            75
+          ],
+          [
+            209,
+            3,
+            56,
+            75
+          ]
+        ],
+        "attack": [
+          [
+            308,
+            19,
+            131,
+            48
+          ],
+          [
+            450,
+            19,
+            104,
+            47
+          ]
+        ]
+      },
+      "size": [
+        137,
+        79
+      ],
+      "origin": [
+        101,
+        77
+      ],
+      "mask": [
+        81,
+        29,
+        121,
+        76
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ],
+        "move": [
+          1,
+          2
+        ],
+        "attack": [
+          3,
+          2
+        ]
+      },
+      "frames": 5,
+      "object": "oEnemy_X4_KingPoseidon",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "Kunbien",
+      "sprite": "sX4_Kunbien",
+      "sheet": "mmx4__kunbien_meganest.gif",
+      "source_rects": {
+        "idle": [
+          [
+            7,
+            3,
+            21,
+            33
+          ],
+          [
+            31,
+            3,
+            22,
+            33
+          ],
+          [
+            57,
+            3,
+            22,
+            33
+          ],
+          [
+            82,
+            3,
+            22,
+            33
+          ],
+          [
+            122,
+            3,
+            19,
+            32
+          ],
+          [
+            144,
+            5,
+            18,
+            30
+          ],
+          [
+            165,
+            3,
+            23,
+            31
+          ],
+          [
+            191,
+            4,
+            27,
+            28
+          ]
+        ]
+      },
+      "size": [
+        31,
+        37
+      ],
+      "origin": [
+        15,
+        18
+      ],
+      "mask": [
+        8,
+        6,
+        21,
+        29
+      ],
+      "clips": {
+        "idle": [
+          0,
+          8
+        ]
+      },
+      "frames": 8,
+      "object": "oEnemy_X4_Kunbien",
+      "kind": "HOVER"
+    },
+    {
+      "key": "Meganest",
+      "sprite": "sX4_Meganest",
+      "sheet": "mmx4__kunbien_meganest.gif",
+      "source_rects": {
+        "idle": [
+          [
+            27,
+            167,
+            79,
+            110
+          ]
+        ],
+        "destroyed": [
+          [
+            127,
+            167,
+            76,
+            103
+          ]
+        ]
+      },
+      "size": [
+        83,
+        114
+      ],
+      "origin": [
+        41,
+        57
+      ],
+      "mask": [
+        14,
+        16,
+        68,
+        97
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ],
+        "destroyed": [
+          1,
+          1
+        ]
+      },
+      "frames": 2,
+      "object": "oEnemy_X4_Meganest",
+      "kind": "NEST"
+    },
+    {
+      "key": "MadBull97",
+      "sprite": "sX4_MadBull97",
+      "sheet": "mmx4__mad_bull_97.gif",
+      "source_rects": {
+        "idle": [
+          [
+            4,
+            13,
+            80,
+            100
+          ]
+        ],
+        "attack": [
+          [
+            138,
+            58,
+            85,
+            53
+          ]
+        ]
+      },
+      "size": [
+        89,
+        104
+      ],
+      "origin": [
+        44,
+        102
+      ],
+      "mask": [
+        16,
+        27,
+        71,
+        101
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ],
+        "attack": [
+          1,
+          1
+        ]
+      },
+      "frames": 2,
+      "object": "oEnemy_X4_MadBull97",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "MetalGabyool",
+      "sprite": "sX4_MetalGabyool",
+      "sheet": "mmx4__metal_gabyool.gif",
+      "source_rects": {
+        "idle": [
+          [
+            7,
+            6,
+            21,
+            25
+          ],
+          [
+            47,
+            6,
+            21,
+            25
+          ],
+          [
+            87,
+            6,
+            23,
+            25
+          ],
+          [
+            127,
+            6,
+            24,
+            25
+          ],
+          [
+            167,
+            6,
+            21,
+            25
+          ],
+          [
+            207,
+            6,
+            21,
+            25
+          ],
+          [
+            247,
+            6,
+            21,
+            25
+          ],
+          [
+            285,
+            6,
+            23,
+            25
+          ],
+          [
+            327,
+            6,
+            25,
+            25
+          ],
+          [
+            367,
+            6,
+            23,
+            25
+          ],
+          [
+            407,
+            6,
+            21,
+            25
+          ],
+          [
+            447,
+            6,
+            21,
+            25
+          ],
+          [
+            483,
+            6,
+            25,
+            25
+          ],
+          [
+            524,
+            6,
+            24,
+            25
+          ],
+          [
+            565,
+            6,
+            23,
+            25
+          ],
+          [
+            607,
+            6,
+            21,
+            25
+          ]
+        ]
+      },
+      "size": [
+        29,
+        29
+      ],
+      "origin": [
+        14,
+        27
+      ],
+      "mask": [
+        7,
+        9,
+        20,
+        26
+      ],
+      "clips": {
+        "idle": [
+          0,
+          16
+        ]
+      },
+      "frames": 16,
+      "object": "oEnemy_X4_MetalGabyool",
+      "kind": "PATROL"
+    },
+    {
+      "key": "MetalHawk",
+      "sprite": "sX4_MetalHawk",
+      "sheet": "mmx4__metal_hawk.gif",
+      "source_rects": {
+        "idle": [
+          [
+            2,
+            132,
+            160,
+            105
+          ],
+          [
+            170,
+            119,
+            160,
+            128
+          ],
+          [
+            342,
+            106,
+            160,
+            152
+          ]
+        ]
+      },
+      "size": [
+        164,
+        156
+      ],
+      "origin": [
+        82,
+        78
+      ],
+      "mask": [
+        26,
+        39,
+        137,
+        116
+      ],
+      "clips": {
+        "idle": [
+          0,
+          3
+        ]
+      },
+      "frames": 3,
+      "object": "oEnemy_X4_MetalHawk",
+      "kind": "HOVER"
+    },
+    {
+      "key": "Obeel",
+      "sprite": "sX4_Obeel",
+      "sheet": "mmx4__obeel.gif",
+      "source_rects": {
+        "idle": [
+          [
+            3,
+            2,
+            38,
+            30
+          ],
+          [
+            61,
+            10,
+            55,
+            22
+          ],
+          [
+            135,
+            14,
+            56,
+            22
+          ],
+          [
+            202,
+            7,
+            53,
+            26
+          ],
+          [
+            274,
+            3,
+            44,
+            29
+          ]
+        ]
+      },
+      "size": [
+        60,
+        34
+      ],
+      "origin": [
+        30,
+        17
+      ],
+      "mask": [
+        17,
+        6,
+        42,
+        27
+      ],
+      "clips": {
+        "idle": [
+          0,
+          5
+        ]
+      },
+      "frames": 5,
+      "object": "oEnemy_X4_Obeel",
+      "kind": "HOVER"
+    },
+    {
+      "key": "PlasmaCannon",
+      "sprite": "sX4_PlasmaCannon",
+      "sheet": "mmx4__plasma_cannon.gif",
+      "source_rects": {
+        "idle": [
+          [
+            37,
+            2,
+            101,
+            40
+          ]
+        ],
+        "attack": [
+          [
+            143,
+            243,
+            95,
+            44
+          ]
+        ]
+      },
+      "size": [
+        105,
+        48
+      ],
+      "origin": [
+        52,
+        24
+      ],
+      "mask": [
+        17,
+        9,
+        86,
+        38
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ],
+        "attack": [
+          1,
+          1
+        ]
+      },
+      "frames": 2,
+      "object": "oEnemy_X4_PlasmaCannon",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "SpiderCore",
+      "sprite": "sX4_SpiderCore",
+      "sheet": "mmx4__spider_core.gif",
+      "source_rects": {
+        "idle": [
+          [
+            84,
+            4,
+            27,
+            28
+          ],
+          [
+            124,
+            5,
+            33,
+            24
+          ],
+          [
+            183,
+            6,
+            31,
+            24
+          ],
+          [
+            238,
+            5,
+            33,
+            26
+          ],
+          [
+            295,
+            6,
+            31,
+            24
+          ],
+          [
+            350,
+            7,
+            34,
+            23
+          ],
+          [
+            404,
+            6,
+            34,
+            25
+          ],
+          [
+            462,
+            6,
+            34,
+            24
+          ]
+        ]
+      },
+      "size": [
+        38,
+        32
+      ],
+      "origin": [
+        19,
+        30
+      ],
+      "mask": [
+        10,
+        9,
+        27,
+        29
+      ],
+      "clips": {
+        "idle": [
+          0,
+          8
+        ]
+      },
+      "frames": 8,
+      "object": "oEnemy_X4_SpiderCore",
+      "kind": "PATROL"
+    },
+    {
+      "key": "TentoroidBS",
+      "sprite": "sX4_TentoroidBS",
+      "sheet": "mmx4__tentoroid_bs__0.png",
+      "source_rects": {
+        "idle": [
+          [
+            29,
+            8,
+            58,
+            41
+          ],
+          [
+            100,
+            2,
+            60,
+            47
+          ],
+          [
+            172,
+            2,
+            44,
+            47
+          ]
+        ],
+        "attack": [
+          [
+            17,
+            58,
+            42,
+            47
+          ],
+          [
+            77,
+            58,
+            38,
+            48
+          ],
+          [
+            133,
+            58,
+            37,
+            47
+          ],
+          [
+            184,
+            58,
+            44,
+            47
+          ]
+        ]
+      },
+      "size": [
+        64,
+        52
+      ],
+      "origin": [
+        32,
+        26
+      ],
+      "mask": [
+        12,
+        11,
+        51,
+        40
+      ],
+      "clips": {
+        "idle": [
+          0,
+          3
+        ],
+        "attack": [
+          3,
+          4
+        ]
+      },
+      "frames": 7,
+      "object": "oEnemy_X4_TentoroidBS",
+      "kind": "CHARGER"
+    },
+    {
+      "key": "Togerikusu",
+      "sprite": "sX4_Togerikusu",
+      "sheet": "mmx4__togerikusu1.gif",
+      "source_rects": {
+        "idle": [
+          [
+            2,
+            17,
+            30,
+            37
+          ],
+          [
+            42,
+            16,
+            30,
+            38
+          ]
+        ],
+        "attack": [
+          [
+            86,
+            11,
+            28,
+            45
+          ],
+          [
+            122,
+            10,
+            32,
+            53
+          ],
+          [
+            162,
+            9,
+            38,
+            54
+          ],
+          [
+            218,
+            9,
+            39,
+            54
+          ],
+          [
+            274,
+            9,
+            41,
+            54
+          ],
+          [
+            330,
+            9,
+            41,
+            54
+          ],
+          [
+            386,
+            9,
+            41,
+            54
+          ],
+          [
+            442,
+            9,
+            41,
+            54
+          ],
+          [
+            498,
+            9,
+            41,
+            54
+          ],
+          [
+            554,
+            9,
+            41,
+            54
+          ]
+        ]
+      },
+      "size": [
+        45,
+        58
+      ],
+      "origin": [
+        22,
+        29
+      ],
+      "mask": [
+        12,
+        16,
+        32,
+        42
+      ],
+      "clips": {
+        "idle": [
+          0,
+          2
+        ],
+        "attack": [
+          2,
+          10
+        ]
+      },
+      "frames": 12,
+      "object": "oEnemy_X4_Togerikusu",
+      "kind": "ORBIT"
+    },
+    {
+      "key": "TrapBlast",
+      "sprite": "sX4_TrapBlast",
+      "sheet": "mmx4__trap_blast__0.gif",
+      "source_rects": {
+        "idle": [
+          [
+            2,
+            29,
+            45,
+            31
+          ]
+        ]
+      },
+      "size": [
+        49,
+        35
+      ],
+      "origin": [
+        24,
+        17
+      ],
+      "mask": [
+        9,
+        6,
+        39,
+        28
+      ],
+      "clips": {
+        "idle": [
+          0,
+          1
+        ]
+      },
+      "frames": 1,
+      "object": "oEnemy_X4_TrapBlast",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "TrapBlastVertical",
+      "sprite": "sX4_TrapBlastVertical",
+      "sheet": "mmx4__trap_blast__1.gif",
+      "source_rects": {
+        "idle": [
+          [
+            167,
+            57,
+            54,
+            31
+          ],
+          [
+            176,
+            89,
+            45,
+            31
+          ],
+          [
+            172,
+            121,
+            49,
+            31
+          ]
+        ],
+        "impact": [
+          [
+            187,
+            154,
+            21,
+            25
+          ]
+        ]
+      },
+      "size": [
+        58,
+        35
+      ],
+      "origin": [
+        29,
+        17
+      ],
+      "mask": [
+        11,
+        6,
+        47,
+        28
+      ],
+      "clips": {
+        "idle": [
+          0,
+          3
+        ],
+        "impact": [
+          3,
+          1
+        ]
+      },
+      "frames": 4,
+      "object": "oEnemy_X4_TrapBlastVertical",
+      "kind": "SHOOTER"
+    },
+    {
+      "key": "Yukidalbon",
+      "sprite": "sX4_Yukidalbon",
+      "sheet": "mmx4__yukidalbon.gif",
+      "source_rects": {
+        "idle": [
+          [
+            5,
+            2,
+            26,
+            32
+          ],
+          [
+            44,
+            2,
+            28,
+            32
+          ],
+          [
+            85,
+            6,
+            26,
+            28
+          ],
+          [
+            125,
+            8,
+            27,
+            26
+          ]
+        ],
+        "move": [
+          [
+            202,
+            13,
+            32,
+            21
+          ],
+          [
+            242,
+            13,
+            32,
+            21
+          ],
+          [
+            282,
+            14,
+            32,
+            20
+          ],
+          [
+            323,
+            13,
+            31,
+            21
+          ]
+        ]
+      },
+      "size": [
+        36,
+        36
+      ],
+      "origin": [
+        18,
+        34
+      ],
+      "mask": [
+        9,
+        10,
+        26,
+        33
+      ],
+      "clips": {
+        "idle": [
+          0,
+          4
+        ],
+        "move": [
+          4,
+          4
+        ]
+      },
+      "frames": 8,
+      "object": "oEnemy_X4_Yukidalbon",
+      "kind": "HOPPER"
+    },
+    {
+      "key": "Wasp",
+      "sprite": "sX4_Wasp",
+      "sheet": "rmx4-waspenemy.png",
+      "source_rects": {
+        "idle": [
+          [
+            1,
+            16,
+            66,
+            37
+          ],
+          [
+            72,
+            11,
+            66,
+            42
+          ],
+          [
+            143,
+            6,
+            64,
+            47
+          ]
+        ],
+        "attack": [
+          [
+            272,
+            16,
+            66,
+            36
+          ],
+          [
+            341,
+            11,
+            66,
+            41
+          ],
+          [
+            410,
+            6,
+            64,
+            46
+          ]
+        ]
+      },
+      "size": [
+        70,
+        51
+      ],
+      "origin": [
+        35,
+        25
+      ],
+      "mask": [
+        12,
+        12,
+        57,
+        38
+      ],
+      "clips": {
+        "idle": [
+          0,
+          3
+        ],
+        "attack": [
+          3,
+          3
+        ]
+      },
+      "frames": 6,
+      "object": "oEnemy_X4_Wasp",
+      "kind": "HOVER"
+    },
+    {
+      "key": "RockLedge",
+      "sprite": "sX4_RockLedge",
+      "sheet": "mmm-mmx4rockledge.gif",
+      "source_rects": {
+        "idle": [
+          [
+            5,
+            3,
+            64,
+            64
+          ],
+          [
+            70,
+            3,
+            64,
+            64
+          ]
+        ]
+      },
+      "size": [
+        68,
+        68
+      ],
+      "origin": [
+        34,
+        34
+      ],
+      "mask": [
+        12,
+        10,
+        55,
+        57
+      ],
+      "clips": {
+        "idle": [
+          0,
+          2
+        ]
+      },
+      "frames": 2
+    }
+  ],
+  "source_coverage": {
+    "mmm-mmx4beetle1.gif": "oEnemy_TentoroidRS",
+    "mmm-mmx4beetle2.gif": "oEnemy_X4_TentoroidBS (alternate source sheet)",
+    "mmx4__batton_bone_b81.gif": "oEnemy_Batton",
+    "mmx4__fly_gunner.gif": "oEnemy_FlyGunner",
+    "mmx4__guardian.gif": "oEnemy_Guardian",
+    "mmx4__mettool_d2.gif": "oEnemy_MettaurD2",
+    "mmx4__spiky_mk-ii.png": "oEnemy_SpikyMKII",
+    "rmx4__spiky_mk-ii.png": "oEnemy_SpikyMKII (alternate sheet)",
+    "rmx4__tentoroid_bs.png": "oEnemy_X4_TentoroidBS (alternate sheet)",
+    "x4grenademan.gif": "oEnemy_KnotBeretB",
+    "x4grenademan2.gif": "oEnemy_KnotBeretG"
+  }
+}

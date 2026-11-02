@@ -8,6 +8,9 @@ death_timer = 0;
 death_phase = 0;
 is_dash_jumping = false;
 anim_timer = 0;
+run_anim_tick = 0;
+run_frame = 0;
+wall_fx_timer = 0;
 is_ladder_exiting = false;
 ladder_exit_frame = 0.0;
 

@@ -38,6 +38,10 @@ if (_is_menu_room) {
 
 if (!instance_exists(oInput)) instance_create_layer(0, 0, "Instances", oInput);
 if (!instance_exists(oCamera)) instance_create_layer(0, 0, "Instances", oCamera);
+// The camera persists between rooms; a checkpoint restart releases the arena frame.
+oCamera.boss_arena_locked = false;
+oCamera.gate_pan_active = false;
+oCamera.follow_target_id = noone;
 if (!instance_exists(oUI_HUD)) instance_create_layer(0, 0, "Instances", oUI_HUD);
 if (!instance_exists(oParallaxBackground)) instance_create_layer(0, 0, "Instances", oParallaxBackground);
 
@@ -46,6 +50,8 @@ if (room == Room1) {
     scr_build_test_room();
 } else if (room_get_name(room) == "rStage_Intro") {
     scr_build_stage_intro();
+} else if (room == rStage_Sky) {
+    scr_build_stage_sky();
 } else if (room_get_name(room) == "rStage_WebSpider") {
     scr_build_stage_web_spider();
 } else if (room_get_name(room) == "rBoss_NightmareZero") {
@@ -102,6 +108,11 @@ if (!instance_exists(oPlayer)) {
     if (room_get_name(room) == "rBoss_NightmareZero" && !_respawning) {
         _spawn_x = 80;
         _spawn_y = 240;
+    } else if (room == rStage_Sky && !_respawning) {
+        _spawn_x = 64;
+        _spawn_y = 1152;
+        global.checkpoint_x = _spawn_x;
+        global.checkpoint_y = _spawn_y;
     } else if (room_get_name(room) == "rStage_WebSpider") {
         if (!_respawning && (_spawn_y == 440 || _spawn_y == 750 || _spawn_y == 480 || _spawn_y == 352)) {
             _spawn_x = 64;
@@ -149,14 +160,14 @@ if (!instance_exists(oPlayer)) {
         }
     }
     if (instance_exists(oCamera)) {
-        var _camera_pos = camera_update_follow(view_camera[0], _p.x, _p.y);
-        oCamera.cam_x = _camera_pos[0];
-        oCamera.cam_y = _camera_pos[1];
-        oCamera.shake_timer = 0;
-        camera_set_view_pos(view_camera[0], _camera_pos[0], _camera_pos[1]);
+        camera_reset_follow(_p);
     }
 }
 global.pending_respawn = noone;
+
+// Reserve all entry/checkpoint screens on every build, including room restarts.
+stage_encounters_configure(global.checkpoint_x, global.checkpoint_y);
+stage_encounters_clear_reserved();
 
 // Play READY on stage entry alongside the player's teleport-in.
 // Menu rooms return above, and the overlay is non-persistent.
@@ -170,4 +181,13 @@ if (!_respawning && !instance_exists(obj_ready_intro)) {
 if (!_respawning && room_get_name(room) == "rStage_Sky"
     && global.current_char == CHAR_TYPE.X && !instance_exists(obj_stage_briefing)) {
     instance_create_layer(0, 0, "Instances", obj_stage_briefing);
+}
+
+// Consume the story handoff once; normal Jungle entry and deaths do not replay it.
+if (global.sky_jungle_briefing_pending) {
+    global.sky_jungle_briefing_pending = false;
+    if (!_respawning && room == rStage_WebSpider && global.current_char == CHAR_TYPE.ZERO
+        && !instance_exists(obj_stage_briefing)) {
+        instance_create_layer(0, 0, "Instances", obj_stage_briefing);
+    }
 }

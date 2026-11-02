@@ -1,4 +1,8 @@
 /// @desc Mini Spider Minion Step
+if (stage_encounters_reserved(x, y)) {
+    instance_destroy();
+    return;
+}
 anim_timer += 0.2;
 
 // Health check
@@ -26,9 +30,6 @@ switch (spider_state) {
             spider_state = SPIDER_MINION_STATE.FLOOR;
             floor_crawl_timer = 0;
             facing = crawl_dir;
-            if (object_exists(oFX_DashDust)) {
-                instance_create_layer(x, y, "Instances", oFX_DashDust);
-            }
         }
         break;
         

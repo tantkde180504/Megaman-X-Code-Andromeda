@@ -1,3 +1,1 @@
-﻿image_alpha -= 0.1;
-y -= 0.2;
-if (image_alpha <= 0) instance_destroy();
+fx_x4_advance();

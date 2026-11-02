@@ -92,7 +92,8 @@ enter_title_state = function(_state) {
             flash_alpha = 0.0;
             logo_frame = 0;
             logo_animating = false;
-            intro_audio_pending = false;
+            // Keep a browser-delayed title track pending if the intro is skipped.
+            intro_audio_pending = display_settings_is_web() && intro_audio_pending;
             menu_blink = 0;
             global.title_intro_done = true;
             // The Title track continues after the logo reveal and into the menu.

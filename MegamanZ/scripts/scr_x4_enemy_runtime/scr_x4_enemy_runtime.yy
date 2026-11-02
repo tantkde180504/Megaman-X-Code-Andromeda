@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_x4_enemy_runtime",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_x4_enemy_runtime",
+  "parent":{"name":"Scripts","path":"folders/Scripts.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

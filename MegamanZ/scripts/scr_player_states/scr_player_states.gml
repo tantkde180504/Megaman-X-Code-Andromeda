@@ -117,7 +117,7 @@ function player_state_idle() {
             if (_move != 0) facing = _move;
             hsp = facing * DASH_JUMP_SPEED;
             if (object_exists(oFX_DashDust)) {
-                instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+                player_spawn_x4_dash_dust(x - (facing * 12), bbox_bottom);
             }
         } else {
             is_dash_jumping = false;
@@ -144,7 +144,7 @@ function player_state_idle() {
             if (audio_exists(snd_zero_dash)) audio_play_sound(snd_zero_dash, 75, false);
         }
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+            player_spawn_x4_dash_dust(x - (facing * 12), bbox_bottom);
         }
         return;
     }
@@ -209,7 +209,7 @@ function player_state_run() {
             is_dash_jumping = true;
             hsp = facing * DASH_JUMP_SPEED;
             if (object_exists(oFX_DashDust)) {
-                instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+                player_spawn_x4_dash_dust(x - (facing * 12), bbox_bottom);
             }
         } else {
             is_dash_jumping = false;
@@ -230,7 +230,7 @@ function player_state_run() {
             if (audio_exists(snd_zero_dash)) audio_play_sound(snd_zero_dash, 75, false);
         }
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+            player_spawn_x4_dash_dust(x - (facing * 12), bbox_bottom);
         }
         return;
     }
@@ -288,7 +288,7 @@ function player_state_jump() {
             if (audio_exists(snd_zero_air_dash)) audio_play_sound(snd_zero_air_dash, 75, false);
         }
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
+            player_spawn_x4_dash_dust(x - (facing * 12), y);
         }
         return;
     }
@@ -308,7 +308,7 @@ function player_state_jump() {
         }
         if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+            player_spawn_x4_dash_dust(x, bbox_bottom);
         }
         return;
     }
@@ -391,7 +391,7 @@ function player_state_fall() {
             if (audio_exists(snd_zero_air_dash)) audio_play_sound(snd_zero_air_dash, 75, false);
         }
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
+            player_spawn_x4_dash_dust(x - (facing * 12), y);
         }
         return;
     }
@@ -426,7 +426,7 @@ function player_state_fall() {
         }
         if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+            player_spawn_x4_dash_dust(x, bbox_bottom);
         }
         state = PLAYER_STATE.JUMP;
         return;
@@ -512,7 +512,7 @@ function player_state_dash() {
             if (audio_exists(snd_zero_jump1)) audio_play_sound(snd_zero_jump1, 75, false);
         }
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x - (facing * 12), bbox_bottom, "Instances", oFX_DashDust);
+            player_spawn_x4_dash_dust(x - (facing * 12), bbox_bottom);
         }
         return;
     }
@@ -530,7 +530,7 @@ function player_state_dash() {
             hsp = facing * DASH_JUMP_SPEED;
             if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
             if (object_exists(oFX_DashDust)) {
-                instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+                player_spawn_x4_dash_dust(x, bbox_bottom);
             }
             state = PLAYER_STATE.JUMP;
             return;
@@ -601,7 +601,8 @@ function player_state_wall_slide() {
         }
 
         if (object_exists(oFX_DashDust)) {
-            instance_create_layer(x + (touching_wall * 10), y, "Instances", oFX_DashDust);
+            player_spawn_x4_wall_dust();
+            fx_x4_spawn(sFX_X4_HitSpark, x + (touching_wall * 10), y);
         }
         return;
     }
@@ -641,7 +642,7 @@ function player_state_wall_jump() {
             is_dash_jumping = true;
             state = PLAYER_STATE.DASH;
             if (object_exists(oFX_DashDust)) {
-                instance_create_layer(x - (facing * 12), y, "Instances", oFX_DashDust);
+                player_spawn_x4_dash_dust(x - (facing * 12), y);
             }
             return;
         }
@@ -660,7 +661,7 @@ function player_state_wall_jump() {
             }
             if (variable_instance_exists(id, "jump_frame")) jump_frame = 0.0;
             if (object_exists(oFX_DashDust)) {
-                instance_create_layer(x, bbox_bottom, "Instances", oFX_DashDust);
+                player_spawn_x4_dash_dust(x, bbox_bottom);
             }
             state = PLAYER_STATE.JUMP;
             return;

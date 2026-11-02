@@ -53,7 +53,7 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
                 break;
 
             case PLAYER_STATE.RUN:
-                var _rf = floor((anim_timer * 0.3) % 16);
+                var _rf = run_frame;
                 if (_rf >= 6 && _rf <= 11) {
                     _dx = 35;
                 } else if (_rf >= 12 && _rf <= 13) {
@@ -137,6 +137,14 @@ if (global.input.shoot_released || (global.input.shoot_pressed && charge_timer <
 }
 
 if (shoot_anim_timer > 0) shoot_anim_timer--;
+
+// Tired idle: restart the breathing cycle after healing, shooting or moving.
+if (hp_current > 0 && hp_current <= 4 && state == PLAYER_STATE.IDLE
+    && grounded && !is_landing && !is_dash_recovering && shoot_anim_timer <= 0) {
+    low_health_frame = (low_health_frame + 0.1) % sprite_get_number(sX_LowHealth);
+} else {
+    low_health_frame = 0.0;
+}
 
 // -------------------------------------------------------------
 // Jump, Hover/Fall & Landing Animation State Control

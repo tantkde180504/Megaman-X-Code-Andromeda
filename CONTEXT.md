@@ -1,6 +1,12 @@
 # Megaman X4 GameMaker Studio 2 Project — Context & Architecture
 
 ## 1. Project Overview
+
+### Stage language
+
+- **Sky**: X's opening stage after character selection, following the supplied artwork through the ruined city and statue tower. It has no boss and ends at the exit teleporter.
+- **Sky teleporter**: Fades to a loading screen, then switches to Zero at the Jungle entrance (`rStage_WebSpider`). After READY and teleport-in, Zero wonders how X is doing. This dialogue plays on the handoff, not checkpoint respawns.
+
 - **Project Name:** MegamanZ (Megaman X4 Fan-Recreation)
 - **Engine:** GameMaker Studio 2 / 2026 LTS (Runtime 2026.0.0.23)
 - **Native Resolution:** 480 × 270 (16:9), upscaled pixel-perfect to 960×540, 1440×810, 1920×1080

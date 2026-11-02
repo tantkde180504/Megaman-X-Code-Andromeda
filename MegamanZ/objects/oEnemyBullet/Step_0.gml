@@ -1,3 +1,8 @@
+// Ordinary enemy fire cannot cross a rest screen or enter the boss encounter.
+if (stage_encounters_reserved(x, y, 48) || stage_encounters_reserved(x + hsp, y + vsp, 48)) {
+    instance_destroy();
+    return;
+}
 if (variable_global_exists("stage_ready") && !global.stage_ready) return;
 
 x += hsp;

@@ -3,28 +3,12 @@ if (boss_warning_is_active()) return;
 if (instance_exists(obj_stage_briefing) && obj_stage_briefing.active) return;
 if (!instance_exists(oPlayer)) return;
 var _p = instance_find(oPlayer, 0);
-var _hx = 16;
-var _hy = 20;
-var _bar_h = 64;
-var _bar_w = 8;
 draw_set_alpha(1);
-draw_set_color(c_black);
-draw_rectangle(_hx - 2, _hy - 2, _hx + _bar_w + 1, _hy + _bar_h + 1, false);
-draw_set_color(make_color_rgb(140, 160, 190));
-draw_rectangle(_hx - 2, _hy - 2, _hx + _bar_w + 1, _hy + _bar_h + 1, true);
-var _tick_h = (_bar_h - 2) / max(1, _p.hp_max);
-for (var _i = 0; _i < _p.hp_max; _i++) {
-    var _y = _hy + _bar_h - 2 - (_i + 1) * _tick_h;
-    var _colour = make_color_rgb(40, 40, 50);
-    if (_i < _p.hp_current) {
-        _colour = _p.hp_current <= 4 ? c_red : (_p.hp_current <= 8 ? c_yellow : c_lime);
-    }
-    draw_set_color(_colour);
-    draw_rectangle(_hx, _y, _hx + _bar_w - 1, _y + _tick_h - 1, false);
-}
-ps1_draw_text(16, 2, global.current_char == CHAR_TYPE.X ? "X" : "Z", 16, 16);
+var _hud_style = global.current_char == CHAR_TYPE.ZERO ? X4_HUD_STYLE.ZERO : X4_HUD_STYLE.X;
+hud_x4_draw_bar(8, 12, _p.hp_current, _p.hp_max, _hud_style, clamp(round(_p.hp_max), 1, 32));
 var _title = "TRAINING";
 if (room == rStage_Intro) _title = "RUINED HIGHWAY";
+else if (room == rStage_Sky) _title = "SKY";
 else if (room == rStage_WebSpider) _title = "DEEP JUNGLE";
 else if (room == rBoss_NightmareZero) _title = "NIGHTMARE AREA";
 // Reserve both screen edges for the player and boss health bars.

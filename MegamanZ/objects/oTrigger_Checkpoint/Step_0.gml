@@ -10,6 +10,8 @@ if (!activated && instance_exists(oPlayer)) {
             global.checkpoint_x = x;
             global.checkpoint_y = y;
         }
+        stage_encounters_add_checkpoint(global.checkpoint_x, global.checkpoint_y);
+        stage_encounters_clear_reserved();
         camera_shake(1, 6);
         if (object_exists(oFX_HitSpark)) {
             instance_create_layer(x, y - 8, "Instances", oFX_HitSpark);

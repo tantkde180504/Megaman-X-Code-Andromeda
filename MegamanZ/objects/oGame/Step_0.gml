@@ -1,19 +1,24 @@
 // 1. Center window after creation
 if (variable_instance_exists(id, "window_centered_timer") && window_centered_timer > 0) {
     window_centered_timer--;
-    if (window_centered_timer == 0) window_center();
+    if (window_centered_timer == 0 && !display_settings_is_web()) window_center();
 }
+
+// Browsers can unlock audio only after the player interacts with the page.
+music_update_pending();
 
 // 2. Display controls: clean fullscreen output, with optional window scaling.
 if (keyboard_check_pressed(vk_f3)) {
     display_settings_cycle_size();
-    global.osd_message = "WINDOW SIZE: " + display_settings_size_label();
+    global.osd_message = display_settings_is_web() ? "SIZE: AUTO FIT IN BROWSER"
+        : "WINDOW SIZE: " + display_settings_size_label();
     global.osd_timer = 90;
     if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
 }
 if (keyboard_check_pressed(vk_f4)) {
     display_settings_toggle_fullscreen();
-    global.osd_message = window_get_fullscreen() ? "FULLSCREEN: ON (4:3)" : "FULLSCREEN: OFF";
+    global.osd_message = display_settings_is_web() ? "USE THE PAGE FULLSCREEN BUTTON"
+        : (window_get_fullscreen() ? "FULLSCREEN: ON (4:3)" : "FULLSCREEN: OFF");
     global.osd_timer = 90;
     if (audio_exists(snd_x_shot)) audio_play_sound(snd_x_shot, 80, false);
 }
@@ -23,6 +28,7 @@ if (variable_global_exists("osd_timer") && global.osd_timer > 0) {
 
 if (room_get_name(room) == "rTitle" || room_get_name(room) == "rStageSelect") return;
 if (instance_exists(obj_stage_briefing)) return;
+if (instance_exists(obj_sky_jungle_transition)) return;
 
 // Boss defeat and the preview key share the actual stage-clear sequence.
 if (global.boss_defeated && !global.stage_clear_active) {

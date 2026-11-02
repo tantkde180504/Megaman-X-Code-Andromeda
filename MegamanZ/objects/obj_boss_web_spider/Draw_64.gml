@@ -17,50 +17,5 @@ if (state == WS_STATE.INTRO && warning_timer > 0) {
     return;
 }
 
-// 2. Vertical Boss Health Bar (48 HP Mega Man X Style)
-var _bx = VIEW_WIDTH - 24;
-var _by = 28;
-var _bar_w = 8;
-var _bar_h = 64;
-
-if (intro_done) {
-    hp_display = hp;
-}
-
-// Frame & border
-draw_set_color(c_black);
-draw_rectangle(_bx - 2, _by - 2, _bx + _bar_w + 1, _by + _bar_h + 1, false);
-draw_set_color(make_color_rgb(140, 180, 160));
-draw_rectangle(_bx - 2, _by - 2, _bx + _bar_w + 1, _by + _bar_h + 1, true);
-
-// Inner empty background
-var _inner_h = _bar_h - 2;
-var _fill_h = round((clamp(hp_display, 0, hp_max) / max(1, hp_max)) * _inner_h);
-
-draw_set_color(make_color_rgb(25, 40, 30));
-draw_rectangle(_bx, _by, _bx + _bar_w - 1, _by + _inner_h - 1, false);
-
-// Health bar lines (Jungle green in Phase 1 / Electric amber in Phase 2)
-if (_fill_h > 0) {
-    var _fill_top = _by + _inner_h - _fill_h;
-    for (var _py = _by + _inner_h - 1; _py >= _fill_top; _py--) {
-        if (flash_timer > 0) {
-            draw_set_color(c_white);
-        } else if (phase == 2) {
-            // Phase 2: Electric amber
-            draw_set_color((_py % 2 == 0) ? make_color_rgb(255, 180, 30) : make_color_rgb(220, 120, 20));
-        } else {
-            // Phase 1: Forest green / teal
-            draw_set_color((_py % 2 == 0) ? make_color_rgb(60, 220, 120) : make_color_rgb(30, 160, 80));
-        }
-        draw_line(_bx, _py, _bx + _bar_w - 1, _py);
-    }
-}
-
-// Circular Boss Icon on top of health bar ("WS" for Web Spider)
-draw_set_color(make_color_rgb(40, 160, 90));
-draw_circle(_bx + 3, _by - 8, 6, false);
-draw_set_color(c_white);
-draw_set_halign(fa_center);
-draw_text(_bx + 3, _by - 15, "WS");
-draw_set_halign(fa_left);
+if (intro_done) hp_display = hp;
+hud_x4_draw_boss(hp_display, hp_max, X4_HUD_STYLE.BOSS_R, flash_timer > 0);

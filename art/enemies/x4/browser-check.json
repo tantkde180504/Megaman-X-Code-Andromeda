@@ -1,0 +1,369 @@
+{
+  "browser": "Edge headless",
+  "results": [
+    {
+      "key": "Bomb",
+      "alive": false,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Buoy",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "ElectricBall",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "MeteorVertical",
+      "alive": false,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "MeteorDiagonal",
+      "alive": false,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "MiniLaserCannon",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": false
+    },
+    {
+      "key": "ReploidArmor",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "SpikeBall",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "SpringDude",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Surprise",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Triangle",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "WalkCannon",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "UFO",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "DeathGuardian",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": false
+    },
+    {
+      "key": "Dejira",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Gigadeath",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Hornet",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "HoverGunner",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "KingPoseidon",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Kunbien",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Meganest",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": false
+    },
+    {
+      "key": "MadBull97",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "MetalGabyool",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "MetalHawk",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Obeel",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "PlasmaCannon",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": false
+    },
+    {
+      "key": "SpiderCore",
+      "alive": true,
+      "states": [
+        0
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "TentoroidBS",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Togerikusu",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "TrapBlast",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": false
+    },
+    {
+      "key": "TrapBlastVertical",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": false
+    },
+    {
+      "key": "Yukidalbon",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    },
+    {
+      "key": "Wasp",
+      "alive": true,
+      "states": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "animated": true,
+      "moved": true
+    }
+  ],
+  "errors": []
+}

@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 let desktop = [1920, 1080], fullscreen = true, size = [], saved;
 const c = {
     global: {}, VIEW_WIDTH: 320, VIEW_HEIGHT: 240,
+    os_browser: -1, browser_not_a_browser: -1, os_type: 0, os_gxgames: 99,
     max: Math.max, min: Math.min, floor: Math.floor,
     clamp: (v, lo, hi) => Math.max(lo, Math.min(hi, v)), string: String,
     display_get_width: () => desktop[0], display_get_height: () => desktop[1],
@@ -75,4 +76,22 @@ pressed = new Set([27]);c.menu_step();
 assert.equal(c.menu_state, 3, 'Keyboard back returns to Options');
 c.menu_step();
 assert.equal(c.menu_state, 1, 'Options back returns to title menu');
+
+// Browser hosts own sizing/fullscreen. No desktop API or display.ini is touched.
+for (const target of ['html5', 'gx']) {
+    c.os_browser = target === 'html5' ? 1 : -1;
+    c.os_type = target === 'gx' ? c.os_gxgames : 0;
+    for (const api of ['display_get_width', 'display_get_height', 'window_set_size',
+        'window_set_fullscreen', 'window_get_fullscreen', 'file_exists', 'ini_open']) {
+        c[api] = () => { throw new Error(`${target} called desktop API ${api}`); };
+    }
+    c.oGame.window_centered_timer = 0;
+    c.display_settings_init();
+    c.display_settings_apply(true, 4);
+    c.display_settings_cycle_size();
+    c.display_settings_toggle_fullscreen();
+    assert.equal(c.global.display_window_scale, 1);
+    assert.equal(c.display_settings_size_label(), 'AUTO FIT');
+    assert.equal(c.oGame.window_centered_timer, 0);
+}
 console.log('PASS: windowed startup, mode/size Options navigation, keyboard submenu, persistence, desktop bounds and launch options.');

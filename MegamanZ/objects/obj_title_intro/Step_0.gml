@@ -152,9 +152,9 @@ if (state != TITLE_INTRO_STATE.MENU && (_confirm || _cancel)) {
     exit;
 }
 
-if (intro_audio_pending) {
+if (intro_audio_pending && (!display_settings_is_web() || audio_system_is_available())) {
     intro_audio_pending = false;
-    play_title_sound(sound_beam);
+    if (state != TITLE_INTRO_STATE.MENU) play_title_sound(sound_beam);
     bgm_handle = play_title_sound(sound_bgm, false);
     intro_audio_started = bgm_handle != noone && bgm_handle != -1;
 }

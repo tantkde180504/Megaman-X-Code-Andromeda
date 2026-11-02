@@ -127,7 +127,8 @@ switch (state) {
                     state = MENU_STATE.CREDITS;
                     break;
                 case 3: // EXIT GAME
-                    game_end();
+                    if (display_settings_is_web()) room_goto(rTitle);
+                    else game_end();
                     break;
             }
         }
@@ -249,8 +250,8 @@ switch (state) {
             // Apply chosen character
             global.current_char = (selected_char == 0) ? CHAR_TYPE.X : CHAR_TYPE.ZERO;
             global.checkpoint_x = 64;
-            global.checkpoint_y = 368;
-            room_goto(rStage_WebSpider);
+            global.checkpoint_y = (global.current_char == CHAR_TYPE.X) ? 1152 : 368;
+            room_goto((global.current_char == CHAR_TYPE.X) ? rStage_Sky : rStage_WebSpider);
         }
         break;
 }

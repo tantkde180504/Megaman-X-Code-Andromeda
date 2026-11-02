@@ -1,0 +1,358 @@
+{
+  "page": "https://sprites-inc.com/sprite.php?local=X/X4/Enemy/",
+  "sheets": [
+    {
+      "file": "mmm-mmx4beetle1.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4beetle1.gif",
+      "width": 253,
+      "height": 126,
+      "frames": 1,
+      "sha256": "62da680e27d47920b5db2e57e93f9f1c9b95b8ef9f391ba7bd73285fcddad179"
+    },
+    {
+      "file": "mmm-mmx4beetle2.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4beetle2.gif",
+      "width": 253,
+      "height": 370,
+      "frames": 1,
+      "sha256": "9634d3dc07a8f5bfc586fd6c0fceef7a7b9b00f076549a31d80ec99f517a6c96"
+    },
+    {
+      "file": "mmm-mmx4bomb.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4bomb.gif",
+      "width": 54,
+      "height": 40,
+      "frames": 1,
+      "sha256": "2112ca5cf6d9d68e1f855e354d8c7ceefbc3546bbea04dc52b7c10ae2712f06d"
+    },
+    {
+      "file": "mmm-mmx4booy.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4booy.gif",
+      "width": 158,
+      "height": 32,
+      "frames": 1,
+      "sha256": "8553f9c984ad7026a04292978c668dda9bbf7a29b799c6c7d9c28d319a6b2096"
+    },
+    {
+      "file": "mmm-mmx4elecball.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4elecball.gif",
+      "width": 582,
+      "height": 119,
+      "frames": 1,
+      "sha256": "2b3e0ba535f15172ed5d68ed48df40cff7b6b5f124dbca2eac7707e656c03a98"
+    },
+    {
+      "file": "mmm-mmx4meteor1.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4meteor1.gif",
+      "width": 703,
+      "height": 238,
+      "frames": 1,
+      "sha256": "25a5bf134baaa10df6101d07627b2fa4f3e721360dd0926a3935a65ecfd5f660"
+    },
+    {
+      "file": "mmm-mmx4meteor2.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4meteor2.gif",
+      "width": 563,
+      "height": 347,
+      "frames": 1,
+      "sha256": "037dfc179142145751be485ff74b89d44c06fbe80fb94ab06bf66ecf91269c59"
+    },
+    {
+      "file": "mmm-mmx4minilasercannon.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4minilasercannon.gif",
+      "width": 430,
+      "height": 354,
+      "frames": 1,
+      "sha256": "6e67d4821e246f3dcc69a2f4ab4dc3d8106cdc3194ddd06ab7d9fc13fc7563f0"
+    },
+    {
+      "file": "mmm-mmx4repliodarmor.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4repliodarmor.gif",
+      "width": 493,
+      "height": 262,
+      "frames": 1,
+      "sha256": "3774af7dd9cf2e60a7fb94e0cf45617eaeb31e67f5efb92fc4203f7960b788ab"
+    },
+    {
+      "file": "mmm-mmx4rockledge.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4rockledge.gif",
+      "width": 139,
+      "height": 71,
+      "frames": 1,
+      "sha256": "192dcfad05ab7dc928ca4cb9f19c205ced47d191c1ee2e6cbe73d013284e8145"
+    },
+    {
+      "file": "mmm-mmx4spikeball.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4spikeball.gif",
+      "width": 329,
+      "height": 139,
+      "frames": 1,
+      "sha256": "a821b8ef0a8a0af6eb08f18f57ea3b94f94b256fc356323ad08c05a61f69baab"
+    },
+    {
+      "file": "mmm-mmx4springdude.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4springdude.gif",
+      "width": 353,
+      "height": 92,
+      "frames": 1,
+      "sha256": "c5936db77a30f4c7c267abe62f5f43c21afef330d7202bca329d58bea012f643"
+    },
+    {
+      "file": "mmm-mmx4surpise.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4surpise.gif",
+      "width": 316,
+      "height": 138,
+      "frames": 1,
+      "sha256": "3113abe1035543f1286f47c8f0eb7f63998f1547be090450e928102959d60d08"
+    },
+    {
+      "file": "mmm-mmx4triangle.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4triangle.gif",
+      "width": 200,
+      "height": 35,
+      "frames": 1,
+      "sha256": "3352db95ceb506ba6bf5344bf350b371700efd6607f73641d59e6a3039fcd45e"
+    },
+    {
+      "file": "mmm-mmx4walkcannon.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmm-mmx4walkcannon.gif",
+      "width": 238,
+      "height": 170,
+      "frames": 1,
+      "sha256": "650152c5406a0871fd66d2655437e5ba985fca5fef2dc21ff4e86e6e97771b0e"
+    },
+    {
+      "file": "mmx4-ufo.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4-ufo.gif",
+      "width": 549,
+      "height": 312,
+      "frames": 1,
+      "sha256": "79712ae1f2bc55cb2d9fca97b90ce29aa503aa155fe5895fd08e63e5327bae61"
+    },
+    {
+      "file": "mmx4__batton_bone_b81.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__batton_bone_b81.gif",
+      "width": 299,
+      "height": 176,
+      "frames": 1,
+      "sha256": "f230a3ed0927aa58854710f072eb8c047305fcff56fe22af660417b9a3c74b75"
+    },
+    {
+      "file": "mmx4__death_guardian.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__death_guardian.gif",
+      "width": 524,
+      "height": 350,
+      "frames": 1,
+      "sha256": "fbbfeca1062dab9b6d05abd96a53fc047e18d77bea6b3af23ce901bc976c2c08"
+    },
+    {
+      "file": "mmx4__dejira.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__dejira.gif",
+      "width": 412,
+      "height": 78,
+      "frames": 1,
+      "sha256": "d2a21accf7fa355158fb35eedc9efd9ecce5c9c13040b8da26fa06c7bc7c57cf"
+    },
+    {
+      "file": "mmx4__fly_gunner.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__fly_gunner.gif",
+      "width": 370,
+      "height": 102,
+      "frames": 1,
+      "sha256": "d5961ea06161da288b1682aa29931d268c913893f9d574210a1a89801d32a7f3"
+    },
+    {
+      "file": "mmx4__gigadeath.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__gigadeath.gif",
+      "width": 328,
+      "height": 354,
+      "frames": 1,
+      "sha256": "105d9c3fe0e202c54fa28dde447918ea5b1679c8f288680c9fdcf70ab4a03be4"
+    },
+    {
+      "file": "mmx4__guardian.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__guardian.gif",
+      "width": 444,
+      "height": 300,
+      "frames": 1,
+      "sha256": "2fc4b254aee6b9c6ffd89a8169f1be674792986126685a825dbdc72696b4d36d"
+    },
+    {
+      "file": "mmx4__hornet.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__hornet.gif",
+      "width": 315,
+      "height": 422,
+      "frames": 1,
+      "sha256": "db4eb2d41306057616c8796fffb6d867aa616a748a61c30d49b5496038671bc6"
+    },
+    {
+      "file": "mmx4__hover_gunner.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__hover_gunner.gif",
+      "width": 342,
+      "height": 85,
+      "frames": 1,
+      "sha256": "01a5c894ea6bba43f6b16623aa53d62bb131002a5d72e59087bf88f8403e08d9"
+    },
+    {
+      "file": "mmx4__king_poseidon.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__king_poseidon.gif",
+      "width": 560,
+      "height": 532,
+      "frames": 1,
+      "sha256": "db8d7edb986390f1c2a648b48c0a7e76c4d85e6c2cd35c209485f432784edf6c"
+    },
+    {
+      "file": "mmx4__kunbien_meganest.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__kunbien_meganest.gif",
+      "width": 231,
+      "height": 327,
+      "frames": 1,
+      "sha256": "ac1bbc8568493f95dabcafcf835cb6678698eb3ab3babca949da894075a80aed"
+    },
+    {
+      "file": "mmx4__mad_bull_97.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__mad_bull_97.gif",
+      "width": 277,
+      "height": 321,
+      "frames": 1,
+      "sha256": "a2643ad4d349e6846f0b0154089d6c738a0ddda1e6f4e3a8d4ee825f283ded44"
+    },
+    {
+      "file": "mmx4__metal_gabyool.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__metal_gabyool.gif",
+      "width": 636,
+      "height": 78,
+      "frames": 1,
+      "sha256": "43719b33f147d07351915074b4227b741b6310036476d1fdd335776d078c6fed"
+    },
+    {
+      "file": "mmx4__metal_hawk.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__metal_hawk.gif",
+      "width": 504,
+      "height": 354,
+      "frames": 1,
+      "sha256": "4a277443eefdc7dfa734b6c3f980cd0a602a071ebebebe9d6de9812670fb0a70"
+    },
+    {
+      "file": "mmx4__mettool_d2.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__mettool_d2.gif",
+      "width": 313,
+      "height": 256,
+      "frames": 1,
+      "sha256": "9984491ecceada99d02482b2e5c1550a3413bfcaca5012cf4cfebbebc30e0354"
+    },
+    {
+      "file": "mmx4__obeel.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__obeel.gif",
+      "width": 324,
+      "height": 254,
+      "frames": 1,
+      "sha256": "40ddee5fe679f09cfc9adc73bdfd44519f95ce6918958fe1f8808a38e41aa6b9"
+    },
+    {
+      "file": "mmx4__plasma_cannon.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__plasma_cannon.gif",
+      "width": 389,
+      "height": 304,
+      "frames": 1,
+      "sha256": "8199f268ab3c7afa3371fe8e2a9c7acb7f723f6b194da9e681b56619dc4d7101"
+    },
+    {
+      "file": "mmx4__spider_core.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__spider_core.gif",
+      "width": 596,
+      "height": 290,
+      "frames": 1,
+      "sha256": "e75e119f155ed4bc18261714fba5f2155ccfe6948afbcd00622174671b5ca57c"
+    },
+    {
+      "file": "mmx4__spiky_mk-ii.png",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__spiky_mk-ii.png",
+      "width": 462,
+      "height": 198,
+      "frames": 1,
+      "sha256": "15587156e1a3c6be9bde0b27cb936bc16fd6f1de3fb970c51ecb2512e640265b"
+    },
+    {
+      "file": "mmx4__tentoroid_bs__0.png",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__tentoroid_bs__0.png",
+      "width": 236,
+      "height": 194,
+      "frames": 1,
+      "sha256": "3409021e7b7cf6c67563aa89a209f27ec42b3bb486316742c35f0082b9f81275"
+    },
+    {
+      "file": "mmx4__togerikusu1.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__togerikusu1.gif",
+      "width": 605,
+      "height": 206,
+      "frames": 1,
+      "sha256": "7e1f06eed74dea37124939ea0b36eaf1a426177d3a9274e6147645faa98e18a9"
+    },
+    {
+      "file": "mmx4__trap_blast__0.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__trap_blast__0.gif",
+      "width": 393,
+      "height": 192,
+      "frames": 1,
+      "sha256": "f229f6afe17eb2d82591c4a62f9236b9f0d1a5420aa6c48f1e0fba09076f56d2"
+    },
+    {
+      "file": "mmx4__trap_blast__1.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__trap_blast__1.gif",
+      "width": 226,
+      "height": 273,
+      "frames": 1,
+      "sha256": "c73e47330a4689564b03c74f1c7558fad17add77882446c704bbfaa8a0ad33d1"
+    },
+    {
+      "file": "mmx4__yukidalbon.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/mmx4__yukidalbon.gif",
+      "width": 532,
+      "height": 54,
+      "frames": 1,
+      "sha256": "c37361a82caea0168498820f28a5312c3a219940cacb3900ef608778dc2064c3"
+    },
+    {
+      "file": "rmx4-waspenemy.png",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/rmx4-waspenemy.png",
+      "width": 511,
+      "height": 461,
+      "frames": 1,
+      "sha256": "594deb17dd9ce229aff44973edf2f5add92792d283785d2d11863595a624c17a"
+    },
+    {
+      "file": "rmx4__spiky_mk-ii.png",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/rmx4__spiky_mk-ii.png",
+      "width": 462,
+      "height": 198,
+      "frames": 1,
+      "sha256": "15587156e1a3c6be9bde0b27cb936bc16fd6f1de3fb970c51ecb2512e640265b"
+    },
+    {
+      "file": "rmx4__tentoroid_bs.png",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/rmx4__tentoroid_bs.png",
+      "width": 236,
+      "height": 194,
+      "frames": 1,
+      "sha256": "3409021e7b7cf6c67563aa89a209f27ec42b3bb486316742c35f0082b9f81275"
+    },
+    {
+      "file": "x4grenademan.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/x4grenademan.gif",
+      "width": 500,
+      "height": 400,
+      "frames": 1,
+      "sha256": "d1741e40cc76952af5f23bcdd06e1375e38854e14864ee648ca41c967bb5a99f"
+    },
+    {
+      "file": "x4grenademan2.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Enemy/x4grenademan2.gif",
+      "width": 500,
+      "height": 404,
+      "frames": 1,
+      "sha256": "43079e5f12b679c99545d85b890e594574f713c4d8abcbf21b41e2c5efc57cc3"
+    }
+  ],
+  "provenance": "Mega Man X4 game art (Capcom), sheets hosted by Sprites INC; retain embedded ripper credits in the original source files. The source page does not specify an independent reuse licence."
+}

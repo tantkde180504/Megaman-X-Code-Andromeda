@@ -1,0 +1,10 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_build_stage_sky",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_build_stage_sky",
+  "parent":{"name":"Scripts","path":"folders/Scripts.yy",},
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

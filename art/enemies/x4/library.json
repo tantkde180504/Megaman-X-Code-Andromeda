@@ -1,0 +1,1099 @@
+{
+  "description": "Source-backed reusable X4 enemy prefabs; baseline behaviours, not frame-perfect recreations.",
+  "profiles": [
+    {
+      "key": "Bomb",
+      "label": "Bomb",
+      "sheet": "mmm-mmx4bomb.gif",
+      "kind": "FALLING",
+      "ground": false,
+      "hp": 1,
+      "speed": 0,
+      "fall_speed": 2,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            54,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "key": "Buoy",
+      "label": "Buoy (source: booy)",
+      "sheet": "mmm-mmx4booy.gif",
+      "kind": "ORBIT",
+      "ground": false,
+      "hp": 4,
+      "speed": 0,
+      "radius": 8,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            158,
+            32
+          ]
+        }
+      }
+    },
+    {
+      "key": "ElectricBall",
+      "label": "Electric Ball",
+      "sheet": "mmm-mmx4elecball.gif",
+      "kind": "ORBIT",
+      "ground": false,
+      "hp": 8,
+      "speed": 0,
+      "radius": 32,
+      "invulnerable": true,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            582,
+            64
+          ]
+        }
+      }
+    },
+    {
+      "key": "MeteorVertical",
+      "label": "Vertical Meteor",
+      "sheet": "mmm-mmx4meteor1.gif",
+      "kind": "FALLING",
+      "ground": false,
+      "hp": 8,
+      "speed": 0,
+      "fall_speed": 3,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            703,
+            119
+          ]
+        }
+      }
+    },
+    {
+      "key": "MeteorDiagonal",
+      "label": "Diagonal Meteor",
+      "sheet": "mmm-mmx4meteor2.gif",
+      "kind": "FALLING",
+      "ground": false,
+      "hp": 8,
+      "speed": 1.5,
+      "fall_speed": 2.5,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              0,
+              0,
+              148,
+              112
+            ],
+            [
+              148,
+              0,
+              261,
+              112
+            ],
+            [
+              261,
+              0,
+              378,
+              112
+            ],
+            [
+              378,
+              0,
+              475,
+              112
+            ],
+            [
+              475,
+              0,
+              563,
+              112
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "MiniLaserCannon",
+      "label": "Mini Laser Cannon",
+      "sheet": "mmm-mmx4minilasercannon.gif",
+      "kind": "SHOOTER",
+      "ground": false,
+      "hp": 5,
+      "speed": 0,
+      "shots": 3,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            139,
+            55
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              157,
+              1,
+              209,
+              55
+            ],
+            [
+              210,
+              1,
+              263,
+              55
+            ],
+            [
+              266,
+              1,
+              319,
+              55
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "ReploidArmor",
+      "label": "Reploid Armor",
+      "sheet": "mmm-mmx4repliodarmor.gif",
+      "kind": "CHARGER",
+      "ground": true,
+      "hp": 18,
+      "speed": 1.2,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              4,
+              40,
+              67,
+              123
+            ]
+          ]
+        },
+        "move": {
+          "strip": [
+            0,
+            35,
+            195,
+            125
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              195,
+              7,
+              292,
+              125
+            ],
+            [
+              302,
+              7,
+              394,
+              125
+            ],
+            [
+              396,
+              7,
+              493,
+              125
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "SpikeBall",
+      "label": "Spike Ball",
+      "sheet": "mmm-mmx4spikeball.gif",
+      "kind": "PATROL",
+      "ground": true,
+      "hp": 7,
+      "speed": 1.4,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            329,
+            44
+          ]
+        }
+      }
+    },
+    {
+      "key": "SpringDude",
+      "label": "Spring Robot (source: springdude)",
+      "sheet": "mmm-mmx4springdude.gif",
+      "kind": "HOPPER",
+      "ground": true,
+      "hp": 4,
+      "speed": 1.1,
+      "shots": 1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              0,
+              8,
+              47,
+              49
+            ]
+          ]
+        },
+        "move": {
+          "strip": [
+            0,
+            0,
+            353,
+            49
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              0,
+              50,
+              47,
+              92
+            ],
+            [
+              47,
+              50,
+              83,
+              92
+            ],
+            [
+              83,
+              50,
+              122,
+              92
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "Surprise",
+      "label": "Surprise Drill Robot",
+      "sheet": "mmm-mmx4surpise.gif",
+      "kind": "HOPPER",
+      "ground": true,
+      "hp": 5,
+      "speed": 0.8,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            316,
+            65
+          ]
+        },
+        "move": {
+          "strip": [
+            0,
+            66,
+            280,
+            138
+          ]
+        }
+      }
+    },
+    {
+      "key": "Triangle",
+      "label": "Rotating Triangle",
+      "sheet": "mmm-mmx4triangle.gif",
+      "kind": "ORBIT",
+      "ground": false,
+      "hp": 6,
+      "speed": 0,
+      "radius": 24,
+      "invulnerable": true,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            200,
+            35
+          ]
+        }
+      }
+    },
+    {
+      "key": "WalkCannon",
+      "label": "Walking Cannon",
+      "sheet": "mmm-mmx4walkcannon.gif",
+      "kind": "SHOOTER",
+      "ground": true,
+      "hp": 7,
+      "speed": 0.8,
+      "shots": 2,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            238,
+            53
+          ]
+        },
+        "move": {
+          "strip": [
+            0,
+            54,
+            218,
+            110
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              50,
+              112,
+              96,
+              166
+            ],
+            [
+              98,
+              110,
+              139,
+              168
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "UFO",
+      "label": "UFO",
+      "sheet": "mmx4-ufo.gif",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 32,
+      "speed": 0,
+      "radius": 24,
+      "shots": 3,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              0,
+              0,
+              549,
+              72
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "DeathGuardian",
+      "label": "Death Guardian",
+      "sheet": "mmx4__death_guardian.gif",
+      "kind": "SHOOTER",
+      "ground": false,
+      "hp": 10,
+      "speed": 0,
+      "shots": 3,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "strip": [
+            97,
+            0,
+            231,
+            40
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              65,
+              44,
+              111,
+              142
+            ],
+            [
+              111,
+              44,
+              174,
+              142
+            ],
+            [
+              174,
+              39,
+              274,
+              128
+            ],
+            [
+              276,
+              39,
+              375,
+              99
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "Dejira",
+      "label": "Dejira",
+      "sheet": "mmx4__dejira.gif",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 5,
+      "speed": 0,
+      "radius": 24,
+      "shots": 1,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "strip": [
+            39,
+            0,
+            377,
+            37
+          ]
+        }
+      }
+    },
+    {
+      "key": "Gigadeath",
+      "label": "Gigadeath",
+      "sheet": "mmx4__gigadeath.gif",
+      "kind": "SHOOTER",
+      "ground": true,
+      "hp": 24,
+      "speed": 0,
+      "shots": 4,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              109,
+              263,
+              219,
+              338
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "Hornet",
+      "label": "Hornet",
+      "sheet": "mmx4__hornet.gif",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 8,
+      "speed": 0,
+      "radius": 48,
+      "shots": 2,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            315,
+            63
+          ]
+        }
+      }
+    },
+    {
+      "key": "HoverGunner",
+      "label": "Hover Gunner",
+      "sheet": "mmx4__hover_gunner.gif",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 5,
+      "speed": 0,
+      "radius": 40,
+      "shots": 2,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            139,
+            36
+          ]
+        }
+      }
+    },
+    {
+      "key": "KingPoseidon",
+      "label": "King Poseidon",
+      "sheet": "mmx4__king_poseidon.gif",
+      "kind": "SHOOTER",
+      "ground": true,
+      "hp": 14,
+      "speed": 0.6,
+      "shots": 2,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              6,
+              4,
+              72,
+              81
+            ]
+          ]
+        },
+        "move": {
+          "rects": [
+            [
+              143,
+              1,
+              208,
+              83
+            ],
+            [
+              208,
+              1,
+              267,
+              83
+            ]
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              308,
+              5,
+              444,
+              83
+            ],
+            [
+              446,
+              5,
+              560,
+              83
+            ]
+          ],
+          "pivots": [
+            [
+              99,
+              62
+            ],
+            [
+              74,
+              62
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "Kunbien",
+      "label": "Kunbien",
+      "sheet": "mmx4__kunbien_meganest.gif",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 2,
+      "speed": 0,
+      "radius": 32,
+      "shots": 1,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            231,
+            39
+          ]
+        }
+      }
+    },
+    {
+      "key": "Meganest",
+      "label": "Meganest",
+      "sheet": "mmx4__kunbien_meganest.gif",
+      "kind": "NEST",
+      "ground": false,
+      "hp": 16,
+      "speed": 0,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              23,
+              164,
+              109,
+              277
+            ]
+          ]
+        },
+        "destroyed": {
+          "rects": [
+            [
+              125,
+              164,
+              207,
+              270
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "MadBull97",
+      "label": "Mad Bull 97",
+      "sheet": "mmx4__mad_bull_97.gif",
+      "kind": "SHOOTER",
+      "ground": true,
+      "hp": 20,
+      "speed": 0,
+      "shots": 3,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              0,
+              0,
+              101,
+              117
+            ]
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              128,
+              56,
+              234,
+              117
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "MetalGabyool",
+      "label": "Metal Gabyool",
+      "sheet": "mmx4__metal_gabyool.gif",
+      "kind": "PATROL",
+      "ground": true,
+      "hp": 4,
+      "speed": 1.6,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            636,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "key": "MetalHawk",
+      "label": "Metal Hawk",
+      "sheet": "mmx4__metal_hawk.gif",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 24,
+      "speed": 0,
+      "radius": 32,
+      "shots": 3,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              0,
+              102,
+              166,
+              260
+            ],
+            [
+              169,
+              102,
+              337,
+              260
+            ],
+            [
+              339,
+              102,
+              504,
+              260
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "Obeel",
+      "label": "Obeel",
+      "sheet": "mmx4__obeel.gif",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 6,
+      "speed": 0,
+      "radius": 48,
+      "shots": 0,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              0,
+              0,
+              52,
+              40
+            ],
+            [
+              54,
+              0,
+              121,
+              40
+            ],
+            [
+              126,
+              0,
+              191,
+              40
+            ],
+            [
+              193,
+              0,
+              268,
+              40
+            ],
+            [
+              270,
+              0,
+              324,
+              40
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "PlasmaCannon",
+      "label": "Plasma Cannon",
+      "sheet": "mmx4__plasma_cannon.gif",
+      "kind": "SHOOTER",
+      "ground": false,
+      "hp": 14,
+      "speed": 0,
+      "shots": 3,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              34,
+              0,
+              138,
+              46
+            ]
+          ]
+        },
+        "attack": {
+          "rects": [
+            [
+              139,
+              243,
+              241,
+              291
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "SpiderCore",
+      "label": "Spider Core",
+      "sheet": "mmx4__spider_core.gif",
+      "kind": "PATROL",
+      "ground": true,
+      "hp": 4,
+      "speed": 1.0,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            77,
+            0,
+            500,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "key": "TentoroidBS",
+      "label": "Tentoroid BS",
+      "sheet": "mmx4__tentoroid_bs__0.png",
+      "kind": "CHARGER",
+      "ground": false,
+      "hp": 7,
+      "speed": 0,
+      "shots": 0,
+      "clips": {
+        "idle": {
+          "strip": [
+            18,
+            0,
+            222,
+            49
+          ]
+        },
+        "attack": {
+          "strip": [
+            6,
+            51,
+            236,
+            110
+          ]
+        }
+      }
+    },
+    {
+      "key": "Togerikusu",
+      "label": "Togerikusu",
+      "sheet": "mmx4__togerikusu1.gif",
+      "kind": "ORBIT",
+      "ground": false,
+      "hp": 7,
+      "speed": 0,
+      "radius": 28,
+      "shots": 2,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            78,
+            65
+          ]
+        },
+        "attack": {
+          "strip": [
+            78,
+            0,
+            605,
+            65
+          ]
+        }
+      }
+    },
+    {
+      "key": "TrapBlast",
+      "label": "Trap Blast",
+      "sheet": "mmx4__trap_blast__0.gif",
+      "kind": "SHOOTER",
+      "ground": false,
+      "hp": 8,
+      "speed": 0,
+      "shots": 3,
+      "native_facing": 1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              0,
+              25,
+              49,
+              66
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "TrapBlastVertical",
+      "label": "Trap Blast (spike variant)",
+      "sheet": "mmx4__trap_blast__1.gif",
+      "kind": "SHOOTER",
+      "ground": false,
+      "hp": 8,
+      "speed": 0,
+      "shots": 3,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "rects": [
+            [
+              160,
+              56,
+              226,
+              88
+            ],
+            [
+              160,
+              89,
+              226,
+              120
+            ],
+            [
+              160,
+              121,
+              226,
+              152
+            ]
+          ]
+        },
+        "impact": {
+          "rects": [
+            [
+              168,
+              154,
+              226,
+              180
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "Yukidalbon",
+      "label": "Yukidalbon",
+      "sheet": "mmx4__yukidalbon.gif",
+      "kind": "HOPPER",
+      "ground": true,
+      "hp": 5,
+      "speed": 1.0,
+      "shots": 1,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            156,
+            43
+          ]
+        },
+        "move": {
+          "rects": [
+            [
+              200,
+              4,
+              236,
+              38
+            ],
+            [
+              240,
+              4,
+              276,
+              38
+            ],
+            [
+              280,
+              4,
+              316,
+              38
+            ],
+            [
+              321,
+              4,
+              356,
+              38
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "Wasp",
+      "label": "Wasp (blue variant)",
+      "sheet": "rmx4-waspenemy.png",
+      "kind": "HOVER",
+      "ground": false,
+      "hp": 6,
+      "speed": 0,
+      "radius": 48,
+      "shots": 2,
+      "native_facing": -1,
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            255,
+            64
+          ]
+        },
+        "attack": {
+          "strip": [
+            264,
+            0,
+            511,
+            64
+          ]
+        }
+      }
+    }
+  ],
+  "environment": [
+    {
+      "key": "RockLedge",
+      "sheet": "mmm-mmx4rockledge.gif",
+      "clips": {
+        "idle": {
+          "strip": [
+            0,
+            0,
+            139,
+            71
+          ]
+        }
+      }
+    }
+  ],
+  "existing": {
+    "mmm-mmx4beetle1.gif": "oEnemy_TentoroidRS",
+    "mmm-mmx4beetle2.gif": "oEnemy_X4_TentoroidBS (alternate source sheet)",
+    "mmx4__batton_bone_b81.gif": "oEnemy_Batton",
+    "mmx4__fly_gunner.gif": "oEnemy_FlyGunner",
+    "mmx4__guardian.gif": "oEnemy_Guardian",
+    "mmx4__mettool_d2.gif": "oEnemy_MettaurD2",
+    "mmx4__spiky_mk-ii.png": "oEnemy_SpikyMKII",
+    "rmx4__spiky_mk-ii.png": "oEnemy_SpikyMKII (alternate sheet)",
+    "rmx4__tentoroid_bs.png": "oEnemy_X4_TentoroidBS (alternate sheet)",
+    "x4grenademan.gif": "oEnemy_KnotBeretB",
+    "x4grenademan2.gif": "oEnemy_KnotBeretG"
+  }
+}

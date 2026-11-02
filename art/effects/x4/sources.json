@@ -1,0 +1,97 @@
+{
+  "page": "https://sprites-inc.com/sprite.php?local=/X/X4/Misc/GameObjects/Effects/",
+  "sheets": [
+    {
+      "file": "MMX6_XHoverEffect.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/MMX6_XHoverEffect.gif",
+      "width": 151,
+      "height": 37,
+      "sha256": "888ef1ca8808d5034f73a2a3b38449602e5704760eef0f393da88f4da0943d43"
+    },
+    {
+      "file": "X4Explosion.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/X4Explosion.gif",
+      "width": 650,
+      "height": 280,
+      "sha256": "5bf2582d2c1d6f46e38709efeafc0b116ca9b91351f9047e0bd4b64351c91349"
+    },
+    {
+      "file": "mmm-mmx4meteor1.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmm-mmx4meteor1.gif",
+      "width": 703,
+      "height": 238,
+      "sha256": "25a5bf134baaa10df6101d07627b2fa4f3e721360dd0926a3935a65ecfd5f660"
+    },
+    {
+      "file": "mmm-mmx4meteor2.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmm-mmx4meteor2.gif",
+      "width": 563,
+      "height": 347,
+      "sha256": "037dfc179142145751be485ff74b89d44c06fbe80fb94ab06bf66ecf91269c59"
+    },
+    {
+      "file": "mmx4-dash.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4-dash.gif",
+      "width": 494,
+      "height": 49,
+      "sha256": "7261387c993551c55a9bc2d1f8e9ebcb7ad5e15e97ec04361b111314f4196b6f"
+    },
+    {
+      "file": "mmx4-wallkick-effects.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4-wallkick-effects.gif",
+      "width": 284,
+      "height": 103,
+      "sha256": "319b50d9375f0a121c0f1d39a86b18b665bfbe2c974ff273d8873e6965342c0c"
+    },
+    {
+      "file": "mmx4-x-dash.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4-x-dash.gif",
+      "width": 377,
+      "height": 44,
+      "sha256": "6556d543adf5f8e391296edf1b92a01ff9bca99f739a299a6f6fd6d3af81018b"
+    },
+    {
+      "file": "mmx4-zero-dash.gif",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4-zero-dash.gif",
+      "width": 311,
+      "height": 42,
+      "sha256": "30fa78fe539fee87c25fcc19c715db1d3630d6ac35e9727d1fc2ed5fa9f830c9"
+    },
+    {
+      "file": "mmx4_after-image_x.png",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4_after-image_x.png",
+      "width": 325,
+      "height": 124,
+      "sha256": "00cadae891dff9f91d597608d855cb769bb18b45a5cd56bb78abea604c72bd92"
+    },
+    {
+      "file": "mmx4_after-image_zero.png",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4_after-image_zero.png",
+      "width": 245,
+      "height": 101,
+      "sha256": "32852c34019bd7ff697a385570ead87dffb8d9a1f1249c76cabdb204f373a4e5"
+    },
+    {
+      "file": "mmx4_hud.png",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4_hud.png",
+      "width": 228,
+      "height": 151,
+      "sha256": "7a4a6ef4ebf6e595db68d071e6c43985cf612ec52653248f3861c8ec93d52637"
+    },
+    {
+      "file": "mmx4_pausemenu_x_icons.png",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4_pausemenu_x_icons.png",
+      "width": 200,
+      "height": 51,
+      "sha256": "9ea36c9c70c8076918dadcda049582f03c2e9a1c8be9d82f5ccc21792031929a"
+    },
+    {
+      "file": "mmx4_pausemenu_zero_icons.png",
+      "url": "https://sprites-inc.com/files/X/X4/Misc/GameObjects/Effects/mmx4_pausemenu_zero_icons.png",
+      "width": 162,
+      "height": 26,
+      "sha256": "0da2d37a2f0d9cb85aaf1dbc8b47cc818b7d4863e4affde98dfeb40ce32a1fc6"
+    }
+  ],
+  "provenance": "Original game art: Capcom. Hosted by Sprites INC; original sheets and credits retained. No independent reuse licence stated."
+}

@@ -7,7 +7,7 @@ enum MENU_STATE {
     CREDITS,        // Credits modal
     CHAR_SELECT,    // Mega Man X vs Zero Character Select
     CUTSCENE,       // MMX5-style Story Cutscene & Mission Briefing
-    TRANSITION_OUT  // Fade out into rStage_Intro
+    TRANSITION_OUT  // Fade out into the chosen character's opening stage
 }
 
 state = MENU_STATE.TITLE;
@@ -34,6 +34,7 @@ grid_offset = 0.0;
 
 // Main Menu data
 menu_options = ["GAME START", "HOW TO PLAY", "CREDITS", "EXIT GAME"];
+if (display_settings_is_web()) menu_options[3] = "RETURN TO TITLE";
 menu_index = 0;
 menu_count = array_length(menu_options);
 

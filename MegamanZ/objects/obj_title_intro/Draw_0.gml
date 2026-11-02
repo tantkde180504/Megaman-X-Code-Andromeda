@@ -84,7 +84,8 @@ if (state == TITLE_INTRO_STATE.MENU && menu_state == TITLE_MENU_STATE.SETTINGS) 
     ps1_draw_panel(4, 2, 312, 236);
     ps1_draw_centered(160, 16, "OPTIONS", 300, c_aqua);
     var _labels = ["KEYBOARD", "SCREEN MODE", "WINDOW SIZE", "BACK"];
-    var _values = ["EDIT", window_get_fullscreen() ? "FULLSCREEN" : "WINDOWED",
+    var _values = ["EDIT", display_settings_is_web() ? "BROWSER"
+        : (window_get_fullscreen() ? "FULLSCREEN" : "WINDOWED"),
         display_settings_size_label(), ""];
     for (var _row = 0; _row < 4; _row++) {
         var _y = 56 + _row * 34;

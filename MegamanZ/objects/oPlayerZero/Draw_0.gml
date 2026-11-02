@@ -158,8 +158,8 @@ else if (is_landing && sprite_exists(sZero_Jump)) {
     var _jump_idx = clamp(floor(jump_frame), 0, 6);
     _draw_player(sZero_Jump, _jump_idx, x, y, facing, 1, 0, c_white, 1);
 } else if (state == PLAYER_STATE.RUN && sprite_exists(sZero_Run)) {
-    // 16-frame authentic Run animation
-    var _run_frame = (anim_timer * 0.3) % 16;
+    // Startup poses play once; the shared running stride loops continuously.
+    var _run_frame = run_frame;
     _draw_player(sZero_Run, _run_frame, x, y, facing, 1, 0, c_white, 1);
 } else {
     // Check if low health (<= 30% HP) for exhausted idle animation (Hàng 20: 4 frame sau)

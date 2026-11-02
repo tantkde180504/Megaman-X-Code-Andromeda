@@ -36,7 +36,6 @@ switch (state) {
     case 2: // ROCKET_CHARGE: High-speed horizontal jet boost with rear blue flame!
         hsp = facing * 3.6;
         vsp = 0;
-        if (state_timer % 6 == 0) instance_create_layer(x - facing * 16, y, "Instances", oFX_DashDust);
         
         if (place_meeting(x + hsp, y, oSolid)) {
             state = 3; // BRAKE

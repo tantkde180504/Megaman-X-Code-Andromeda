@@ -1,9 +1,9 @@
 /// @desc Wait for entry animations, then read the briefing without gameplay input.
-if (!instance_exists(oPlayerX)) {
+if (!instance_exists(player_object)) {
     instance_destroy();
     exit;
 }
-var _player = instance_find(oPlayerX, 0);
+var _player = instance_find(player_object, 0);
 if (_player.state == PLAYER_STATE.DEATH || _player.hp_current <= 0) {
     instance_destroy();
     exit;

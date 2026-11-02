@@ -1,4 +1,5 @@
 /// @desc Mini Spider Minion Draw
+if (stage_encounters_reserved(x, y)) return;
 var _f = 0;
 if (spider_state == SPIDER_MINION_STATE.AIR) {
     _f = 13 + (floor(anim_timer) % 5);

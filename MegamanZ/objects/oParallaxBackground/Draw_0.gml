@@ -1,5 +1,21 @@
 if (room_get_name(room) == "rTitle") return;
 
+// Sky's artwork and collision markers are authored in the room at native scale.
+if (room == rStage_Sky) {
+    if (global.debug_overlay) {
+        draw_set_alpha(0.35);
+        draw_set_color(c_red);
+        with (oSolid) draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, false);
+        draw_set_color(c_yellow);
+        with (oOneWayPlatform) draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, false);
+        draw_set_color(c_aqua);
+        with (oLadder) draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, false);
+        draw_set_alpha(1);
+        draw_set_color(c_white);
+    }
+    return;
+}
+
 if (room_get_name(room) == "rStage_WebSpider") {
     var _cx = camera_get_view_x(view_camera[0]);
     var _cy = camera_get_view_y(view_camera[0]);

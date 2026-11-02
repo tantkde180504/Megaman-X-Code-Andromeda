@@ -1,3 +1,21 @@
+// Regular stage mobs cannot spawn or wander into entry, checkpoint or boss areas.
+if (stage_enemy_is_regular(object_index)) {
+    if (stage_encounters_reserved(x, y)) {
+        stage_frozen = true;
+        is_dead = true;
+        instance_destroy(id, false);
+        return;
+    }
+    if (instance_exists(oPlayer)) {
+        var _player = instance_find(oPlayer, 0);
+        // Rest screens stay quiet; distant encounters wait at their authored spots.
+        if (stage_encounters_reserved(_player.x, _player.y, 0)
+            || abs(x - _player.x) > VIEW_WIDTH || abs(y - _player.y) > VIEW_HEIGHT) {
+            stage_frozen = true;
+            return;
+        }
+    }
+}
 if (variable_global_exists("stage_ready") && !global.stage_ready) {
     stage_frozen = true;
     return;
